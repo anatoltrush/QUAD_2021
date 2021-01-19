@@ -1,5 +1,4 @@
 #include <Servo.h>
-#include <I2Cdev.h>
 #include <MPU6050.h>
 #include <GyverPID.h>
 
@@ -27,13 +26,15 @@ Flasher flasher(PIN_FLASH, TIME_FLASH_MS, TIME_FLASH_MS);
 
 // GYRO
 MPU6050 accel;
-float angle_ax, angle_ay;
-float prev_ax, prev_ay;
-float new_val_x, new_val_y;
-float delta_x, delta_y;
+float angle_ax = 0.0f, angle_ay = 0.0f;
+float prev_ax = 0.0f, prev_ay = 0.0f;
+float new_val_x = 0.0f, new_val_y = 0.0f;
+float delta_x = 0.0f, delta_y = 0.0f;
+uint64_t curr_time = 0;
 
 // PID
 GyverPID regulator;
+float kp = 0.0f, ki = 0.0f, kd = 0.0f;
 
 // MOVER
 Servo motorFR;
@@ -48,6 +49,9 @@ void setup() {
   accel.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 
   // PID
+  regulator.setDirection(NORMAL);
+  regulator.setLimits(MIN_POWER, MAX_POWER);
+  regulator.setDt(TIME_PID);
 
   // MOVER
   pinMode(FR_pin_out, OUTPUT);
@@ -78,8 +82,10 @@ void setup() {
 
 void loop() {
   // GYRO
-  if (1) {
-    int16_t ax_raw, ay_raw, az_raw, gx_raw, gy_raw, gz_raw;
+  if (millis() - curr_time > TIME_GYRO) {
+    curr_time = millis();
+
+                int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
     float ay = 0.0f, gx = 0.0f;
     float ax = 0.0f, gy = 0.0f;
     prev_ax = new_val_x;
@@ -114,9 +120,7 @@ void loop() {
   }
 
   // PID
-  if (1) {
-
-  }
+  float output = regulator.getResultTimer();
 
   // MOVER
   motorFR.writeMicroseconds(POWER);
