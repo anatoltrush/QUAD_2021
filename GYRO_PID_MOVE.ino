@@ -34,7 +34,6 @@ uint64_t curr_time = 0;
 
 // PID
 GyverPID regulator;
-float kp = 0.0f, ki = 0.0f, kd = 0.0f;
 
 // MOVER
 Servo motorFR;
@@ -50,8 +49,9 @@ void setup() {
 
   // PID
   regulator.setDirection(NORMAL);
-  regulator.setLimits(MIN_POWER, MAX_POWER);
+  regulator.setLimits(-(MAX_POWER - MIN_POWER), MAX_POWER - MIN_POWER);
   regulator.setDt(TIME_PID);
+  regulator.setpoint = 0;  // УСТАНОВКА регулятора, например необходимая температура
 
   // MOVER
   pinMode(FR_pin_out, OUTPUT);
@@ -78,6 +78,7 @@ void setup() {
 
   Serial.begin(9600);
   Serial.setTimeout(50);
+  Serial.println("AXIS_X, OUTPUT_R, OUTPUT_L");
 }
 
 void loop() {
@@ -85,7 +86,23 @@ void loop() {
   if (millis() - curr_time > TIME_GYRO) {
     curr_time = millis();
 
-                int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
+    if (Serial.available() > 0) {
+      int val = Serial.parseInt();
+      if (val > 0 && val < 200) { // P
+        regulator.Kp = (float)((val - 100.0f) / 10.0f);
+      }
+      if (val >= 200 && val < 300) { // I
+        regulator.Ki = (float)((val - 200.0f) / 10.0f);
+      }
+      if (val >= 300 && val < 800) { // D
+        regulator.Kd = (float)((val - 300.0f) / 10.0f);
+      }
+      if (val >= 800 && val < 2300) { // POWER
+        POWER = val;
+      }
+    }
+
+    int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
     float ay = 0.0f, gx = 0.0f;
     float ax = 0.0f, gy = 0.0f;
     prev_ax = new_val_x;
@@ -110,17 +127,27 @@ void loop() {
 
     delta_x = angle_ax - prev_ax;
     new_val_x = prev_ax + (delta_x * 0.3f); // config 0-low...1-full
+    regulator.input = new_val_x;     // ВХОД регулятора угол
+
+    Serial.print(new_val_x);
+    Serial.print(',');
 
     delta_y = angle_ay - prev_ay;
     new_val_y = prev_ay + (delta_y * 0.3f); // config 0-low...1-full
 
-    Serial.print(new_val_x);
-    Serial.print(" ");
-    Serial.println(new_val_y);
-  }
+    /*Serial.print(new_val_x);
+      Serial.print(" ");
+      Serial.println(new_val_y);*/
 
-  // PID
-  float output = regulator.getResultTimer();
+    // PID
+    int pid_out = (int)regulator.getResultTimer();
+    int RR = POWER + pid_out;
+    int RL = POWER - pid_out;
+
+    Serial.print(RR);
+    Serial.print(',');
+    Serial.println(RL);
+  }
 
   // MOVER
   motorFR.writeMicroseconds(POWER);
@@ -130,3 +157,4 @@ void loop() {
 
   flasher.update();
 }
+// kp = 5...8, ki = 0.5...2.0, kd = 0.5
