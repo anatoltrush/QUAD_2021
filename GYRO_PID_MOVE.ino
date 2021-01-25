@@ -141,8 +141,8 @@ void loop() {
 
     // PID
     int pid_out = (int)regulator_FR_RL.getResultTimer();
-    POWER_RR = POWER_IN + pid_out;
-    POWER_RL = POWER_IN - pid_out;
+    POWER_RR = POWER_IN - pid_out;
+    POWER_RL = POWER_IN + pid_out;
 
     Serial.print(POWER_RR);
     Serial.print(',');
@@ -158,3 +158,4 @@ void loop() {
   flasher.update();
 }
 // kp = 5...8, ki = 0.5...2.0, kd = 0.5
+// kp = 1...2, ki = 1, kd = 0.1
