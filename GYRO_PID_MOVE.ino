@@ -1,28 +1,16 @@
 #include <Servo.h>
 #include <MPU6050.h>
 #include <GyverPID.h>
+#include <RF24.h>
 
 #include "Flash.hpp"
-#define PIN_FLASH      8
-#define TIME_FLASH_MS    500
 
-// GYRO
-#define TO_DEG 57.29577951308232087679815481410517033f
-#define TIME_GYRO 50
-
-// PID
-#define TIME_PID 50
-
-// MOVER
-#define MIN_POWER 800
-#define MAX_POWER 2300
-
-#define FR_pin_out 4 // PIN_FR_SERV_OUT
-#define FL_pin_out 6 // PIN_FL_SERV_OUT
-#define RR_pin_out 3 // PIN_RR_SERV_OUT
-#define RL_pin_out 5 // PIN_RL_SERV_OUT
+#include "Defines.hpp"
 
 Flasher flasher(PIN_FLASH, TIME_FLASH_MS, TIME_FLASH_MS);
+
+// RADIO
+RF24 radio(PIN_NRF_CE, PIN_NRF_CS);
 
 // GYRO
 MPU6050 accel;
@@ -33,14 +21,21 @@ float delta_x = 0.0f, delta_y = 0.0f;
 uint64_t curr_time = 0;
 
 // PID
-GyverPID regulator;
+GyverPID regulator_FR_RL;
+GyverPID regulator_FL_RR;
+GyverPID regulator_D1_D2;
 
 // MOVER
 Servo motorFR;
 Servo motorFL;
 Servo motorRR;
 Servo motorRL;
-int POWER = MIN_POWER;
+
+int POWER_IN = MIN_POWER;
+int POWER_FR = MIN_POWER;
+int POWER_FL = MIN_POWER;
+int POWER_RR = MIN_POWER;
+int POWER_RL = MIN_POWER;
 
 void setup() {
   // GYRO
@@ -48,10 +43,15 @@ void setup() {
   accel.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 
   // PID
-  regulator.setDirection(NORMAL);
-  regulator.setLimits(-(MAX_POWER - MIN_POWER), MAX_POWER - MIN_POWER);
-  regulator.setDt(TIME_PID);
-  regulator.setpoint = 0;  // УСТАНОВКА регулятора, например необходимая температура
+  regulator_FR_RL.setDirection(NORMAL);
+  regulator_FR_RL.setLimits(-(MAX_POWER - MIN_POWER), MAX_POWER - MIN_POWER);
+  regulator_FR_RL.setDt(TIME_PID);
+  regulator_FR_RL.setpoint = 0;  // УСТАНОВКА УГЛА
+
+  regulator_FL_RR.setDirection(NORMAL);
+  regulator_FL_RR.setLimits(-(MAX_POWER - MIN_POWER), MAX_POWER - MIN_POWER);
+  regulator_FL_RR.setDt(TIME_PID);
+  regulator_FL_RR.setpoint = 0;  // УСТАНОВКА УГЛА
 
   // MOVER
   pinMode(FR_pin_out, OUTPUT);
@@ -89,16 +89,16 @@ void loop() {
     if (Serial.available() > 0) {
       int val = Serial.parseInt();
       if (val > 0 && val < 200) { // P
-        regulator.Kp = (float)((val - 100.0f) / 10.0f);
+        regulator_FR_RL.Kp = (float)((val - 100.0f) / 10.0f);
       }
       if (val >= 200 && val < 300) { // I
-        regulator.Ki = (float)((val - 200.0f) / 10.0f);
+        regulator_FR_RL.Ki = (float)((val - 200.0f) / 10.0f);
       }
       if (val >= 300 && val < 800) { // D
-        regulator.Kd = (float)((val - 300.0f) / 10.0f);
+        regulator_FR_RL.Kd = (float)((val - 300.0f) / 10.0f);
       }
       if (val >= 800 && val < 2300) { // POWER
-        POWER = val;
+        POWER_IN = val;
       }
     }
 
@@ -127,7 +127,7 @@ void loop() {
 
     delta_x = angle_ax - prev_ax;
     new_val_x = prev_ax + (delta_x * 0.3f); // config 0-low...1-full
-    regulator.input = new_val_x;     // ВХОД регулятора угол
+    regulator_FR_RL.input = new_val_x;     // ВХОД регулятора угол
 
     Serial.print(new_val_x);
     Serial.print(',');
@@ -140,20 +140,20 @@ void loop() {
       Serial.println(new_val_y);*/
 
     // PID
-    int pid_out = (int)regulator.getResultTimer();
-    int RR = POWER + pid_out;
-    int RL = POWER - pid_out;
+    int pid_out = (int)regulator_FR_RL.getResultTimer();
+    POWER_RR = POWER_IN + pid_out;
+    POWER_RL = POWER_IN - pid_out;
 
-    Serial.print(RR);
+    Serial.print(POWER_RR);
     Serial.print(',');
-    Serial.println(RL);
+    Serial.println(POWER_RL);
   }
 
   // MOVER
-  motorFR.writeMicroseconds(POWER);
-  motorFL.writeMicroseconds(POWER);
-  motorRR.writeMicroseconds(POWER);
-  motorRL.writeMicroseconds(POWER);
+  motorFR.writeMicroseconds(POWER_FR);
+  motorFL.writeMicroseconds(POWER_FL);
+  motorRR.writeMicroseconds(POWER_RR);
+  motorRL.writeMicroseconds(POWER_RL);
 
   flasher.update();
 }
