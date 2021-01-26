@@ -1,8 +1,10 @@
 #ifndef FLASH_HPP
 #define FLASH_HPP
 
-#include <stdint.h>
 #include <Arduino.h>
+
+#define PIN_FLASH      8
+#define TIME_FLASH_MS    500
 
 /*example---> Flasher led1(5, 500, 400);
 --->led1.Update();*/
@@ -22,4 +24,3 @@ public:
 	void update();
 };
 #endif // FLASH_HPP
-
