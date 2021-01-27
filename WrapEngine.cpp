@@ -1,7 +1,6 @@
 #include "WrapEngine.hpp"
 
-WrapEngine::WrapEngine()
-{
+void WrapEngine::init() {
   pinMode(FR_pin_out, OUTPUT);
   pinMode(FL_pin_out, OUTPUT);
   pinMode(RR_pin_out, OUTPUT);
@@ -33,10 +32,12 @@ void WrapEngine::apply()
   motorRL.writeMicroseconds(POWER_RL);
 }
 
+// RELOAD
 void WrapEngine::apply(uint16_t ms)
 {
-  uint64_t _curr_mills = millis(); // текущее время в миллисекундах
-  if (_curr_mills - _prev_millis > ms) {
+  if (millis() - _prev_millis > ms) {
+    _prev_millis = millis(); // запоминаем момент времени
+
     motorFR.writeMicroseconds(POWER_FR);
     motorFL.writeMicroseconds(POWER_FL);
     motorRR.writeMicroseconds(POWER_RR);

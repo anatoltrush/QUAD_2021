@@ -7,12 +7,11 @@ Flasher::Flasher(uint8_t pin, uint64_t time_on, uint64_t time_off) :
 }
 
 void Flasher::update() {
-  uint64_t _curr_mills = millis(); // текущее время в миллисекундах
-
-  if (_curr_mills - _prev_millis > _on_time) {
+  if (millis() - _prev_millis > _on_time) {
+    _prev_millis = millis(); // запоминаем момент времени
+    
     (_led_state == LOW) ? _led_state = HIGH : _led_state = LOW;
-
-    _prev_millis = _curr_mills; // запоминаем момент времени
+    
     digitalWrite(_led_pin, _led_state); // реализуем новое состояние
   }
 }

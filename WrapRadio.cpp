@@ -9,3 +9,7 @@ WrapRadio::~WrapRadio()
 {
   delete radio;
 }
+
+void WrapRadio::init() {
+
+}

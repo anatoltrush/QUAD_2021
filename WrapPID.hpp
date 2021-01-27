@@ -6,7 +6,7 @@
 
 #include "WrapEngine.hpp"
 
-#define TIME_PID 25
+#define TIME_PID 30
 
 class WrapPID
 {
@@ -15,6 +15,6 @@ class WrapPID
     GyverPID regulator_FL_RR;
     GyverPID regulator_D1_D2;
 
-    WrapPID();
+    void init();
 };
 #endif // WRAPPID_HPP

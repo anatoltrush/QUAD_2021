@@ -1,6 +1,6 @@
 #include "WrapPID.hpp"
 
-WrapPID::WrapPID()
+void WrapPID::init()
 {
   regulator_FR_RL.setDirection(NORMAL);
   regulator_FR_RL.setLimits(-(MAX_POWER - MIN_POWER), MAX_POWER - MIN_POWER);

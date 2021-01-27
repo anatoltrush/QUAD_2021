@@ -21,6 +21,11 @@ WrapEngine wrapengine;
 int POWER_IN = MIN_POWER;
 
 void setup() {
+  wrapengine.init();
+  wrapgyro.init();
+  wrappid.init();
+  wrapradio.init();
+
   Serial.begin(9600);
   Serial.setTimeout(50);
   Serial.println("AXIS_X, OUTPUT_R, OUTPUT_L");
@@ -48,30 +53,30 @@ void loop() {
     }
 
     float smoothed_x = 0.0f, smoothed_y = 0.0f;
-    wrapgyro.getSmoothResult(smoothed_x, smoothed_y);
+    wrapgyro.getSmoothResult(smoothed_x, smoothed_y, TIME_GYRO);
     wrappid.regulator_FR_RL.input = smoothed_x;     // ВХОД регулятора угол
 
     Serial.print(smoothed_x);
     Serial.print(',');
 
-    /*Serial.print(new_val_x);
-      Serial.print(" ");
-      Serial.println(new_val_y);*/
-
     // PID
     int pid_out = (int)wrappid.regulator_FR_RL.getResultTimer();
-    wrapengine.POWER_RR = POWER_IN - pid_out;
-    wrapengine.POWER_RL = POWER_IN + pid_out;
+    wrapengine.POWER_FL = POWER_IN - pid_out;
+    wrapengine.POWER_RR = POWER_IN + pid_out;
+
+    //wrapengine.POWER_RL = POWER_IN ;
+    //wrapengine.POWER_FR = POWER_IN ;
+    //wrapengine.POWER_RR = POWER_IN ;
 
     Serial.print(wrapengine.POWER_RR);
     Serial.print(',');
-    Serial.println(wrapengine.POWER_RL);
+    Serial.println(wrapengine.POWER_FL);
   }
 
   // MOVER
-  wrapengine.apply(5);
+  wrapengine.apply(10);
 
   flasher.update();
 }
 // kp = 5...8, ki = 0.5...2.0, kd = 0.5
-// kp = 1...2, ki = 1, kd = 0.1
+// kp = 110, ki = 215, kd = 301

@@ -29,7 +29,7 @@ class WrapEngine
 
     uint64_t _prev_millis  = 0; // последний момент смены состояния
 
-    WrapEngine();
+    void init();
     void apply();
     void apply(uint16_t ms);
 };
