@@ -26,8 +26,11 @@ class WrapEngine
     int POWER_FL = MIN_POWER;
     int POWER_RR = MIN_POWER;
     int POWER_RL = MIN_POWER;
-    
+
+    uint64_t _prev_millis  = 0; // последний момент смены состояния
+
     WrapEngine();
     void apply();
+    void apply(uint16_t ms);
 };
 #endif // WRAPENGINE_HPP

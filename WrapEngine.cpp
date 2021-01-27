@@ -32,3 +32,14 @@ void WrapEngine::apply()
   motorRR.writeMicroseconds(POWER_RR);
   motorRL.writeMicroseconds(POWER_RL);
 }
+
+void WrapEngine::apply(uint16_t ms)
+{
+  uint64_t _curr_mills = millis(); // текущее время в миллисекундах
+  if (_curr_mills - _prev_millis > ms) {
+    motorFR.writeMicroseconds(POWER_FR);
+    motorFL.writeMicroseconds(POWER_FL);
+    motorRR.writeMicroseconds(POWER_RR);
+    motorRL.writeMicroseconds(POWER_RL);
+  }
+}
