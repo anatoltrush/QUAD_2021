@@ -4,7 +4,10 @@
 #include "WrapGyro.hpp"
 #include "WrapPID.hpp"
 
+#define SIZE_OF_DATA 6
+
 uint64_t curr_time = 0;
+uint8_t data_cntrl[SIZE_OF_DATA] = {0, 0, 0, 0 , 0 , 0};
 
 WrapRadio wrapradio;
 
@@ -60,13 +63,13 @@ void loop() {
     Serial.print(',');
 
     // PID
-    int pid_out = (int)wrappid.regulator_FR_RL.getResultTimer();
-    wrapengine.POWER_FL = POWER_IN - pid_out;
-    wrapengine.POWER_RR = POWER_IN + pid_out;
+    int pid_out_FR_RL = (int)wrappid.regulator_FR_RL.getResultTimer();
+    wrapengine.POWER_FL = POWER_IN - pid_out_FR_RL;
+    wrapengine.POWER_RR = POWER_IN + pid_out_FR_RL;
 
-    //wrapengine.POWER_RL = POWER_IN ;
-    //wrapengine.POWER_FR = POWER_IN ;
-    //wrapengine.POWER_RR = POWER_IN ;
+    int pid_out_FL_RR = (int)wrappid.regulator_FL_RR.getResultTimer();
+    wrapengine.POWER_FL = POWER_IN - pid_out_FL_RR;
+    wrapengine.POWER_RR = POWER_IN + pid_out_FL_RR;
 
     Serial.print(wrapengine.POWER_RR);
     Serial.print(',');

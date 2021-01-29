@@ -16,9 +16,13 @@ class WrapRadio
   public:
     RF24* radio = NULL;
 
+    byte pipeNo, gotByte;    
+
     WrapRadio();
     ~WrapRadio();
 
     void init();
+
+    //byte address[][6] = { "1Node", "2Node", "3Node", "4Node", "5Node", "6Node" };
 };
 #endif // WRAPRADIO_HPP
