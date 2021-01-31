@@ -6,7 +6,7 @@
 
 #include "WrapEngine.hpp"
 
-#define TIME_PID 30
+#define TIME_PID 20
 
 class WrapPID
 {

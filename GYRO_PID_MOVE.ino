@@ -31,7 +31,7 @@ void setup() {
 
   Serial.begin(9600);
   Serial.setTimeout(50);
-  Serial.println("AXIS_X, OUTPUT_R, OUTPUT_L");
+  Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
 }
 
 void loop() {
@@ -54,26 +54,36 @@ void loop() {
         POWER_IN = val;
       }
     }
+    /*wrappid.regulator_FR_RL.Kp = 1.2f;
+      wrappid.regulator_FR_RL.Ki = 1.5f;
+      wrappid.regulator_FR_RL.Kd = 0.2f;
+      POWER_IN = 950;*/
 
     float smoothed_x = 0.0f, smoothed_y = 0.0f;
     wrapgyro.getSmoothResult(smoothed_x, smoothed_y, TIME_GYRO);
-    wrappid.regulator_FR_RL.input = smoothed_x;     // ВХОД регулятора угол
+    wrappid.regulator_FR_RL.input = smoothed_x; // ВХОД регулятора угол X
+    wrappid.regulator_FL_RR.input = smoothed_y;// ВХОД регулятора угол Y
 
     Serial.print(smoothed_x);
+    Serial.print(',');
+    
+    float real_x = 0.0f, real_y = 0.0f;
+    wrapgyro.getRealResult(real_x, real_y, TIME_GYRO);
+    Serial.print(real_x);
     Serial.print(',');
 
     // PID
     int pid_out_FR_RL = (int)wrappid.regulator_FR_RL.getResultTimer();
-    wrapengine.POWER_FL = POWER_IN - pid_out_FR_RL;
-    wrapengine.POWER_RR = POWER_IN + pid_out_FR_RL;
+    wrapengine.POWER_FR = POWER_IN - pid_out_FR_RL;
+    wrapengine.POWER_RL = POWER_IN + pid_out_FR_RL;
 
     int pid_out_FL_RR = (int)wrappid.regulator_FL_RR.getResultTimer();
     wrapengine.POWER_FL = POWER_IN - pid_out_FL_RR;
     wrapengine.POWER_RR = POWER_IN + pid_out_FL_RR;
 
-    Serial.print(wrapengine.POWER_RR);
+    Serial.print(wrapengine.POWER_FR);
     Serial.print(',');
-    Serial.println(wrapengine.POWER_FL);
+    Serial.println(wrapengine.POWER_RL);
   }
 
   // MOVER
@@ -82,4 +92,4 @@ void loop() {
   flasher.update();
 }
 // kp = 5...8, ki = 0.5...2.0, kd = 0.5
-// kp = 110, ki = 215, kd = 301
+// kp = 105, ki = 215, kd = 301
