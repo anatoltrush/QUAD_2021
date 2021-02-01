@@ -42,13 +42,16 @@ void loop() {
     if (Serial.available() > 0) {
       int val = Serial.parseInt();
       if (val > 0 && val < 200) { // P
-        wrappid.regulator_FR_RL.Kp = (float)((val - 100.0f) / 10.0f);
+        wrappid.regulator_FL_RR.Kp = wrappid.regulator_FR_RL.Kp
+        = (float)((val - 100.0f) / 10.0f);
       }
       if (val >= 200 && val < 300) { // I
-        wrappid.regulator_FR_RL.Ki = (float)((val - 200.0f) / 10.0f);
+        wrappid.regulator_FL_RR.Ki = wrappid.regulator_FR_RL.Ki
+        = (float)((val - 200.0f) / 10.0f);
       }
       if (val >= 300 && val < 800) { // D
-        wrappid.regulator_FR_RL.Kd = (float)((val - 300.0f) / 10.0f);
+        wrappid.regulator_FL_RR.Kd = wrappid.regulator_FR_RL.Kd
+        = (float)((val - 300.0f) / 10.0f);
       }
       if (val >= 800 && val < 2300) { // POWER
         POWER_IN = val;
@@ -87,9 +90,9 @@ void loop() {
   }
 
   // MOVER
-  wrapengine.apply(10);
+  wrapengine.apply(5);
 
   flasher.update();
 }
 // kp = 5...8, ki = 0.5...2.0, kd = 0.5
-// kp = 105, ki = 215, kd = 301
+// kp = 105, ki = 215, kd = 301?
