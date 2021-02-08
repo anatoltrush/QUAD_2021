@@ -35,6 +35,19 @@ void setup() {
 }
 
 void loop() {
+  if (wrapradio->radio.available(&wrapradio.pipeNo)) {
+    wrapradio.read(&data_upr, sizeof(data_upr));
+    wrapradio.gotByte = volt.update() * 10;
+    wrapradio->radio.writeAckPayload(wrapradio.pipeNo, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
+#ifdef DEBUG
+    delay(100);
+    Serial.print("DATA: ");
+    Serial.println(data_upr[1]);
+    Serial.println("power[1]: ");
+    Serial.println(power[1]);
+#endif // DEBUG
+  }
+
   // GYRO
   if (millis() - curr_time > TIME_GYRO) {
     curr_time = millis();
@@ -43,15 +56,15 @@ void loop() {
       int val = Serial.parseInt();
       if (val > 0 && val < 200) { // P
         wrappid.regulator_FL_RR.Kp = wrappid.regulator_FR_RL.Kp
-        = (float)((val - 100.0f) / 10.0f);
+                                     = (float)((val - 100.0f) / 10.0f);
       }
       if (val >= 200 && val < 300) { // I
         wrappid.regulator_FL_RR.Ki = wrappid.regulator_FR_RL.Ki
-        = (float)((val - 200.0f) / 10.0f);
+                                     = (float)((val - 200.0f) / 10.0f);
       }
       if (val >= 300 && val < 800) { // D
         wrappid.regulator_FL_RR.Kd = wrappid.regulator_FR_RL.Kd
-        = (float)((val - 300.0f) / 10.0f);
+                                     = (float)((val - 300.0f) / 100.0f);
       }
       if (val >= 800 && val < 2300) { // POWER
         POWER_IN = val;
@@ -69,7 +82,7 @@ void loop() {
 
     Serial.print(smoothed_x);
     Serial.print(',');
-    
+
     float real_x = 0.0f, real_y = 0.0f;
     wrapgyro.getRealResult(real_x, real_y, TIME_GYRO);
     Serial.print(real_x);
