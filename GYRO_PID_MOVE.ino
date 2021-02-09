@@ -35,16 +35,14 @@ void setup() {
 }
 
 void loop() {
-  if (wrapradio->radio.available(&wrapradio.pipeNo)) {
-    wrapradio.read(&data_upr, sizeof(data_upr));
-    wrapradio.gotByte = volt.update() * 10;
-    wrapradio->radio.writeAckPayload(wrapradio.pipeNo, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
+  if (wrapradio.radio->available(&wrapradio.pipeNo)) {
+    wrapradio.radio->read(&data_cntrl, sizeof(data_cntrl));
+    //wrapradio.gotByte = volt.update() * 10;
+    wrapradio.radio->writeAckPayload(wrapradio.pipeNo, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
 #ifdef DEBUG
     delay(100);
     Serial.print("DATA: ");
-    Serial.println(data_upr[1]);
-    Serial.println("power[1]: ");
-    Serial.println(power[1]);
+    Serial.println(data_cntrl[1]);
 #endif // DEBUG
   }
 
@@ -109,3 +107,4 @@ void loop() {
 }
 // kp = 5...8, ki = 0.5...2.0, kd = 0.5
 // kp = 105, ki = 215, kd = 301?
+// TODO: add Voltage
