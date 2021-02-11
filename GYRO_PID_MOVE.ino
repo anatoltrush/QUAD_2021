@@ -23,7 +23,8 @@ WrapPID wrappid;
 
 // ENGINES
 WrapEngine wrapengine;
-int POWER_IN = MIN_POWER;
+int POWER_IN_DRL = MIN_POWER;
+int POWER_IN_DLR = MIN_POWER;
 
 void setup() {
   wrapengine.init();
@@ -67,7 +68,7 @@ void loop() {
                                      = (float)((val - 300.0f) / 100.0f);
       }
       if (val >= 800 && val < 2300) { // POWER
-        POWER_IN = val;
+        POWER_IN_DRL = val;
       }
     }
 
@@ -84,14 +85,17 @@ void loop() {
     Serial.print(real_x);
     Serial.print(',');
 
-    // PID
+    // PID DIAGONAL 1
     int pid_out_FR_RL = (int)wrappid.regulator_FR_RL.getResultTimer();
-    wrapengine.POWER_FR = POWER_IN - pid_out_FR_RL;
-    wrapengine.POWER_RL = POWER_IN + pid_out_FR_RL;
+    wrapengine.POWER_FR = POWER_IN_DRL - pid_out_FR_RL;
+    wrapengine.POWER_RL = POWER_IN_DRL + pid_out_FR_RL;
 
+    // PID DIAGONAL 2
     int pid_out_FL_RR = (int)wrappid.regulator_FL_RR.getResultTimer();
-    wrapengine.POWER_FL = POWER_IN - pid_out_FL_RR;
-    wrapengine.POWER_RR = POWER_IN + pid_out_FL_RR;
+    wrapengine.POWER_FL = POWER_IN_DLR - pid_out_FL_RR;
+    wrapengine.POWER_RR = POWER_IN_DLR + pid_out_FL_RR;
+
+    // PID D1 D2
 
     Serial.print(wrapengine.POWER_FR);
     Serial.print(',');
