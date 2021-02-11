@@ -18,8 +18,8 @@ class WrapGyro
     float new_val_x = 0.0f, new_val_y = 0.0f;
     float delta_x = 0.0f, delta_y = 0.0f;
 
-    uint64_t _prev_millis_sm = 0;
-    uint64_t _prev_millis_rl = 0;
+    uint32_t _prev_millis_sm = 0;
+    uint32_t _prev_millis_rl = 0;
 
     void init();
 

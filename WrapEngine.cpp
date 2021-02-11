@@ -33,7 +33,7 @@ void WrapEngine::apply()
 }
 
 // RELOAD
-void WrapEngine::apply(uint16_t ms)
+void WrapEngine::apply(uint32_t ms)
 {
   if (millis() - _prev_millis > ms) {
     _prev_millis = millis(); // запоминаем момент времени

@@ -1,6 +1,6 @@
 #include "Flash.hpp"
 
-Flasher::Flasher(uint8_t pin, uint64_t time_on, uint64_t time_off) :
+Flasher::Flasher(uint8_t pin, uint32_t time_on, uint32_t time_off) :
   _led_pin(pin), _on_time(time_on), _off_time(time_off)
 {
   pinMode(_led_pin, OUTPUT);

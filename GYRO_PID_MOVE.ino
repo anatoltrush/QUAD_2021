@@ -1,4 +1,5 @@
 #include "Flash.hpp"
+#include "Voltage.hpp"
 #include "WrapRadio.hpp"
 #include "WrapEngine.hpp"
 #include "WrapGyro.hpp"
@@ -6,12 +7,13 @@
 
 #define SIZE_OF_DATA 6
 
-uint64_t curr_time = 0;
+uint32_t curr_time = 0;
 uint8_t data_cntrl[SIZE_OF_DATA] = {0, 0, 0, 0 , 0 , 0};
 
 WrapRadio wrapradio;
 
 Flasher flasher(PIN_FLASH, TIME_FLASH_MS, TIME_FLASH_MS);
+Voltage volt(PIN_VOLT, TIME_VOLT_MS);
 
 // GYRO
 WrapGyro wrapgyro;
@@ -37,7 +39,7 @@ void setup() {
 void loop() {
   if (wrapradio.radio->available(&wrapradio.pipeNo)) {
     wrapradio.radio->read(&data_cntrl, sizeof(data_cntrl));
-    //wrapradio.gotByte = volt.update() * 10;
+    wrapradio.gotByte = volt.update() * 100;
     wrapradio.radio->writeAckPayload(wrapradio.pipeNo, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
 #ifdef DEBUG
     delay(100);
@@ -68,10 +70,6 @@ void loop() {
         POWER_IN = val;
       }
     }
-    /*wrappid.regulator_FR_RL.Kp = 1.2f;
-      wrappid.regulator_FR_RL.Ki = 1.5f;
-      wrappid.regulator_FR_RL.Kd = 0.2f;
-      POWER_IN = 950;*/
 
     float smoothed_x = 0.0f, smoothed_y = 0.0f;
     wrapgyro.getSmoothResult(smoothed_x, smoothed_y, TIME_GYRO);

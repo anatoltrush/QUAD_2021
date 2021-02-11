@@ -22,7 +22,5 @@ class WrapRadio
     ~WrapRadio();
 
     void init();
-
-    //byte address[][6] = { "1Node", "2Node", "3Node", "4Node", "5Node", "6Node" };
 };
 #endif // WRAPRADIO_HPP
