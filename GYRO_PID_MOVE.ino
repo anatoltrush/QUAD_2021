@@ -7,13 +7,10 @@
 
 #define SIZE_OF_DATA 6
 
-uint32_t curr_time = 0;
-uint8_t data_cntrl[SIZE_OF_DATA] = {0, 0, 0, 0 , 0 , 0};
-
-WrapRadio wrapradio;
-
 Flasher flasher(PIN_FLASH, TIME_FLASH_MS, TIME_FLASH_MS);
 Voltage volt(PIN_VOLT, TIME_VOLT_MS);
+
+WrapRadio wrapradio;
 
 // GYRO
 WrapGyro wrapgyro;
@@ -23,8 +20,13 @@ WrapPID wrappid;
 
 // ENGINES
 WrapEngine wrapengine;
-int POWER_IN_DRL = MIN_POWER;
-int POWER_IN_DLR = MIN_POWER;
+
+uint32_t curr_time = 0;
+uint8_t data_cntrl[SIZE_OF_DATA] = {0, 0, 0, 0, 0, 0};
+
+uint16_t POWER_MAIN = MIN_POWER;
+uint16_t POWER_IN_DRL = POWER_MAIN;
+uint16_t POWER_IN_DLR = POWER_MAIN;
 
 void setup() {
   wrapengine.init();
@@ -86,12 +88,12 @@ void loop() {
     Serial.print(',');
 
     // PID DIAGONAL 1
-    int pid_out_FR_RL = (int)wrappid.regulator_FR_RL.getResultTimer();
+    uint16_t pid_out_FR_RL = (uint16_t)wrappid.regulator_FR_RL.getResultTimer();
     wrapengine.POWER_FR = POWER_IN_DRL - pid_out_FR_RL;
     wrapengine.POWER_RL = POWER_IN_DRL + pid_out_FR_RL;
 
     // PID DIAGONAL 2
-    int pid_out_FL_RR = (int)wrappid.regulator_FL_RR.getResultTimer();
+    uint16_t pid_out_FL_RR = (uint16_t)wrappid.regulator_FL_RR.getResultTimer();
     wrapengine.POWER_FL = POWER_IN_DLR - pid_out_FL_RR;
     wrapengine.POWER_RR = POWER_IN_DLR + pid_out_FL_RR;
 
@@ -107,6 +109,4 @@ void loop() {
 
   flasher.update();
 }
-// kp = 5...8, ki = 0.5...2.0, kd = 0.5
-// kp = 105, ki = 215, kd = 301?
-// TODO: add Voltage
+// 108 208 302

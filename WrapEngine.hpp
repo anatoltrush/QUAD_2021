@@ -22,12 +22,12 @@ class WrapEngine
     Servo motorRR;
     Servo motorRL;
 
-    int POWER_FR = MIN_POWER;
-    int POWER_FL = MIN_POWER;
-    int POWER_RR = MIN_POWER;
-    int POWER_RL = MIN_POWER;
+    uint16_t POWER_FR = MIN_POWER;
+    uint16_t POWER_FL = MIN_POWER;
+    uint16_t POWER_RR = MIN_POWER;
+    uint16_t POWER_RL = MIN_POWER;
 
-    uint32_t _prev_millis  = 0; // последний момент смены состояния
+    uint32_t _prev_millis = 0; // последний момент смены состояния
 
     void init();
     void apply();

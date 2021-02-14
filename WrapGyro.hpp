@@ -7,7 +7,7 @@
 
 #define TO_DEG    57.29577951308232087679815481410517033f
 #define TIME_GYRO 30
-#define SMOOTH_COEFF  0.40f // config 0-low...1-full
+#define SMOOTH_COEFF  0.25f // config 0-low...1-full
 
 class WrapGyro
 {
