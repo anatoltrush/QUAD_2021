@@ -4,26 +4,19 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
-#define PIN_VOLT      5.0
-#define LOW_VOLT      10.2
-#define MAX_VOLT      12.6
-#define PIN_VOLT      A2
-#define TIME_VOLT_MS  2000
+#include "Defines.hpp"
 
-#define R1  12500.0f
-#define R2  7500.0f
-
-//example---> Voltage volt(5, 1000);(pin, ms)
-//--->float vvv = volt.update();
+//example---> Voltage volt(5, 1000); (pin, ms)
+//--->float v = volt.update();
 
 class Voltage
 {
-    uint8_t perc = 0;       //voltage in percent
-    float signal = 0.0f;    //analog signal
-    float output = 0.0f;    //output signal
-    uint8_t inPin = 0;      //analog pin
-    uint32_t period = 0;    //period
-    uint32_t prevMillis = 0;
+    uint8_t perc        = 0;    // voltage in percent
+    uint8_t inPin       = 0;    // analog pin
+    uint32_t period     = 0;    // period
+    uint32_t prevMillis = 0;    //
+    float signal        = 0.0f; // analog signal
+    float output        = 0.0f; // output signal
 
   public:
     Voltage(uint8_t pin, uint32_t time_upd);

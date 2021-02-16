@@ -11,8 +11,8 @@ float Voltage::update() {
   {
     prevMillis = millis();
 
-    signal = (analogRead(inPin) / 1024.0f) * PIN_VOLT;
-    float div_koeff = R2 / (R1 + R2); // = 0.375
+    signal = (analogRead(inPin) / 1024.0f) * MAX_INP_VOLT;
+    float div_koeff = RESIST_2 / (RESIST_1 + RESIST_2); // = 0.375
     output = signal / div_koeff;
 
     // in percs

@@ -2,12 +2,9 @@
 #define WRAPGYRO_HPP
 
 #include <Arduino.h>
-
 #include <MPU6050.h>
 
-#define TO_DEG    57.29577951308232087679815481410517033f
-#define TIME_GYRO 30
-#define SMOOTH_COEFF  0.25f // config 0-low...1-full
+#include "Defines.hpp"
 
 class WrapGyro
 {

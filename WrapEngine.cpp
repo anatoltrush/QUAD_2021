@@ -1,15 +1,15 @@
 #include "WrapEngine.hpp"
 
 void WrapEngine::init() {
-  pinMode(FR_pin_out, OUTPUT);
-  pinMode(FL_pin_out, OUTPUT);
-  pinMode(RR_pin_out, OUTPUT);
-  pinMode(RL_pin_out, OUTPUT);
+  pinMode(PIN_FR, OUTPUT);
+  pinMode(PIN_FL, OUTPUT);
+  pinMode(PIN_RR, OUTPUT);
+  pinMode(PIN_RL, OUTPUT);
 
-  motorFR.attach(FR_pin_out);
-  motorFL.attach(FL_pin_out);
-  motorRR.attach(RR_pin_out);
-  motorRL.attach(RL_pin_out);
+  motorFR.attach(PIN_FR);
+  motorFL.attach(PIN_FL);
+  motorRR.attach(PIN_RR);
+  motorRL.attach(PIN_RL);
 
   motorFR.writeMicroseconds(MAX_POWER);
   motorFL.writeMicroseconds(MAX_POWER);

@@ -4,9 +4,7 @@
 #include <Arduino.h>
 #include <GyverPID.h>
 
-#include "WrapEngine.hpp"
-
-#define TIME_PID 20
+#include "Defines.hpp"
 
 class WrapPID
 {

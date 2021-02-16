@@ -40,10 +40,10 @@ void setup() {
 }
 
 void loop() {
-  if (wrapradio.radio->available(&wrapradio.pipeNo)) {
+  if (wrapradio.radio->available(&wrapradio.pipeNum)) {
     wrapradio.radio->read(&data_cntrl, sizeof(data_cntrl));
     wrapradio.gotByte = volt.update() * 100;
-    wrapradio.radio->writeAckPayload(wrapradio.pipeNo, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
+    wrapradio.radio->writeAckPayload(wrapradio.pipeNum, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
 #ifdef DEBUG
     delay(100);
     Serial.print("DATA: ");
@@ -52,7 +52,7 @@ void loop() {
   }
 
   // GYRO
-  if (millis() - curr_time > TIME_GYRO) {
+  if (millis() - curr_time > TIME_GYRO_MS) {
     curr_time = millis();
 
     if (Serial.available() > 0) {
@@ -75,7 +75,7 @@ void loop() {
     }
 
     float smoothed_x = 0.0f, smoothed_y = 0.0f;
-    wrapgyro.getSmoothResult(smoothed_x, smoothed_y, TIME_GYRO);
+    wrapgyro.getSmoothResult(smoothed_x, smoothed_y, TIME_GYRO_MS);
     wrappid.regulator_FR_RL.input = smoothed_x; // ВХОД регулятора угол X
     wrappid.regulator_FL_RR.input = smoothed_y;// ВХОД регулятора угол Y
 
@@ -83,7 +83,7 @@ void loop() {
     Serial.print(',');
 
     float real_x = 0.0f, real_y = 0.0f;
-    wrapgyro.getRealResult(real_x, real_y, TIME_GYRO);
+    wrapgyro.getRealResult(real_x, real_y, TIME_GYRO_MS);
     Serial.print(real_x);
     Serial.print(',');
 

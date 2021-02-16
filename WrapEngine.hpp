@@ -2,16 +2,9 @@
 #define WRAPENGINE_HPP
 
 #include <Arduino.h>
-
 #include <Servo.h>
 
-#define FR_pin_out 4 // PIN_FR_SERV_OUT
-#define FL_pin_out 6 // PIN_FL_SERV_OUT
-#define RR_pin_out 5 // PIN_RR_SERV_OUT
-#define RL_pin_out 3 // PIN_RL_SERV_OUT
-
-#define MIN_POWER 800
-#define MAX_POWER 2300
+#include "Defines.hpp"
 
 class WrapEngine
 {
