@@ -1,6 +1,8 @@
 #ifndef DEFINES_HPP
 #define DEFINES_HPP
 
+#define SIZE_OF_DATA 6
+
 // <----- DIGITAL PINS ----->
 
 #define PIN_RL          3 // PIN_RL_SERV_OUT
@@ -25,7 +27,7 @@
 // <----- PERIODS ----->
 
 #define TIME_PID_MS     20
-#define TIME_GYRO_MS    30
+#define TIME_GYRO_MS    20
 #define TIME_FLASH_MS   500
 #define TIME_VOLT_MS    2000
 

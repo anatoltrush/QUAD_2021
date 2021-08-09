@@ -20,10 +20,10 @@ class WrapGyro
 
     void init();
 
-    void getRealResult(float &angle_x, float &angle_y);
-    void getRealResult(float &angle_x, float &angle_y, uint16_t ms);
+    void getRealResultNow(float &angle_x, float &angle_y);
+    void getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms);
 
-    void getSmoothResult(float &angle_x, float &angle_y);
-    void getSmoothResult(float &angle_x, float &angle_y, uint16_t ms);
+    void getSmoothResultNow(float &angle_x, float &angle_y);
+    void getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms);
 };
 #endif // WRAPGYRO_HPP

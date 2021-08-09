@@ -5,7 +5,7 @@ void WrapGyro::init() {
   accel.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 }
 
-void WrapGyro::getRealResult(float &angle_x, float &angle_y) {
+void WrapGyro::getRealResultNow(float &angle_x, float &angle_y) {
   int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
   float ay = 0.0f, gx = 0.0f;
   float ax = 0.0f, gy = 0.0f;
@@ -29,7 +29,7 @@ void WrapGyro::getRealResult(float &angle_x, float &angle_y) {
 }
 
 // RELOAD
-void WrapGyro::getRealResult(float &angle_x, float &angle_y, uint16_t ms) {
+void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms) {
   if (millis() - _prev_millis_rl > ms) {
     _prev_millis_rl = millis(); // запоминаем момент времени
 
@@ -56,7 +56,7 @@ void WrapGyro::getRealResult(float &angle_x, float &angle_y, uint16_t ms) {
   }
 }
 
-void WrapGyro::getSmoothResult(float &angle_x, float &angle_y)
+void WrapGyro::getSmoothResultNow(float &angle_x, float &angle_y)
 {
   int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
   float ay = 0.0f, gx = 0.0f;
@@ -91,7 +91,7 @@ void WrapGyro::getSmoothResult(float &angle_x, float &angle_y)
 }
 
 // RELOAD
-void WrapGyro::getSmoothResult(float &angle_x, float &angle_y, uint16_t ms)
+void WrapGyro::getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms)
 {
   if (millis() - _prev_millis_sm > ms) {
     _prev_millis_sm = millis(); // запоминаем момент времени

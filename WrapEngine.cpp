@@ -38,9 +38,20 @@ void WrapEngine::apply(uint32_t ms)
   if (millis() - _prev_millis > ms) {
     _prev_millis = millis(); // запоминаем момент времени
 
+    if(POWER_FR < MIN_POWER) POWER_FR = MIN_POWER;
+    if(POWER_FR > MAX_POWER) POWER_FR = MAX_POWER;
     motorFR.writeMicroseconds(POWER_FR);
+
+    if(POWER_FL < MIN_POWER) POWER_FL = MIN_POWER;
+    if(POWER_FL > MAX_POWER) POWER_FL = MAX_POWER;
     motorFL.writeMicroseconds(POWER_FL);
+
+    if(POWER_RR < MIN_POWER) POWER_RR = MIN_POWER;
+    if(POWER_RR > MAX_POWER) POWER_RR = MAX_POWER;
     motorRR.writeMicroseconds(POWER_RR);
+
+    if(POWER_RL < MIN_POWER) POWER_RL = MIN_POWER;
+    if(POWER_RL > MAX_POWER) POWER_RL = MAX_POWER;
     motorRL.writeMicroseconds(POWER_RL);
   }
 }
