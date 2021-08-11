@@ -11,6 +11,8 @@
 class WrapGyro
 {
   public:
+    WrapGyro();
+
     MPU6050 accel;
     float angle_ax = 0.0f, angle_ay = 0.0f;
     float prev_ax = 0.0f, prev_ay = 0.0f;
@@ -19,8 +21,6 @@ class WrapGyro
 
     uint32_t _prev_millis_sm = 0;
     uint32_t _prev_millis_rl = 0;
-
-    void init();
 
     void getRealResultNow(float &angle_x, float &angle_y);
     void getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms);

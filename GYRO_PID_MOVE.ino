@@ -9,25 +9,14 @@ Flasher flasher(PIN_FLASH, TIME_FLASH_MS, TIME_FLASH_MS);
 Voltage volt(PIN_VOLT, TIME_VOLT_MS);
 
 WrapRadio wrapradio;
-
-// GYRO
 WrapGyro wrapgyro;
-
-// PID
 WrapPID wrappid;
-
-// ENGINES
 WrapEngine wrapengine;
 
 // uint32_t curr_time = 0;
 uint8_t data_cntrl[SIZE_OF_DATA] = {0, 0, 0, 0, 0, 0};
 
 void setup() {
-  wrapengine.init();
-  wrapgyro.init();
-  wrappid.init();
-  wrapradio.init();
-
   Serial.begin(9600);
   Serial.setTimeout(100);
   Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
@@ -104,6 +93,4 @@ void loop() {
 
   flasher.update();
 }
-// TODO: delete inits?
-// TODO: add prints
 // 108 208 302

@@ -1,8 +1,8 @@
 #include "WrapPID.hpp"
 
-void WrapPID::init()
+WrapPID::WrapPID()
 {
-  POWER_FULL_DIFF = MAX_POWER - MIN_POWER;
+    POWER_FULL_DIFF = MAX_POWER - MIN_POWER;
 
   regulator_FR_RL.setDirection(NORMAL);
   // regulator_FR_RL.setLimits(-(MAX_POWER - MIN_POWER), MAX_POWER - MIN_POWER);

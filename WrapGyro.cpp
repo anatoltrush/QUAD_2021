@@ -1,6 +1,7 @@
 #include "WrapGyro.hpp"
 
-void WrapGyro::init() {
+WrapGyro::WrapGyro()
+{
   accel.initialize(); // первичная настройка датчика
   accel.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 }

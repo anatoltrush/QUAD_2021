@@ -16,7 +16,5 @@ class WrapRadio
 
     WrapRadio();
     ~WrapRadio();
-
-    void init();
 };
 #endif // WRAPRADIO_HPP

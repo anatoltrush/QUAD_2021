@@ -1,6 +1,7 @@
 #include "WrapEngine.hpp"
 
-void WrapEngine::init() {
+WrapEngine::WrapEngine()
+{
   pinMode(PIN_FR, OUTPUT);
   pinMode(PIN_FL, OUTPUT);
   pinMode(PIN_RR, OUTPUT);

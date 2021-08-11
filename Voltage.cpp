@@ -1,12 +1,14 @@
 #include "Voltage.hpp"
 
 Voltage::Voltage(uint8_t pin, uint32_t time_upd):
-  inPin(pin), period(time_upd)
+  inPin(pin),
+  period(time_upd)
 {
   pinMode(inPin, INPUT);
 }
 
-float Voltage::update() {
+float Voltage::update()
+{
   if (millis() - prevMillis >= period)
   {
     prevMillis = millis();
