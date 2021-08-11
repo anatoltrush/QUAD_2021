@@ -33,26 +33,30 @@
 #define TIME_VOLT_MS    2000
 
 // <----- CONSTANT VALUES ----->
-// engines
+
+// ENGINES
 #define MIN_POWER       800
 #define MAX_POWER       2300
 
-// resistance
+// RESISTANCE
 #define RESIST_1        12500.0f
 #define RESIST_2        7500.0f
 
-// gyro
+// GYRO
 #define TO_DEG          57.29577951308232087679815481410517033f
 #define SMOOTH_COEFF    0.25f // config 0-low...1-full
 
-// voltage
+// VOLTAGE
 #define MAX_INP_VOLT    5.0
 #define LOW_VOLT        10.2
 #define MAX_VOLT        12.6
 
-// PID
+// PID COEFFS
 #define PID_KP          0.8f
 #define PID_KI          0.8f
 #define PID_KD          0.02f
+
+// PID  LIMIT PERCENT
+#define PID_LIM_COEFF   0.3f
 
 #endif // DEFINES_HPP

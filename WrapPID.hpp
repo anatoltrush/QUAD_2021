@@ -14,5 +14,8 @@ class WrapPID
     GyverPID regulator_D1_D2;
 
     void init();
+
+  private:
+    uint16_t POWER_FULL_DIFF = 0;
 };
 #endif // WRAPPID_HPP

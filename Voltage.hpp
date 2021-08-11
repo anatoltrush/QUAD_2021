@@ -2,7 +2,6 @@
 #define VOLTAGE_HPP
 
 #include <Arduino.h>
-#include <LiquidCrystal.h>
 
 #include "Defines.hpp"
 

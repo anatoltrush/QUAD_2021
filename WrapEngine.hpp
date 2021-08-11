@@ -23,12 +23,9 @@ class WrapEngine
     uint16_t POWER_RR = MIN_POWER;
     uint16_t POWER_RL = MIN_POWER;
 
-    uint16_t POWER_FULL_DIFF = 0;
-
     uint32_t _prev_millis = 0; // последний момент смены состояния
 
     void init();
     void apply(uint32_t ms);
-    void apply(uint32_t ms, float gap_perc);
 };
 #endif // WRAPENGINE_HPP

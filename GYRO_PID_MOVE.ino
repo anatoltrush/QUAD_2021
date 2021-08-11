@@ -29,8 +29,9 @@ void setup() {
   wrapradio.init();
 
   Serial.begin(9600);
-  Serial.setTimeout(50);
+  Serial.setTimeout(100);
   Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
+  Serial.println(__PRETTY_FUNCTION__); // delete after test
 }
 
 void loop() {
@@ -99,9 +100,9 @@ void loop() {
   //}
 
   // MOVER
-  wrapengine.apply(TIME_ENG_MS, 0.3f);
+  wrapengine.apply(TIME_ENG_MS);
 
   flasher.update();
 }
-// TODO: delete inits
+// TODO: delete inits?
 // 108 208 302
