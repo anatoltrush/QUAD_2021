@@ -5,6 +5,8 @@
 
 #include "Defines.hpp"
 
+#define DEBUG_VOLT
+
 //example---> Voltage volt(5, 1000); (pin, ms)
 //--->float v = volt.update();
 

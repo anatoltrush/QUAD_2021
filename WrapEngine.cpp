@@ -29,6 +29,12 @@ void WrapEngine::apply(uint32_t ms)
   if (millis() - _prev_millis > ms) {
     _prev_millis = millis(); // запоминаем момент времени
 
+#ifdef DEBUG_ENG
+    Serial.print(millis() + "_");
+    Serial.println(__PRETTY_FUNCTION__);
+#endif
+
+    // __________functional__________
     // Diag FR <-o-> RL
     if (POWER_FR < MIN_POWER) POWER_FR = MIN_POWER;
     if (POWER_FR > MAX_POWER) POWER_FR = MAX_POWER;

@@ -33,6 +33,11 @@ void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms) {
   if (millis() - _prev_millis_rl > ms) {
     _prev_millis_rl = millis(); // запоминаем момент времени
 
+#ifdef DEBUG_GYRO
+    Serial.print(millis() + "_");
+    Serial.println(__PRETTY_FUNCTION__);
+#endif
+
     int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
     float ay = 0.0f, gx = 0.0f;
     float ax = 0.0f, gy = 0.0f;
@@ -95,6 +100,11 @@ void WrapGyro::getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms)
 {
   if (millis() - _prev_millis_sm > ms) {
     _prev_millis_sm = millis(); // запоминаем момент времени
+
+#ifdef DEBUG_GYRO
+    Serial.print(millis() + "_");
+    Serial.println(__PRETTY_FUNCTION__);
+#endif
 
     int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
     float ay = 0.0f, gx = 0.0f;

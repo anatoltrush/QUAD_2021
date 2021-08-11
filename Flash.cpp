@@ -9,9 +9,14 @@ Flasher::Flasher(uint8_t pin, uint32_t time_on, uint32_t time_off) :
 void Flasher::update() {
   if (millis() - _prev_millis > _on_time) {
     _prev_millis = millis(); // запоминаем момент времени
-    
+
+#ifdef DEBUG_FLASH
+    Serial.print(millis() + "_");
+    Serial.println(__PRETTY_FUNCTION__);
+#endif
+
     (_led_state == LOW) ? _led_state = HIGH : _led_state = LOW;
-    
+
     digitalWrite(_led_pin, _led_state); // реализуем новое состояние
   }
 }

@@ -105,4 +105,5 @@ void loop() {
   flasher.update();
 }
 // TODO: delete inits?
+// TODO: add prints
 // 108 208 302

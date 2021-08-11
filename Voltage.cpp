@@ -11,6 +11,11 @@ float Voltage::update() {
   {
     prevMillis = millis();
 
+#ifdef DEBUG_VOLT
+    Serial.print(millis() + "_");
+    Serial.println(__PRETTY_FUNCTION__);
+#endif
+
     signal = (analogRead(inPin) / 1024.0f) * MAX_INP_VOLT;
     float div_koeff = RESIST_2 / (RESIST_1 + RESIST_2); // = 0.375
     output = signal / div_koeff;

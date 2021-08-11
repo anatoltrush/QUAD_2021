@@ -6,6 +6,8 @@
 
 #include "Defines.hpp"
 
+#define DEBUG_GYRO
+
 class WrapGyro
 {
   public:

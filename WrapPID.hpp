@@ -6,6 +6,8 @@
 
 #include "Defines.hpp"
 
+#define DEBUG_PID
+
 class WrapPID
 {
   public:
