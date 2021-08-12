@@ -30,7 +30,7 @@ void WrapEngine::apply(uint32_t ms)
 #ifdef DEBUG_ENG
     Serial.print(millis() - _prev_millis);
     Serial.print("_");
-    Serial.println(__PRETTY_FUNCTION__);
+    Serial.println(__func__);
 #endif
     _prev_millis = millis(); // запоминаем момент времени
 

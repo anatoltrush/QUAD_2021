@@ -11,7 +11,7 @@ void Flasher::update() {
 #ifdef DEBUG_FLASH
     Serial.print(millis() - _prev_millis);
     Serial.print("_");
-    Serial.println(__PRETTY_FUNCTION__);
+    Serial.println(__func__);
 #endif
     _prev_millis = millis(); // запоминаем момент времени
 

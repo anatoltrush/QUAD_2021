@@ -15,7 +15,7 @@ float Voltage::update()
 
 #ifdef DEBUG_VOLT
     Serial.print(millis() + "_");
-    Serial.println(__PRETTY_FUNCTION__);
+    Serial.println(__func__);
 #endif
 
     signal = (analogRead(inPin) / 1024.0f) * MAX_INP_VOLT;

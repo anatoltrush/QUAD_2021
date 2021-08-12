@@ -1,10 +1,12 @@
 #include "Flash.hpp"
+#include "Voltage.hpp"
 #include "WrapRadio.hpp"
 #include "WrapEngine.hpp"
 #include "WrapGyro.hpp"
 #include "WrapPID.hpp"
 
 Flasher flasher(PIN_FLASH, TIME_FLASH_MS, TIME_FLASH_MS);
+Voltage volt(PIN_VOLT, TIME_VOLT_MS);
 
 WrapRadio wrapradio;
 
@@ -29,19 +31,15 @@ void setup() {
   Serial.begin(115200);
   Serial.setTimeout(100);
   Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
-  Serial.println(__PRETTY_FUNCTION__); // delete after test
+  Serial.println(__func__); // delete after test
 }
 
 void loop() {
   if (wrapradio.radio->available(&wrapradio.pipeNum))
   {
     wrapradio.radio->read(&data_cntrl, sizeof(data_cntrl));
+    wrapradio.gotByte = volt.update() * 100;
     wrapradio.radio->writeAckPayload(wrapradio.pipeNum, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
-#ifdef DEBUG
-    delay(100);
-    Serial.print("DATA: ");
-    Serial.println(data_cntrl[1]);
-#endif // DEBUG
   }
 
   // GYRO
@@ -69,16 +67,17 @@ void loop() {
 
     float smoothed_x = 0.0f, smoothed_y = 0.0f;
     wrapgyro.getSmoothResultTimer(smoothed_x, smoothed_y, TIME_GYRO_MS);
+    
     wrappid.regulator_FR_RL.input = smoothed_x; // ВХОД регулятора угол X
     wrappid.regulator_FL_RR.input = smoothed_y;// ВХОД регулятора угол Y
 
-    Serial.print(smoothed_x);
-    Serial.print(',');
+    //Serial.print(smoothed_x);
+    //Serial.print(',');
 
     float real_x = 0.0f, real_y = 0.0f;
     wrapgyro.getRealResultTimer(real_x, real_y, TIME_GYRO_MS);
-    Serial.print(real_x);
-    Serial.print(',');
+    //Serial.print(real_x);
+    //Serial.print(',');
 
     // PID DIAGONAL 1
     uint16_t pid_out_FR_RL = (uint16_t)wrappid.regulator_FR_RL.getResultTimer();
@@ -93,9 +92,9 @@ void loop() {
     // PID D1 D2
     // .....
 
-    Serial.print(wrapengine.POWER_FR);
-    Serial.print(',');
-    Serial.println(wrapengine.POWER_RL);
+    //Serial.print(wrapengine.POWER_FR);
+    //Serial.print(',');
+    //Serial.println(wrapengine.POWER_RL);
   }
 
   // MOVER
