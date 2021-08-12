@@ -6,7 +6,7 @@
 
 #include "Defines.hpp"
 
-#define DEBUG_GYRO
+//#define DEBUG_GYRO
 
 class WrapGyro
 {
@@ -17,7 +17,12 @@ class WrapGyro
     float new_val_x = 0.0f, new_val_y = 0.0f;
     float delta_x = 0.0f, delta_y = 0.0f;
 
-    int16_t ax_raw = 0, ay_raw = 0, az_raw = 0, gx_raw = 0, gy_raw = 0, gz_raw = 0;
+    float reserve_ax_sm = 0.0f, reserve_ay_sm = 0.0f;
+    float reserve_ax_rl = 0.0f, reserve_ay_rl = 0.0f;
+
+    int16_t ax_raw = 0, ay_raw = 0, az_raw = 0;
+    int16_t gx_raw = 0, gy_raw = 0, gz_raw = 0;
+    
     float ay = 0.0f, gx = 0.0f;
     float ax = 0.0f, gy = 0.0f;
 

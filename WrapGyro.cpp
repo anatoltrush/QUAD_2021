@@ -1,11 +1,11 @@
 #include "WrapGyro.hpp"
 
-void WrapGyro::init(){
+void WrapGyro::init() {
   accel.initialize(); // первичная настройка датчика
   accel.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 }
 
-void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms){
+void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms) {
   if (millis() - _prev_millis_rl >= ms) {
 #ifdef DEBUG_GYRO
     Serial.print(millis() - _prev_millis_rl);
@@ -27,13 +27,19 @@ void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms){
     angle_y = (ax >= 0) ? 90.0f - TO_DEG * acos(ax) : angle_y = TO_DEG * acos(-ax) - 90.0f;
 
     if (isnan(angle_x) || isnan(angle_y)) { // !!!
-      Serial.println("NAN!");
-      return;
+      //Serial.println("NAN!");
+      angle_x = reserve_ax_rl;
+      angle_y = reserve_ay_rl;
+      //return;
+    }
+    else {
+      reserve_ax_rl = angle_x;
+      reserve_ay_rl = angle_y;
     }
   }
 }
 
-void WrapGyro::getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms){
+void WrapGyro::getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms) {
   if (millis() - _prev_millis_sm >= ms) {
 #ifdef DEBUG_GYRO
     Serial.print(millis() - _prev_millis_sm);
@@ -58,8 +64,14 @@ void WrapGyro::getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms)
     angle_ay = (ax >= 0) ? 90.0f - TO_DEG * acos(ax) : angle_ay = TO_DEG * acos(-ax) - 90.0f;
 
     if (isnan(angle_ax) || isnan(angle_ay)) { // !!!
-      Serial.println("NAN!");
-      return;
+      //Serial.println("NAN!");
+      angle_ax = reserve_ax_sm;
+      angle_ay = reserve_ay_sm;
+      //return;
+    }
+    else {
+      reserve_ax_sm = angle_x;
+      reserve_ay_sm = angle_y;
     }
 
     delta_x = angle_ax - prev_ax;

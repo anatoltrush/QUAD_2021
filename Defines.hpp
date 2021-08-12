@@ -26,9 +26,9 @@
 
 // <----- PERIODS ----->
 
-#define TIME_PID_MS     15
-#define TIME_GYRO_MS    15
-#define TIME_ENG_MS     15
+#define TIME_PID_MS     20
+#define TIME_GYRO_MS    20
+#define TIME_ENG_MS     20
 #define TIME_FLASH_MS   500
 #define TIME_VOLT_MS    2000
 
@@ -44,7 +44,7 @@
 
 // GYRO
 #define TO_DEG          57.29577951308232087679815481410517033f
-#define SMOOTH_COEFF    0.25f // config 0-low...1-full
+#define SMOOTH_COEFF    0.20f // config 0-smooth...1-sharp
 
 // VOLTAGE
 #define MAX_INP_VOLT    5.0

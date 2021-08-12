@@ -5,7 +5,7 @@
 
 #include "Defines.hpp"
 
-#define DEBUG_FLASH
+//#define DEBUG_FLASH
 
 /*example---> Flasher led1(5, 500, 400);
 --->led1.Update();*/

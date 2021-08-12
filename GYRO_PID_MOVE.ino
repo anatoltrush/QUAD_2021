@@ -69,13 +69,13 @@ void loop() {
     wrappid.regulator_FR_RL.input = smoothed_x; // ВХОД регулятора угол X
     wrappid.regulator_FL_RR.input = smoothed_y;// ВХОД регулятора угол Y
 
-    //Serial.print(smoothed_x);
-    //Serial.print(',');
+    Serial.print(smoothed_x);
+    Serial.print(',');
 
     float real_x = 0.0f, real_y = 0.0f;
     wrapgyro.getRealResultTimer(real_x, real_y, TIME_GYRO_MS);
-    //Serial.print(real_x);
-    //Serial.print(',');
+    Serial.print(real_x);
+    Serial.print(',');
 
     // PID DIAGONAL 1
     uint16_t pid_out_FR_RL = (uint16_t)wrappid.regulator_FR_RL.getResultTimer();
@@ -90,9 +90,10 @@ void loop() {
     // PID D1 D2
     // .....
 
-    //Serial.print(wrapengine.POWER_FR);
-    //Serial.print(',');
-    //Serial.println(wrapengine.POWER_RL);
+    Serial.print(wrapengine.POWER_FR);
+    Serial.print(',');
+    Serial.println(wrapengine.POWER_RL);
+    //Serial.println();
   }
 
   // MOVER
