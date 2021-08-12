@@ -1,7 +1,6 @@
 #include "WrapEngine.hpp"
 
-WrapEngine::WrapEngine()
-{
+void WrapEngine::init() {
   pinMode(PIN_FR, OUTPUT);
   pinMode(PIN_FL, OUTPUT);
   pinMode(PIN_RR, OUTPUT);
@@ -27,13 +26,13 @@ WrapEngine::WrapEngine()
 
 void WrapEngine::apply(uint32_t ms)
 {
-  if (millis() - _prev_millis > ms) {
-    _prev_millis = millis(); // запоминаем момент времени
-
+  if (millis() - _prev_millis >= ms) {
 #ifdef DEBUG_ENG
-    Serial.print(millis() + "_");
+    Serial.print(millis() - _prev_millis);
+    Serial.print("_");
     Serial.println(__PRETTY_FUNCTION__);
 #endif
+    _prev_millis = millis(); // запоминаем момент времени
 
     // __________functional__________
     // Diag FR <-o-> RL

@@ -11,8 +11,6 @@
 class WrapEngine
 {
   public:
-    WrapEngine();
-
     Servo motorFR;
     Servo motorFL;
     Servo motorRR;
@@ -28,6 +26,7 @@ class WrapEngine
 
     uint32_t _prev_millis = 0; // последний момент смены состояния
 
+    void init();
     void apply(uint32_t ms);
 };
 #endif // WRAPENGINE_HPP
