@@ -1,11 +1,11 @@
 #include "WrapGyro.hpp"
 
-void WrapGyro::init() {
+void WrapGyro::init(){
   accel.initialize(); // первичная настройка датчика
   accel.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 }
 
-void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms) {
+void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms){
   if (millis() - _prev_millis_rl >= ms) {
 #ifdef DEBUG_GYRO
     Serial.print(millis() - _prev_millis_rl);
@@ -33,8 +33,7 @@ void WrapGyro::getRealResultTimer(float &angle_x, float &angle_y, uint16_t ms) {
   }
 }
 
-void WrapGyro::getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms)
-{
+void WrapGyro::getSmoothResultTimer(float &angle_x, float &angle_y, uint16_t ms){
   if (millis() - _prev_millis_sm >= ms) {
 #ifdef DEBUG_GYRO
     Serial.print(millis() - _prev_millis_sm);

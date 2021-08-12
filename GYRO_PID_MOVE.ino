@@ -31,12 +31,10 @@ void setup() {
   Serial.begin(115200);
   Serial.setTimeout(100);
   Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
-  Serial.println(__func__); // delete after test
 }
 
 void loop() {
-  if (wrapradio.radio->available(&wrapradio.pipeNum))
-  {
+  if (wrapradio.radio->available(&wrapradio.pipeNum)) {
     wrapradio.radio->read(&data_cntrl, sizeof(data_cntrl));
     wrapradio.gotByte = volt.update() * 100;
     wrapradio.radio->writeAckPayload(wrapradio.pipeNum, &wrapradio.gotByte, 1); // îòïðàâëÿåì îáðàòíî òî ÷òî ïðèíÿëè
@@ -67,7 +65,7 @@ void loop() {
 
     float smoothed_x = 0.0f, smoothed_y = 0.0f;
     wrapgyro.getSmoothResultTimer(smoothed_x, smoothed_y, TIME_GYRO_MS);
-    
+
     wrappid.regulator_FR_RL.input = smoothed_x; // ВХОД регулятора угол X
     wrappid.regulator_FL_RR.input = smoothed_y;// ВХОД регулятора угол Y
 

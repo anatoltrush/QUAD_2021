@@ -26,9 +26,9 @@
 
 // <----- PERIODS ----->
 
-#define TIME_PID_MS     20
-#define TIME_GYRO_MS    20
-#define TIME_ENG_MS     20
+#define TIME_PID_MS     15
+#define TIME_GYRO_MS    15
+#define TIME_ENG_MS     15
 #define TIME_FLASH_MS   500
 #define TIME_VOLT_MS    2000
 
