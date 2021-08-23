@@ -24,7 +24,7 @@ void WrapEngine::init() {
   delay(2000);
 }
 
-void WrapEngine::apply(uint32_t ms){
+void WrapEngine::apply(uint32_t ms) {
   if (millis() - _prev_millis >= ms) {
 #ifdef DEBUG_ENG
     Serial.print(millis() - _prev_millis);

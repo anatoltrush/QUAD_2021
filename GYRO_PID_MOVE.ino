@@ -48,11 +48,11 @@ void loop() {
       int val = Serial.parseInt();
       if (val > 0 && val < 200) { // P
         wrappid.regulator_FL_RR.Kp = wrappid.regulator_FR_RL.Kp
-                                     = (float)((val - 100.0f) / 10.0f);
+                                     = (float)((val - 100.0f) /*/ 10.0f*/);
       }
       if (val >= 200 && val < 300) { // I
         wrappid.regulator_FL_RR.Ki = wrappid.regulator_FR_RL.Ki
-                                     = (float)((val - 200.0f) / 10.0f);
+                                     = (float)((val - 200.0f) /*/ 10.0f*/);
       }
       if (val >= 300 && val < MIN_POWER) { // D
         wrappid.regulator_FL_RR.Kd = wrappid.regulator_FR_RL.Kd
@@ -69,36 +69,35 @@ void loop() {
     wrappid.regulator_FR_RL.input = smoothed_x; // ВХОД регулятора угол X
     wrappid.regulator_FL_RR.input = smoothed_y;// ВХОД регулятора угол Y
 
-    Serial.print(smoothed_x);
-    Serial.print(',');
+    /*Serial.print(smoothed_x);
+    Serial.print(',');*/
 
     float real_x = 0.0f, real_y = 0.0f;
     wrapgyro.getRealResultTimer(real_x, real_y, TIME_GYRO_MS);
-    Serial.print(real_x);
-    Serial.print(',');
+    /*Serial.print(real_x);
+    Serial.print(',');*/
 
     // PID DIAGONAL 1
     uint16_t pid_out_FR_RL = (uint16_t)wrappid.regulator_FR_RL.getResultTimer();
-    wrapengine.POWER_FR = wrapengine.POWER_IN_Diag_FRRL - pid_out_FR_RL;
-    wrapengine.POWER_RL = wrapengine.POWER_IN_Diag_FRRL + pid_out_FR_RL;
+    wrapengine.POWER_FR = wrapengine.POWER_IN_Diag_FRRL + pid_out_FR_RL;
+    wrapengine.POWER_RL = wrapengine.POWER_IN_Diag_FRRL - pid_out_FR_RL;
 
     // PID DIAGONAL 2
     uint16_t pid_out_FL_RR = (uint16_t)wrappid.regulator_FL_RR.getResultTimer();
-    wrapengine.POWER_FL = wrapengine.POWER_IN_Diag_FLRR - pid_out_FL_RR;
-    wrapengine.POWER_RR = wrapengine.POWER_IN_Diag_FLRR + pid_out_FL_RR;
+    wrapengine.POWER_FL = wrapengine.POWER_IN_Diag_FLRR + pid_out_FL_RR;
+    wrapengine.POWER_RR = wrapengine.POWER_IN_Diag_FLRR - pid_out_FL_RR;
 
     // PID D1 D2
     // .....
 
-    Serial.print(wrapengine.POWER_FR);
+    wrapengine.apply(TIME_ENG_MS);
+
+    flasher.update();
+
+    /*Serial.print(wrapengine.POWER_FR);
     Serial.print(',');
-    Serial.println(wrapengine.POWER_RL);
+    Serial.println(wrapengine.POWER_RL);*/
     //Serial.println();
   }
-
-  // MOVER
-  wrapengine.apply(TIME_ENG_MS);
-
-  flasher.update();
 }
 // 108 208 302
