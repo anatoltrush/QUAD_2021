@@ -1,7 +1,6 @@
 #ifndef WRAPRADIO_HPP
 #define WRAPRADIO_HPP
 
-#include <Arduino.h>
 #include <RF24.h>
 
 #include "Defines.hpp"
@@ -12,11 +11,13 @@ class WrapRadio
     RF24* radio = NULL;
 
     uint8_t pipeNum = 0;
-    uint8_t gotByte = 0;    
+    uint8_t ack_msg = 0;    
 
     WrapRadio();
     ~WrapRadio();
 
     void init();
+    
+    private:    
 };
 #endif // WRAPRADIO_HPP

@@ -1,7 +1,10 @@
 #ifndef DEFINES_HPP
 #define DEFINES_HPP
 
-#define SIZE_OF_DATA 6
+#include <Arduino.h>
+
+#define SIZE_OF_DATA    6
+#define SIZE_OF_ACK     1
 
 // <----- DIGITAL PINS ----->
 
@@ -26,9 +29,9 @@
 
 // <----- PERIODS ----->
 
-#define TIME_PID_MS     20
-#define TIME_GYRO_MS    20
-#define TIME_ENG_MS     20
+#define TIME_PID_MS     10
+#define TIME_GYRO_MS    10
+#define TIME_ENGINE_MS  10
 #define TIME_FLASH_MS   500
 #define TIME_VOLT_MS    2000
 
@@ -37,6 +40,7 @@
 // ENGINES
 #define MIN_POWER       800
 #define MAX_POWER       2300
+#define MIN_DIAG_POWER  1000  
 
 // RESISTANCE
 #define RESIST_1        12500.0f
@@ -57,6 +61,6 @@
 #define PID_KD          0.02f
 
 // PID  LIMIT PERCENT
-#define PID_LIM_COEFF   0.3f
+#define PID_LIM_COEFF   0.4f
 
 #endif // DEFINES_HPP

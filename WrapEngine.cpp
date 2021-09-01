@@ -22,16 +22,47 @@ void WrapEngine::init() {
   motorRR.writeMicroseconds(MIN_POWER);
   motorRL.writeMicroseconds(MIN_POWER);
   delay(2000);
+
+  regulator_FR_RL.setDirection(NORMAL);
+  regulator_FR_RL.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
+  regulator_FR_RL.setDt(TIME_PID_MS);
+  regulator_FR_RL.setpoint = 0;  // УСТАНОВКА УГЛА
+
+  regulator_FL_RR.setDirection(NORMAL);
+  regulator_FR_RL.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
+  regulator_FL_RR.setDt(TIME_PID_MS);
+  regulator_FL_RR.setpoint = 0;
 }
 
-void WrapEngine::apply(uint32_t ms) {
-  if (millis() - _prev_millis >= ms) {
-#ifdef DEBUG_ENG
-    Serial.print(millis() - _prev_millis);
+void WrapEngine::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
+  if (millis() - prev_millis >= ms) {
+#ifdef DEBUG_ENGINE
+    Serial.print(millis() - prev_millis);
+    Serial.print("_");
+    Serial.print(counter);
     Serial.print("_");
     Serial.println(__func__);
+    counter++;
 #endif
-    _prev_millis = millis(); // запоминаем момент времени
+    prev_millis = millis(); // запоминаем момент времени
+    //_________________________
+    if (POWER_IN_Diag_FRRL >= MIN_DIAG_POWER) {
+      POWER_FR = POWER_IN_Diag_FRRL + pid_FR_RL;
+      POWER_RL = POWER_IN_Diag_FRRL - pid_FR_RL;
+    }
+    else {
+      POWER_FR = POWER_IN_Diag_FRRL;
+      POWER_RL = POWER_IN_Diag_FRRL;
+    }
+
+    if (POWER_IN_Diag_FLRR >= MIN_DIAG_POWER) {
+      POWER_FL = POWER_IN_Diag_FLRR + pid_FL_RR;
+      POWER_RR = POWER_IN_Diag_FLRR - pid_FL_RR;
+    }
+    else {
+      POWER_FL = POWER_IN_Diag_FLRR;
+      POWER_RR = POWER_IN_Diag_FLRR;
+    }
 
     // Diag FR <-o-> RL
     if (POWER_FR < MIN_POWER) POWER_FR = MIN_POWER;
