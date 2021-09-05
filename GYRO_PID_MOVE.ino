@@ -37,7 +37,7 @@ void loop() {
 
   if (Serial.available() > 0) {
     int val = Serial.parseInt();
-    if (val > 0 && val < 200) { // ---> P <---
+    if (val >= 100 && val < 200) { // ---> P <---
       wrapengine.regulator_FL_RR.Kp =
         wrapengine.regulator_FR_RL.Kp =
           (float)((val - 100.0f) /*/ 10.0f*/);
@@ -47,13 +47,15 @@ void loop() {
         wrapengine.regulator_FR_RL.Ki =
           (float)((val - 200.0f) /*/ 10.0f*/);
     }
-    if (val >= 300 && val < MIN_POWER) { // ---> D <---
+    if (val >= 300 && val < 400) { // ---> D <---
       wrapengine.regulator_FL_RR.Kd =
         wrapengine.regulator_FR_RL.Kd =
           (float)((val - 300.0f) / 100.0f);
     }
-    if (val >= 800 && val <= MAX_POWER) { // ---> POWER <---
-      wrapengine.POWER_IN_Diag_FRRL = val;
+    if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
+      wrapengine.POWER_IN_Diag_FRRL =
+        wrapengine.POWER_IN_Diag_FLRR =
+          val;
     }
   }
 
@@ -61,8 +63,10 @@ void loop() {
   wrapgyroDMP.getRealResultTimer(TIME_GYRO_MS);
   wrapgyroDMP.getSmoothResultTimer(TIME_GYRO_MS);
 
-  wrapengine.regulator_FR_RL.input = wrapgyroDMP.ax_x_sm; // ВХОД регулятора угол X
-  wrapengine.regulator_FL_RR.input = wrapgyroDMP.ax_y_sm; // ВХОД регулятора угол Y
+  //wrapengine.regulator_FR_RL.input = wrapgyroDMP.ax_x_sm; // ВХОД регулятора угол X
+  //wrapengine.regulator_FL_RR.input = wrapgyroDMP.ax_y_sm; // ВХОД регулятора угол Y
+  wrapengine.regulator_FR_RL.input = wrapgyroDMP.ax_x_rl; // ВХОД регулятора угол X
+  wrapengine.regulator_FL_RR.input = wrapgyroDMP.ax_y_rl; // ВХОД регулятора угол Y
 
   uint16_t pid_FR_RL = (uint16_t)wrapengine.regulator_FR_RL.getResultTimer(); // PID DIAGONAL 1
   uint16_t pid_FL_RR = (uint16_t)wrapengine.regulator_FL_RR.getResultTimer(); // PID DIAGONAL 2
@@ -72,21 +76,21 @@ void loop() {
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();
 
-    Serial.print(wrapgyroDMP.ax_x_sm);
-    Serial.print(',');
-    Serial.print(wrapgyroDMP.ax_x_rl);
-    Serial.print(',');
-    /*Serial.print(wrapgyroDMP.ax_y_sm);
+    /*Serial.print(wrapgyroDMP.ax_x_sm);
+      Serial.print(',');
+      Serial.print(wrapgyroDMP.ax_x_rl);
+      Serial.print(',');*/
+    Serial.print(wrapgyroDMP.ax_y_sm);
     Serial.print(',');
     Serial.print(wrapgyroDMP.ax_y_rl);
-    Serial.print(',');*/
+    Serial.print(',');
 
-    Serial.print(wrapengine.POWER_FR);
+    /*Serial.print(wrapengine.POWER_FR);
+      Serial.print(',');
+      Serial.print(wrapengine.POWER_RL);*/
+    Serial.print(wrapengine.POWER_FL);
     Serial.print(',');
-    Serial.print(wrapengine.POWER_RL);
-    /*Serial.print(wrapengine.POWER_FL);
-    Serial.print(',');
-    Serial.print(wrapengine.POWER_RR);*/
+    Serial.print(wrapengine.POWER_RR);
     Serial.println();
   }
 }

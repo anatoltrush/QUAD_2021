@@ -29,7 +29,7 @@ void WrapEngine::init() {
   regulator_FR_RL.setpoint = 0;  // УСТАНОВКА УГЛА
 
   regulator_FL_RR.setDirection(NORMAL);
-  regulator_FR_RL.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
+  regulator_FL_RR.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
   regulator_FL_RR.setDt(TIME_PID_MS);
   regulator_FL_RR.setpoint = 0;
 }
@@ -56,8 +56,8 @@ void WrapEngine::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
     }
 
     if (POWER_IN_Diag_FLRR >= MIN_DIAG_POWER) {
-      POWER_FL = POWER_IN_Diag_FLRR + pid_FL_RR;
-      POWER_RR = POWER_IN_Diag_FLRR - pid_FL_RR;
+      POWER_FL = POWER_IN_Diag_FLRR - pid_FL_RR;
+      POWER_RR = POWER_IN_Diag_FLRR + pid_FL_RR;
     }
     else {
       POWER_FL = POWER_IN_Diag_FLRR;
