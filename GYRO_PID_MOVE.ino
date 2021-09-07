@@ -63,10 +63,10 @@ void loop() {
   wrapgyroDMP.getRealResultTimer(TIME_GYRO_MS);
   wrapgyroDMP.getSmoothResultTimer(TIME_GYRO_MS);
 
-  //wrapengine.regulator_FR_RL.input = wrapgyroDMP.ax_x_sm; // ВХОД регулятора угол X
-  //wrapengine.regulator_FL_RR.input = wrapgyroDMP.ax_y_sm; // ВХОД регулятора угол Y
-  wrapengine.regulator_FR_RL.input = wrapgyroDMP.ax_x_rl; // ВХОД регулятора угол X
-  wrapengine.regulator_FL_RR.input = wrapgyroDMP.ax_y_rl; // ВХОД регулятора угол Y
+  wrapengine.regulator_FR_RL.input = wrapgyroDMP.ax_x_sm; // ВХОД регулятора угол X
+  wrapengine.regulator_FL_RR.input = wrapgyroDMP.ax_y_sm; // ВХОД регулятора угол Y
+  //wrapengine.regulator_FR_RL.input = wrapgyroDMP.ax_x_rl; // ВХОД регулятора угол X
+  //wrapengine.regulator_FL_RR.input = wrapgyroDMP.ax_y_rl; // ВХОД регулятора угол Y
 
   uint16_t pid_FR_RL = (uint16_t)wrapengine.regulator_FR_RL.getResultTimer(); // PID DIAGONAL 1
   uint16_t pid_FL_RR = (uint16_t)wrapengine.regulator_FL_RR.getResultTimer(); // PID DIAGONAL 2
@@ -94,4 +94,4 @@ void loop() {
     Serial.println();
   }
 }
-// 108 208 302
+// TODO: 102 202 350 in code

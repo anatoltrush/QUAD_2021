@@ -48,7 +48,7 @@
 
 // GYRO
 #define TO_DEG          57.29577951308232087679815481410517033f
-#define SMOOTH_COEFF    0.20f // config 0-smooth...1-sharp
+#define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
 
 // VOLTAGE
 #define MAX_INP_VOLT    5.0

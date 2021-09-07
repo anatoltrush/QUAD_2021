@@ -31,7 +31,7 @@ void WrapEngine::init() {
   regulator_FL_RR.setDirection(NORMAL);
   regulator_FL_RR.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
   regulator_FL_RR.setDt(TIME_PID_MS);
-  regulator_FL_RR.setpoint = 0;
+  regulator_FL_RR.setpoint = -5;
 }
 
 void WrapEngine::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
