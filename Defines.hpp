@@ -49,18 +49,18 @@
 // GYRO
 #define TO_DEG          57.29577951308232087679815481410517033f
 #define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
+#define OFFSET_FL_RR    -5.0f
+#define OFFSET_FR_RL    0.0f
 
 // VOLTAGE
 #define MAX_INP_VOLT    5.0
 #define LOW_VOLT        10.2
 #define MAX_VOLT        12.6
 
-// PID COEFFS
-#define PID_KP          0.8f
-#define PID_KI          0.8f
-#define PID_KD          0.02f
-
-// PID  LIMIT PERCENT
+// PID
+#define PID_KP          1.5f
+#define PID_KI          2.0f
+#define PID_KD          35.0f
 #define PID_LIM_COEFF   0.4f
 
 #endif // DEFINES_HPP

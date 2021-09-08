@@ -1,11 +1,11 @@
-#ifndef WRAPGYRODMP_HPP
-#define WRAPGYRODMP_HPP
+#ifndef WRAPGYRO_HPP
+#define WRAPGYRO_HPP
 
 #include "Defines.hpp"
 
 //#define DEBUG_GYRO_DMP
 
-class WrapGyroDMP
+class WrapGyro
 {
   public:
     void init();
@@ -31,11 +31,11 @@ class WrapGyroDMP
     float prev_x = 0.0f,    prev_y = 0.0f,      prev_z = 0.0f;
     float new_val_x = 0.0f, new_val_y = 0.0f,   new_val_z = 0.0f;
 
-#ifdef DEBUG_GYRO_DMP
+#ifdef DEBUG_GYRO
     uint16_t counter_rl = 0;
     uint16_t counter_sm = 0;
 #endif
 
     void getData(float &axis_x, float &axis_y, float &axis_z);
 };
-#endif // WRAPGYRODMP_HPP
+#endif // WRAPGYRO_HPP

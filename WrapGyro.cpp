@@ -1,4 +1,4 @@
-#include "WrapGyroDMP.hpp"
+#include "WrapGyro.hpp"
 
 #include "MPU6050_6Axis_MotionApps_V6_12.h"
 
@@ -7,7 +7,7 @@ MPU6050 mpu;
 Quaternion q;           // [w, x, y, z]         quaternion container
 VectorFloat gravity;    // [x, y, z]            gravity vector
 
-void WrapGyroDMP::init() {
+void WrapGyro::init() {
   mpu.initialize(); // первичная настройка датчика
 
   devStatus = mpu.dmpInitialize();
@@ -15,9 +15,9 @@ void WrapGyroDMP::init() {
   mpuIntStatus = mpu.getIntStatus();
 }
 
-void WrapGyroDMP::getRealResultTimer(uint32_t ms) {
+void WrapGyro::getRealResultTimer(uint32_t ms) {
   if (millis() - prev_millis_rl >= ms) {
-#ifdef DEBUG_GYRO_DMP
+#ifdef DEBUG_GYRO
     Serial.print(millis() - prev_millis_rl);
     Serial.print("_");
     Serial.print(counter_rl);
@@ -31,9 +31,9 @@ void WrapGyroDMP::getRealResultTimer(uint32_t ms) {
   }
 }
 
-void WrapGyroDMP::getSmoothResultTimer(uint32_t ms) {
+void WrapGyro::getSmoothResultTimer(uint32_t ms) {
   if (millis() - prev_millis_sm >= ms) {
-#ifdef DEBUG_GYRO_DMP
+#ifdef DEBUG_GYRO
     Serial.print(millis() - prev_millis_sm);
     Serial.print("_");
     Serial.print(counter_sm);
@@ -61,7 +61,7 @@ void WrapGyroDMP::getSmoothResultTimer(uint32_t ms) {
   }
 }
 
-void WrapGyroDMP::getData(float &axis_x, float &axis_y, float &axis_z) {
+void WrapGyro::getData(float &axis_x, float &axis_y, float &axis_z) {
   if (!mpu.dmpGetCurrentFIFOPacket(fifoBuffer))
     mpu.resetFIFO();
 

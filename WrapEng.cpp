@@ -1,6 +1,6 @@
-#include "WrapEngine.hpp"
+#include "WrapEng.hpp"
 
-void WrapEngine::init() {
+void WrapEng::init() {
   pinMode(PIN_FR, OUTPUT);
   pinMode(PIN_FL, OUTPUT);
   pinMode(PIN_RR, OUTPUT);
@@ -26,17 +26,23 @@ void WrapEngine::init() {
   regulator_FR_RL.setDirection(NORMAL);
   regulator_FR_RL.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
   regulator_FR_RL.setDt(TIME_PID_MS);
-  regulator_FR_RL.setpoint = 0;  // УСТАНОВКА УГЛА
+  regulator_FR_RL.setpoint = OFFSET_FR_RL;
+  regulator_FR_RL.Kp = PID_KP;
+  regulator_FR_RL.Ki = PID_KI;
+  regulator_FR_RL.Kd = PID_KD;
 
   regulator_FL_RR.setDirection(NORMAL);
   regulator_FL_RR.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
   regulator_FL_RR.setDt(TIME_PID_MS);
-  regulator_FL_RR.setpoint = -5;
+  regulator_FL_RR.setpoint = OFFSET_FL_RR;
+  regulator_FL_RR.Kp = PID_KP;
+  regulator_FL_RR.Ki = PID_KI;
+  regulator_FL_RR.Kd = PID_KD;
 }
 
-void WrapEngine::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
+void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
   if (millis() - prev_millis >= ms) {
-#ifdef DEBUG_ENGINE
+#ifdef DEBUG_ENG
     Serial.print(millis() - prev_millis);
     Serial.print("_");
     Serial.print(counter);

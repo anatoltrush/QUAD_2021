@@ -1,14 +1,14 @@
-#ifndef WRAPENGINE_HPP
-#define WRAPENGINE_HPP
+#ifndef WRAPENG_HPP
+#define WRAPENG_HPP
 
 #include <Servo.h>
 #include <GyverPID.h>
 
 #include "Defines.hpp"
 
-//#define DEBUG_ENGINE
+//#define DEBUG_ENG
 
-class WrapEngine
+class WrapEng
 {
   public:
     GyverPID regulator_FR_RL;
@@ -41,4 +41,4 @@ class WrapEngine
 #endif
 };
 
-#endif // WRAPENGINE_HPP
+#endif // WRAPENG_HPP
