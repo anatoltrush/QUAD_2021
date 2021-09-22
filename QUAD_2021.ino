@@ -21,7 +21,6 @@ void setup() {
   wrapradio.init();
 
   Serial.begin(115200);
-  Serial.setTimeout(100);
   Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
 }
 
