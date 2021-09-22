@@ -15,7 +15,7 @@ void WrapRadio::init() {
     byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"};
     
     radio->begin();   
-    radio->setAutoAck(1);    
+    radio->setAutoAck(true);    
     radio->setRetries(0, 3);  
     radio->enableAckPayload();   
     radio->setPayloadSize(32); 

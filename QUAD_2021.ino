@@ -36,26 +36,9 @@ void loop() {
   }
 
   if (Serial.available() > 0) {
-    int val = Serial.parseInt();
-    if (val >= 100 && val < 200) { // ---> P <---
-      wrapengine.regulator_FL_RR.Kp =
-        wrapengine.regulator_FR_RL.Kp =
-          (float)((val - 100.0f) /*/ 10.0f*/);
-    }
-    if (val >= 200 && val < 300) { // ---> I <---
-      wrapengine.regulator_FL_RR.Ki =
-        wrapengine.regulator_FR_RL.Ki =
-          (float)((val - 200.0f) /*/ 10.0f*/);
-    }
-    if (val >= 300 && val < 400) { // ---> D <---
-      wrapengine.regulator_FL_RR.Kd =
-        wrapengine.regulator_FR_RL.Kd =
-          (float)((val - 300.0f) / 100.0f);
-    }
+    int val = Serial.parseInt();    
     if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
-      wrapengine.POWER_IN_Diag_FRRL =
-        wrapengine.POWER_IN_Diag_FLRR =
-          val;
+      wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
     }
   }
 
@@ -63,8 +46,8 @@ void loop() {
   wrapgyro.getRealResultTimer(TIME_GYRO_MS);
   wrapgyro.getSmoothResultTimer(TIME_GYRO_MS);
 
-  wrapengine.regulator_FR_RL.input = wrapgyro.ax_x_sm; // ВХОД регулятора угол X
-  wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // ВХОД регулятора угол Y
+  wrapengine.regulator_FR_RL.input = wrapgyro.ax_x_sm; // ВХОД регулятора угол DIAGONAL 1
+  wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // ВХОД регулятора угол DIAGONAL 2
 
   uint16_t pid_FR_RL = (uint16_t)wrapengine.regulator_FR_RL.getResultTimer(); // PID DIAGONAL 1
   uint16_t pid_FL_RR = (uint16_t)wrapengine.regulator_FL_RR.getResultTimer(); // PID DIAGONAL 2

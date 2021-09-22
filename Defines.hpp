@@ -8,10 +8,10 @@
 
 // <----- DIGITAL PINS ----->
 
-#define PIN_RL          3 // PIN_RL_SERV_OUT
-#define PIN_FR          4 // PIN_FR_SERV_OUT
-#define PIN_RR          5 // PIN_RR_SERV_OUT
-#define PIN_FL          6 // PIN_FL_SERV_OUT
+#define PIN_RL          3 // rear-left motor
+#define PIN_FR          4 // front-right motor
+#define PIN_RR          5 // rear-right motor
+#define PIN_FL          6 // front-left motor
 
 #define PIN_FLASH       8
 
@@ -59,8 +59,8 @@
 
 // PID
 #define PID_KP          1.5f
-#define PID_KI          2.0f
-#define PID_KD          35.0f
+#define PID_KI          1.5f
+#define PID_KD          0.6f
 #define PID_LIM_COEFF   0.4f
 
 #endif // DEFINES_HPP
