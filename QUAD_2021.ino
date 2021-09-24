@@ -10,7 +10,7 @@ WrapGyro wrapgyro;
 WrapEng wrapengine;
 
 uint32_t curr_time = 0;
-uint8_t data_cntrl[SIZE_OF_DATA] = {0, 0, 0, 0, 0, 0};
+uint8_t data_msg[SIZE_OF_DATA] = {0}; // left[1]throttle, left[0]yaw, right[4]pitch, right[3]roll
 
 void setup() {
   Wire.begin();
@@ -29,8 +29,9 @@ void loop() {
   extra.get_volt(TIME_VOLT_MS);
 
   if (wrapradio.radio->available(&wrapradio.pipeNum)) {
-    wrapradio.radio->read(&data_cntrl, sizeof(data_cntrl));
-    wrapradio.ack_msg = extra.output * 100;
+    wrapradio.radio->read(&data_msg, SIZE_OF_DATA);
+    wrapradio.ack_msg[0] = extra.output * 100;
+    wrapradio.ack_msg[1] = wrapengine.isMaxReached;
     wrapradio.radio->writeAckPayload(wrapradio.pipeNum, &wrapradio.ack_msg, SIZE_OF_ACK);
   }
 

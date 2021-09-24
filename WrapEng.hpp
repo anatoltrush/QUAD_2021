@@ -23,6 +23,8 @@ class WrapEng
     uint16_t POWER_RR = MIN_POWER;
     uint16_t POWER_RL = MIN_POWER;
 
+    bool isMaxReached = false;
+
     void init();
     void apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms);
 

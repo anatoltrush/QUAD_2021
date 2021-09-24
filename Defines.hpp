@@ -36,7 +36,7 @@
 
 // DATA
 #define SIZE_OF_DATA    6
-#define SIZE_OF_ACK     1
+#define SIZE_OF_ACK     2
 
 #define DATA_MIN        0
 #define DATA_AVRG       1
