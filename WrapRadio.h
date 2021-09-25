@@ -1,9 +1,9 @@
-#ifndef WRAPRADIO_HPP
-#define WRAPRADIO_HPP
+#ifndef WRAPRADIO_H
+#define WRAPRADIO_H
 
 #include <RF24.h>
 
-#include "Defines.hpp"
+#include "Defines.h"
 
 class WrapRadio
 {
@@ -20,4 +20,4 @@ class WrapRadio
     
     private:    
 };
-#endif // WRAPRADIO_HPP
+#endif // WRAPRADIO_H

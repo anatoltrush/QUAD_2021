@@ -1,7 +1,7 @@
-#ifndef EXTRA_HPP
-#define EXTRA_HPP
+#ifndef EXTRA_H
+#define EXTRA_H
 
-#include "Defines.hpp"
+#include "Defines.h"
 
 //#define DEBUG_EXTRA
 
@@ -29,7 +29,7 @@ class Extra
     void get_volt(uint32_t ms);
 };
 
-#endif // EXTRA_HPP
+#endif // EXTRA_H
 
 // 12.6 -> 12100/7900 -> 4.98V
 // 10.2 -> 12100/7900 -> 4.03V

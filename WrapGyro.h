@@ -1,9 +1,9 @@
-#ifndef WRAPGYRO_HPP
-#define WRAPGYRO_HPP
+#ifndef WRAPGYRO_H
+#define WRAPGYRO_H
 
-#include "Defines.hpp"
+#include "Defines.h"
 
-//#define DEBUG_GYRO_DMP
+//#define DEBUG_GYRO
 
 class WrapGyro
 {
@@ -38,4 +38,4 @@ class WrapGyro
 
     void getData(float &axis_x, float &axis_y, float &axis_z);
 };
-#endif // WRAPGYRO_HPP
+#endif // WRAPGYRO_H

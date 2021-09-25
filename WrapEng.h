@@ -1,10 +1,10 @@
-#ifndef WRAPENG_HPP
-#define WRAPENG_HPP
+#ifndef WRAPENG_H
+#define WRAPENG_H
 
 #include <Servo.h>
 #include <GyverPID.h>
 
-#include "Defines.hpp"
+#include "Defines.h"
 
 //#define DEBUG_ENG
 
@@ -23,7 +23,9 @@ class WrapEng
     uint16_t POWER_RR = MIN_POWER;
     uint16_t POWER_RL = MIN_POWER;
 
+    // IS MAX
     bool isMaxReached = false;
+    uint8_t num_eng = 0;
 
     void init();
     void apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms);
@@ -33,14 +35,14 @@ class WrapEng
 
     uint32_t prev_millis = 0;
 
-    Servo motorFR;
-    Servo motorFL;
-    Servo motorRR;
-    Servo motorRL;
+    Servo motorFR; // 1
+    Servo motorFL; // 2
+    Servo motorRR; // 3
+    Servo motorRL; // 4
 
 #ifdef DEBUG_ENGINE
     uint16_t counter = 0;
 #endif
 };
 
-#endif // WRAPENG_HPP
+#endif // WRAPENG_H

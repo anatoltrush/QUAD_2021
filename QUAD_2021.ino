@@ -1,8 +1,8 @@
 #include "Wire.h"
-#include "Extra.hpp"
-#include "WrapRadio.hpp"
-#include "WrapEng.hpp"
-#include "WrapGyro.hpp"
+#include "Extra.h"
+#include "WrapRadio.h"
+#include "WrapEng.h"
+#include "WrapGyro.h"
 
 Extra extra(PIN_FLASH, PIN_VOLT);
 WrapRadio wrapradio;
@@ -30,13 +30,23 @@ void loop() {
 
   if (wrapradio.radio->available(&wrapradio.pipeNum)) {
     wrapradio.radio->read(&data_msg, SIZE_OF_DATA);
+
+    /*Serial.print(data_msg[0]); Serial.print("|");
+    Serial.print(data_msg[1]); Serial.print("|");
+    Serial.print(data_msg[2]); Serial.print("|");
+    Serial.print(data_msg[3]); Serial.print("|");
+    Serial.print(data_msg[4]); Serial.print("|");
+    Serial.print(data_msg[5]); Serial.print("|");*/
+    Serial.print(millis());
+    Serial.println();
+
     wrapradio.ack_msg[0] = extra.output * 100;
     wrapradio.ack_msg[1] = wrapengine.isMaxReached;
     wrapradio.radio->writeAckPayload(wrapradio.pipeNum, &wrapradio.ack_msg, SIZE_OF_ACK);
   }
 
   if (Serial.available() > 0) {
-    int val = Serial.parseInt();    
+    int val = Serial.parseInt();
     if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
       wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
     }
@@ -57,21 +67,21 @@ void loop() {
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();
 
-    Serial.print(wrapgyro.ax_x_sm);
-    Serial.print(',');
-    Serial.print(wrapgyro.ax_x_rl);
-    Serial.print(',');
+    /*Serial.print(wrapgyro.ax_x_sm);
+      Serial.print(',');
+      Serial.print(wrapgyro.ax_x_rl);
+      Serial.print(',');*/
     /*Serial.print(wrapgyro.ax_y_sm);
       Serial.print(',');
       Serial.print(wrapgyro.ax_y_rl);
       Serial.print(',');*/
 
-    Serial.print(wrapengine.POWER_FR);
-    Serial.print(',');
-    Serial.print(wrapengine.POWER_RL);
+    /*Serial.print(wrapengine.POWER_FR);
+      Serial.print(',');
+      Serial.print(wrapengine.POWER_RL);*/
     /*Serial.print(wrapengine.POWER_FL);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RR);*/
-    Serial.println();
+    //Serial.println();
   }
 }

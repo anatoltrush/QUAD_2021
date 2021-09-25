@@ -1,4 +1,4 @@
-#include "Extra.hpp"
+#include "Extra.h"
 
 Extra::Extra(uint8_t led_pin, uint8_t volt_pin):
   flash_pin(led_pin), volt_pin(volt_pin) {

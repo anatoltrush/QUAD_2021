@@ -1,5 +1,5 @@
-#ifndef DEFINES_HPP
-#define DEFINES_HPP
+#ifndef DEFINES_H
+#define DEFINES_H
 
 #include <Arduino.h>
 
@@ -36,7 +36,7 @@
 
 // DATA
 #define SIZE_OF_DATA    6
-#define SIZE_OF_ACK     2
+#define SIZE_OF_ACK     3
 
 #define DATA_MIN        0
 #define DATA_AVRG       1
@@ -68,4 +68,4 @@
 #define PID_KD          0.6f
 #define PID_LIM_COEFF   0.4f
 
-#endif // DEFINES_HPP
+#endif // DEFINES_H
