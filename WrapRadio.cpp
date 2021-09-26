@@ -14,7 +14,7 @@ void WrapRadio::init() {
   if (radio != NULL) {    
     radio->begin();   
     radio->setAutoAck(true);    
-    radio->setRetries(5, 1);  
+    //radio->setRetries(5, 1); // delay, count
     radio->enableAckPayload();   
     radio->setPayloadSize(SIZE_OF_DATA); 
 

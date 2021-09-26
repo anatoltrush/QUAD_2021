@@ -38,6 +38,8 @@
 #define SIZE_OF_DATA    6
 #define SIZE_OF_ACK     3
 
+#define SET_ANGLE       3.0f
+
 #define DATA_MIN        0
 #define DATA_AVRG       1
 #define DATA_MAX        2

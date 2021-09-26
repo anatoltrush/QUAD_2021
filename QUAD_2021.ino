@@ -10,7 +10,6 @@ WrapGyro wrapgyro;
 WrapEng wrapengine;
 
 uint32_t curr_time = 0;
-uint8_t data_msg[SIZE_OF_DATA] = {0}; // left[1]throttle, left[0]yaw, right[4]pitch, right[3]roll
 
 void setup() {
   Wire.begin();
@@ -29,27 +28,45 @@ void loop() {
   extra.get_volt(TIME_VOLT_MS);
 
   if (wrapradio.radio->available(&wrapradio.pipeNum)) {
-    wrapradio.radio->read(&data_msg, SIZE_OF_DATA);
-
-    /*Serial.print(data_msg[0]); Serial.print("|");
-    Serial.print(data_msg[1]); Serial.print("|");
-    Serial.print(data_msg[2]); Serial.print("|");
-    Serial.print(data_msg[3]); Serial.print("|");
-    Serial.print(data_msg[4]); Serial.print("|");
-    Serial.print(data_msg[5]); Serial.print("|");*/
-    Serial.print(millis());
-    Serial.println();
-
+    wrapradio.radio->read(&wrapradio.data_msg, SIZE_OF_DATA);
     wrapradio.ack_msg[0] = extra.output * 100;
-    wrapradio.ack_msg[1] = wrapengine.isMaxReached;
-    wrapradio.radio->writeAckPayload(wrapradio.pipeNum, &wrapradio.ack_msg, SIZE_OF_ACK);
+    //wrapradio.ack_msg[1] = wrapengine.isMaxReached;
+    wrapradio.ack_msg[1] = true;
+    wrapradio.ack_msg[2] = wrapengine.numWarnEngine;
+    wrapradio.radio->writeAckPayload(wrapradio.pipeNum, wrapradio.ack_msg, SIZE_OF_ACK);
   }
+
+  /*Serial.print(wrapradio.data_msg[0]); Serial.print("|");
+  Serial.print(wrapradio.data_msg[1]); Serial.print("|");
+  Serial.print(wrapradio.data_msg[2]); Serial.print("|");
+  Serial.print(wrapradio.data_msg[3]); Serial.print("|");
+  Serial.print(wrapradio.data_msg[4]); Serial.print("|");
+  Serial.print(wrapradio.data_msg[5]); Serial.print("|");
+  //Serial.print(millis());
+  Serial.println();*/
 
   if (Serial.available() > 0) {
     int val = Serial.parseInt();
     if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
       wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
     }
+  }
+
+  switch (wrapradio.data_msg[3]) {
+    case DATA_MIN:
+      wrapengine.regulator_FR_RL.setpoint = -SET_ANGLE;
+      wrapengine.regulator_FL_RR.setpoint = -SET_ANGLE;
+      break;
+    case DATA_AVRG:
+      wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL;
+      wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR;
+      break;
+    case DATA_MAX:
+      wrapengine.regulator_FR_RL.setpoint = SET_ANGLE;
+      wrapengine.regulator_FL_RR.setpoint = SET_ANGLE;
+      break;
+    default :
+      break;
   }
 
   // ---> GYRO <---

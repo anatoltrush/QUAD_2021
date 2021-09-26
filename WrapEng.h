@@ -25,7 +25,7 @@ class WrapEng
 
     // IS MAX
     bool isMaxReached = false;
-    uint8_t num_eng = 0;
+    uint8_t numWarnEngine = 0;
 
     void init();
     void apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms);
