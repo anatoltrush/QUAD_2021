@@ -20,7 +20,7 @@ void setup() {
   wrapradio.init();
 
   Serial.begin(115200);
-  Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
+  //Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
 }
 
 void loop() {
@@ -36,15 +36,6 @@ void loop() {
     wrapradio.radio->writeAckPayload(wrapradio.pipeNum, wrapradio.ack_msg, SIZE_OF_ACK);
   }
 
-  /*Serial.print(wrapradio.data_msg[0]); Serial.print("|");
-  Serial.print(wrapradio.data_msg[1]); Serial.print("|");
-  Serial.print(wrapradio.data_msg[2]); Serial.print("|");
-  Serial.print(wrapradio.data_msg[3]); Serial.print("|");
-  Serial.print(wrapradio.data_msg[4]); Serial.print("|");
-  Serial.print(wrapradio.data_msg[5]); Serial.print("|");
-  //Serial.print(millis());
-  Serial.println();*/
-
   if (Serial.available() > 0) {
     int val = Serial.parseInt();
     if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
@@ -52,18 +43,21 @@ void loop() {
     }
   }
 
-  switch (wrapradio.data_msg[3]) {
+  switch (wrapradio.data_msg[3]) { // move to WrapEngine
     case DATA_MIN:
-      wrapengine.regulator_FR_RL.setpoint = -SET_ANGLE;
-      wrapengine.regulator_FL_RR.setpoint = -SET_ANGLE;
+      wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL - SET_ANGLE;
+      wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR - SET_ANGLE;
+      Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
       break;
     case DATA_AVRG:
       wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL;
       wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR;
+      Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
       break;
     case DATA_MAX:
-      wrapengine.regulator_FR_RL.setpoint = SET_ANGLE;
-      wrapengine.regulator_FL_RR.setpoint = SET_ANGLE;
+      wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL + SET_ANGLE;
+      wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR + SET_ANGLE;
+      Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
       break;
     default :
       break;
@@ -73,11 +67,13 @@ void loop() {
   wrapgyro.getRealResultTimer(TIME_GYRO_MS);
   wrapgyro.getSmoothResultTimer(TIME_GYRO_MS);
 
-  wrapengine.regulator_FR_RL.input = wrapgyro.ax_x_sm; // ВХОД регулятора угол DIAGONAL 1
-  wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // ВХОД регулятора угол DIAGONAL 2
+  wrapengine.regulator_FR_RL.input = wrapgyro.ax_x_sm; // Enter for DIAGONAL 1
+  wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // Enter for DIAGONAL 2
 
-  uint16_t pid_FR_RL = (uint16_t)wrapengine.regulator_FR_RL.getResultTimer(); // PID DIAGONAL 1
-  uint16_t pid_FL_RR = (uint16_t)wrapengine.regulator_FL_RR.getResultTimer(); // PID DIAGONAL 2
+  uint16_t pid_FR_RL = (wrapengine.POWER_IN_Diag_FRRL >= MIN_DIAG_POWER) ?
+                       (uint16_t)wrapengine.regulator_FR_RL.getResultTimer() : 0; // PID DIAGONAL 1
+  uint16_t pid_FL_RR = (wrapengine.POWER_IN_Diag_FLRR >= MIN_DIAG_POWER) ?
+                       (uint16_t)wrapengine.regulator_FL_RR.getResultTimer() : 0; // PID DIAGONAL 2
 
   wrapengine.apply(pid_FR_RL, pid_FL_RR, TIME_ENGINE_MS);
 
@@ -89,16 +85,21 @@ void loop() {
       Serial.print(wrapgyro.ax_x_rl);
       Serial.print(',');*/
     /*Serial.print(wrapgyro.ax_y_sm);
-      Serial.print(',');
-      Serial.print(wrapgyro.ax_y_rl);
-      Serial.print(',');*/
+    Serial.print(',');
+    Serial.print(wrapgyro.ax_y_rl);
+    Serial.print(',');*/
 
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);*/
     /*Serial.print(wrapengine.POWER_FL);
-      Serial.print(',');
-      Serial.print(wrapengine.POWER_RR);*/
+    Serial.print(',');
+    Serial.print(wrapengine.POWER_RR);*/
     //Serial.println();
   }
 }
+
+/* TODO:
+ *  move to WE  
+ *  create warning
+ */

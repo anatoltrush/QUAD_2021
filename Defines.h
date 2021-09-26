@@ -38,7 +38,7 @@
 #define SIZE_OF_DATA    6
 #define SIZE_OF_ACK     3
 
-#define SET_ANGLE       3.0f
+#define SET_ANGLE       5.0f
 
 #define DATA_MIN        0
 #define DATA_AVRG       1
@@ -68,6 +68,6 @@
 #define PID_KP          1.5f
 #define PID_KI          1.5f
 #define PID_KD          0.6f
-#define PID_LIM_COEFF   0.4f
+#define PID_LIM_COEFF   0.35f
 
 #endif // DEFINES_H
