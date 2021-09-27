@@ -100,6 +100,5 @@ void loop() {
 }
 
 /* TODO:
- *  move to WE  
  *  create warning
  */

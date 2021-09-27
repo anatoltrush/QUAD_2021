@@ -43,6 +43,9 @@ class WrapEng
 #ifdef DEBUG_ENGINE
     uint16_t counter = 0;
 #endif
+
+    uint16_t* powers[4];
+    void checkWarning();
 };
 
 #endif // WRAPENG_H

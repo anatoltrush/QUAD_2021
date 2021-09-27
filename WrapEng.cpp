@@ -38,6 +38,11 @@ void WrapEng::init() {
   regulator_FL_RR.Kp = PID_KP;
   regulator_FL_RR.Ki = PID_KI;
   regulator_FL_RR.Kd = PID_KD;
+
+  powers[0] = &POWER_FR;
+  powers[1] = &POWER_FL;
+  powers[2] = &POWER_RR;
+  powers[3] = &POWER_RL;
 }
 
 void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
@@ -70,6 +75,8 @@ void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
       POWER_RR = POWER_IN_Diag_FLRR;
     }
 
+    checkWarning();
+
     // Diag FR <-o-> RL
     if (POWER_FR < MIN_POWER) POWER_FR = MIN_POWER;
     if (POWER_FR > MAX_POWER) POWER_FR = MAX_POWER;
@@ -87,5 +94,24 @@ void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
     if (POWER_RR < MIN_POWER) POWER_RR = MIN_POWER;
     if (POWER_RR > MAX_POWER) POWER_RR = MAX_POWER;
     motorRR.writeMicroseconds(POWER_RR);
+  }
+}
+
+void WrapEng::checkWarning() {
+  uint16_t maxPower = 0;
+  uint8_t maxName = 0;
+  for (size_t i = 0; i < 4; i++) {
+    if (*powers[i] > maxPower) {
+      maxPower = *powers[i];
+      maxName = i + 1;
+    }
+  }
+  //___
+  if (maxPower > WARN_POWER) {
+    isMaxReached = true;
+  }
+  else {
+    isMaxReached = false;
+    maxName = 0;
   }
 }

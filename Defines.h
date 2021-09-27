@@ -48,6 +48,7 @@
 #define MIN_POWER       800
 #define MAX_POWER       2300
 #define MIN_DIAG_POWER  1000  
+#define WARN_POWER      1800
 
 // RESISTANCE
 #define RESIST_1        12500.0f
@@ -56,7 +57,7 @@
 // GYRO
 #define TO_DEG          57.29577951308232087679815481410517033f
 #define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
-#define OFFSET_FL_RR    -5.0f
+#define OFFSET_FL_RR    -4.0f
 #define OFFSET_FR_RL    0.0f
 
 // VOLTAGE
