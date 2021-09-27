@@ -20,26 +20,24 @@ void setup() {
   wrapradio.init();
 
   Serial.begin(115200);
-  //Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
+  Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
 }
 
 void loop() {
   extra.flash(TIME_FLASH_MS); // heart beat
   extra.get_volt(TIME_VOLT_MS);
 
-  if (wrapradio.radio->available(&wrapradio.pipeNum)) {
-    wrapradio.radio->read(&wrapradio.data_msg, SIZE_OF_DATA);
-    wrapradio.ack_msg[0] = extra.output * 100;
-    //wrapradio.ack_msg[1] = wrapengine.isMaxReached;
-    wrapradio.ack_msg[1] = true;
-    wrapradio.ack_msg[2] = wrapengine.numWarnEngine;
-    wrapradio.radio->writeAckPayload(wrapradio.pipeNum, wrapradio.ack_msg, SIZE_OF_ACK);
-  }
+  wrapradio.getData(extra.output * 100, wrapengine.isMaxReached, wrapengine.numWarnEngine);
 
   if (Serial.available() > 0) {
     int val = Serial.parseInt();
     if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
-      wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
+      if (wrapengine.isMaxReached && val < wrapengine.POWER_IN_Diag_FRRL && val < wrapengine.POWER_IN_Diag_FLRR) {
+        wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
+      }
+      else if (!wrapengine.isMaxReached) {
+        wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
+      }
     }
   }
 
@@ -47,17 +45,17 @@ void loop() {
     case DATA_MIN:
       wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL - SET_ANGLE;
       wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR - SET_ANGLE;
-      Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
+      //Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
       break;
     case DATA_AVRG:
       wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL;
       wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR;
-      Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
+      //Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
       break;
     case DATA_MAX:
       wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL + SET_ANGLE;
       wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR + SET_ANGLE;
-      Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
+      //Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
       break;
     default :
       break;
@@ -85,20 +83,17 @@ void loop() {
       Serial.print(wrapgyro.ax_x_rl);
       Serial.print(',');*/
     /*Serial.print(wrapgyro.ax_y_sm);
-    Serial.print(',');
-    Serial.print(wrapgyro.ax_y_rl);
-    Serial.print(',');*/
+      Serial.print(',');
+      Serial.print(wrapgyro.ax_y_rl);
+      Serial.print(',');*/
 
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);*/
-    /*Serial.print(wrapengine.POWER_FL);
-    Serial.print(',');
-    Serial.print(wrapengine.POWER_RR);*/
-    //Serial.println();
+    Serial.print(wrapengine.POWER_FL);
+      Serial.print(',');
+      Serial.print(wrapengine.POWER_RR);
+      Serial.println();
   }
 }
-
-/* TODO:
- *  create warning
- */
+// down power with PIDs

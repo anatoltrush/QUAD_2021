@@ -69,6 +69,6 @@
 #define PID_KP          1.5f
 #define PID_KI          1.5f
 #define PID_KD          0.6f
-#define PID_LIM_COEFF   0.35f
+#define PID_LIM_COEFF   0.4f
 
 #endif // DEFINES_H

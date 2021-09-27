@@ -99,11 +99,10 @@ void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
 
 void WrapEng::checkWarning() {
   uint16_t maxPower = 0;
-  uint8_t maxName = 0;
   for (size_t i = 0; i < 4; i++) {
     if (*powers[i] > maxPower) {
       maxPower = *powers[i];
-      maxName = i + 1;
+      numWarnEngine = i + 1;
     }
   }
   //___
@@ -112,6 +111,6 @@ void WrapEng::checkWarning() {
   }
   else {
     isMaxReached = false;
-    maxName = 0;
+    numWarnEngine = 0;
   }
 }

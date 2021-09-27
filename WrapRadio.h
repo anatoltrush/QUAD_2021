@@ -20,7 +20,7 @@ class WrapRadio
     ~WrapRadio();
 
     void init();
-    
-    private:    
+
+    void getData(uint8_t volt, bool isReached, uint8_t numEng);
 };
 #endif // WRAPRADIO_H
