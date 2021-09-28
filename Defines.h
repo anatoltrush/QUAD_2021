@@ -55,15 +55,15 @@
 #define RESIST_2        7500.0f
 
 // GYRO
-#define TO_DEG          57.29577951308232087679815481410517033f
+#define TO_DEG          57.295779513082320876798f
 #define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
 #define OFFSET_FL_RR    -4.0f
 #define OFFSET_FR_RL    0.0f
 
 // VOLTAGE
-#define MAX_INP_VOLT    5.0
-#define LOW_VOLT        10.2
-#define MAX_VOLT        12.6
+#define VOLT_DIV        80.0f
+#define MIN_VOLT        10.05f // 3 x 3.35V
+#define MAX_VOLT        12.6f // 3 x 4.2V
 
 // PID
 #define PID_KP          1.5f

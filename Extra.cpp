@@ -1,43 +1,39 @@
 #include "Extra.h"
 
 Extra::Extra(uint8_t led_pin, uint8_t volt_pin):
-  flash_pin(led_pin), volt_pin(volt_pin) {
-  pinMode(flash_pin, OUTPUT);
-  pinMode(volt_pin, INPUT);
+  flashPin(led_pin), voltPin(volt_pin) {
+  pinMode(flashPin, OUTPUT);
+  pinMode(voltPin, INPUT);
 }
 
 void Extra::flash(uint32_t ms) {
-  if (millis() - prev_ms_flash >= ms) {
+  if (millis() - prevFlashMs >= ms) {
 #ifdef DEBUG_EXTRA
-    Serial.print(millis() - prev_ms_flash);
+    Serial.print(millis() - prevFlashMs);
     Serial.print("_");
     Serial.println(__func__);
 #endif
-    prev_ms_flash = millis();
+    prevFlashMs = millis();
     //_________________________
-    (led_state == LOW) ? led_state = HIGH : led_state = LOW;
+    (ledState == LOW) ? ledState = HIGH : ledState = LOW;
 
-    digitalWrite(flash_pin, led_state);
+    digitalWrite(flashPin, ledState);
   }
 }
 
 void Extra::get_volt(uint32_t ms) {
-  if (millis() - prev_ms_volt >= ms) {
+  if (millis() - prevVoltMs >= ms) {
 #ifdef DEBUG_EXTRA
-    Serial.print(millis() - prev_ms_volt);
+    Serial.print(millis() - prevVoltMs);
     Serial.print("_");
     Serial.println(__func__);
 #endif
-    prev_ms_volt = millis();
+    prevVoltMs = millis();
     //_________________________
-    signal = (analogRead(volt_pin) / 1024.0f) * MAX_INP_VOLT;
-    float div_koeff = RESIST_2 / (RESIST_1 + RESIST_2); // = 0.375
-    output = signal / div_koeff;
-
-    // in percs
-    float diff_max_min = MAX_VOLT - LOW_VOLT;
-    float diff_curr = output - LOW_VOLT;
-    percent = (diff_curr / diff_max_min) * 100;
+    uint16_t readSignal = analogRead(voltPin);
+    voltOutput = (float)readSignal / VOLT_DIV;
+    // in percents
+    float diffCurr = voltOutput - MIN_VOLT;
+    voltPercent = (diffCurr / diffMinMax) * 100;
   }
-  // TODO: remake algorithm
 }

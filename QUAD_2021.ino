@@ -20,14 +20,14 @@ void setup() {
   wrapradio.init();
 
   Serial.begin(115200);
-  Serial.println("AXIS_X_sm, AXIS_X_rl, OUTPUT_R, OUTPUT_L");
+  Serial.println("OUTPUT_R, OUTPUT_L");
 }
 
 void loop() {
   extra.flash(TIME_FLASH_MS); // heart beat
   extra.get_volt(TIME_VOLT_MS);
 
-  wrapradio.getData(extra.output * 100, wrapengine.isMaxReached, wrapengine.numWarnEngine);
+  wrapradio.getData(extra.voltOutput * 100, wrapengine.isMaxReached, wrapengine.numWarnEngine);
 
   if (Serial.available() > 0) {
     int val = Serial.parseInt();
@@ -77,16 +77,6 @@ void loop() {
 
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();
-
-    /*Serial.print(wrapgyro.ax_x_sm);
-      Serial.print(',');
-      Serial.print(wrapgyro.ax_x_rl);
-      Serial.print(',');*/
-    /*Serial.print(wrapgyro.ax_y_sm);
-      Serial.print(',');
-      Serial.print(wrapgyro.ax_y_rl);
-      Serial.print(',');*/
-
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);*/
@@ -96,4 +86,4 @@ void loop() {
       Serial.println();
   }
 }
-// down power with PIDs
+// down power with down PIDs
