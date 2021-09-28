@@ -21,7 +21,7 @@ void Extra::flash(uint32_t ms) {
   }
 }
 
-void Extra::get_volt(uint32_t ms) {
+void Extra::getVoltQuad(uint32_t ms) {
   if (millis() - prevVoltMs >= ms) {
 #ifdef DEBUG_EXTRA
     Serial.print(millis() - prevVoltMs);
@@ -33,7 +33,7 @@ void Extra::get_volt(uint32_t ms) {
     uint16_t readSignal = analogRead(voltPin);
     voltOutput = (float)readSignal / VOLT_DIV;
     // in percents
-    float diffCurr = voltOutput - MIN_VOLT;
+    float diffCurr = voltOutput - VOLT_MIN;
     voltPercent = (diffCurr / diffMinMax) * 100;
   }
 }

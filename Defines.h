@@ -62,8 +62,8 @@
 
 // VOLTAGE
 #define VOLT_DIV        80.0f
-#define MIN_VOLT        10.05f // 3 x 3.35V
-#define MAX_VOLT        12.6f // 3 x 4.2V
+#define VOLT_MIN        10.05f // 3 x 3.35V
+#define VOLT_MAX        12.6f // 3 x 4.2V
 
 // PID
 #define PID_KP          1.5f

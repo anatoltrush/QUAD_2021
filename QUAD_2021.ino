@@ -25,9 +25,9 @@ void setup() {
 
 void loop() {
   extra.flash(TIME_FLASH_MS); // heart beat
-  extra.get_volt(TIME_VOLT_MS);
+  extra.getVoltQuad(TIME_VOLT_MS);
 
-  wrapradio.getData(extra.voltOutput * 100, wrapengine.isMaxReached, wrapengine.numWarnEngine);
+  wrapradio.getData(extra.voltOutput * 10, wrapengine.isMaxReached, wrapengine.numWarnEngine);
 
   if (Serial.available() > 0) {
     int val = Serial.parseInt();
