@@ -45,6 +45,10 @@ void WrapEng::init() {
   powers[3] = &POWER_RL;
 }
 
+void WrapEng::analyze(uint8_t* msg_data){
+  // implement
+}
+
 void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
   if (millis() - prev_millis >= ms) {
 #ifdef DEBUG_ENG
@@ -75,25 +79,22 @@ void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
       POWER_RR = POWER_IN_Diag_FLRR;
     }
 
+    checkMinMax();
     checkWarning();
 
     // Diag FR <-o-> RL
-    if (POWER_FR < MIN_POWER) POWER_FR = MIN_POWER;
-    if (POWER_FR > MAX_POWER) POWER_FR = MAX_POWER;
     motorFR.writeMicroseconds(POWER_FR);
-
-    if (POWER_RL < MIN_POWER) POWER_RL = MIN_POWER;
-    if (POWER_RL > MAX_POWER) POWER_RL = MAX_POWER;
     motorRL.writeMicroseconds(POWER_RL);
-
     // Diag FL <-o-> RR
-    if (POWER_FL < MIN_POWER) POWER_FL = MIN_POWER;
-    if (POWER_FL > MAX_POWER) POWER_FL = MAX_POWER;
     motorFL.writeMicroseconds(POWER_FL);
-
-    if (POWER_RR < MIN_POWER) POWER_RR = MIN_POWER;
-    if (POWER_RR > MAX_POWER) POWER_RR = MAX_POWER;
     motorRR.writeMicroseconds(POWER_RR);
+  }
+}
+
+void WrapEng::checkMinMax() {
+  for (size_t i = 0; i < 4; i++) {
+    if (*powers[i] < MIN_POWER) *powers[i] = MIN_POWER;
+    if (*powers[i] > MAX_POWER) *powers[i] = MAX_POWER;
   }
 }
 

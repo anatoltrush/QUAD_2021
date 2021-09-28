@@ -41,6 +41,8 @@ void loop() {
     }
   }
 
+  wrapengine.analyze(wrapradio.data_msg[3]);
+
   switch (wrapradio.data_msg[3]) { // move to WrapEngine
     case DATA_MIN:
       wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL - SET_ANGLE;

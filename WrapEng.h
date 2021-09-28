@@ -28,6 +28,7 @@ class WrapEng
     uint8_t numWarnEngine = 0;
 
     void init();
+    void analyze(uint8_t* msg_data);
     void apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms);
 
   private:
@@ -45,6 +46,7 @@ class WrapEng
 #endif
 
     uint16_t* powers[4];
+    void checkMinMax();
     void checkWarning();
 };
 
