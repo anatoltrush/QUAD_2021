@@ -45,30 +45,45 @@ void WrapEng::init() {
   powers[3] = &POWER_RL;
 }
 
-void WrapEng::analyzeCntrl(uint8_t* msg_data) {
-  // implement
-  // set angles
-}
-
-void WrapEng::analyzeAux(uint8_t* msg_data) {
-  // implement
-  if (msg_data[2] == DATA_MAX) // left
-    ; // AUX 1
-  if (msg_data[5] == DATA_MAX) // left
-    ; // AUX 2
+void WrapEng::analyzeCommand(uint8_t* msg_data, uint32_t ms) {
+  if (millis() - prevCmndMs >= ms) {
+#ifdef DEBUG_ENG
+    Serial.print(millis() - prevCmndMs);
+    Serial.print("_");
+    Serial.print(counter);
+    Serial.print("_");
+    Serial.println(__func__);
+#endif
+    prevCmndMs = millis(); // запоминаем момент времени
+    //_________________________
+    // [0] yaw
+    // [1] throttle
+    if(msg_data[1] == DATA_MAX){
+      // implement
+    }
+    // [3] roll
+    // [4] pitch
+    // custom commands
+    if (msg_data[1] == DATA_MIN && msg_data[5] == DATA_MAX) { // FULL DOWN
+      POWER_IN_Diag_FRRL = MIN_POWER;
+      POWER_IN_Diag_FLRR = MIN_POWER;
+    }
+    // isMaxReached
+    // set angles
+  }
 }
 
 void WrapEng::apply(uint32_t ms) {
-  if (millis() - prev_millis >= ms) {
+  if (millis() - prevApplyMs >= ms) {
 #ifdef DEBUG_ENG
-    Serial.print(millis() - prev_millis);
+    Serial.print(millis() - prevApplyMs);
     Serial.print("_");
     Serial.print(counter);
     Serial.print("_");
     Serial.println(__func__);
     counter++;
 #endif
-    prev_millis = millis(); // запоминаем момент времени
+    prevApplyMs = millis(); // запоминаем момент времени
     //_________________________
     // Diag FR <-o-> RL
     uint16_t pid_FR_RL = 0;
@@ -77,7 +92,7 @@ void WrapEng::apply(uint32_t ms) {
     }
     else {
       pid_FR_RL = 0.0f;
-      regulator_FR_RL.output = 0.0f;
+      regulator_FR_RL.integral = 0.0f;
     }
     POWER_FR = POWER_IN_Diag_FRRL + pid_FR_RL;
     POWER_RL = POWER_IN_Diag_FRRL - pid_FR_RL;
@@ -88,8 +103,8 @@ void WrapEng::apply(uint32_t ms) {
       pid_FL_RR = (uint16_t)regulator_FL_RR.getResultTimer();
     }
     else {
-      pid_FL_RR = 0.0f;
-      regulator_FL_RR.output = 0.0f;
+      //pid_FL_RR = 0.0f;
+      //regulator_FL_RR.integral = 0.0f;
     }
     POWER_FL = POWER_IN_Diag_FLRR - pid_FL_RR;
     POWER_RR = POWER_IN_Diag_FLRR + pid_FL_RR;
@@ -121,12 +136,5 @@ void WrapEng::checkWarning() {
       numWarnEngine = i + 1;
     }
   }
-  //___
-  if (maxPower > WARN_POWER) {
-    isMaxReached = true;
-  }
-  else {
-    isMaxReached = false;
-    numWarnEngine = 0;
-  }
+  isMaxReached = (maxPower > WARN_POWER) ? true : false;
 }

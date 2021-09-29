@@ -37,3 +37,20 @@ void Extra::getVoltQuad(uint32_t ms) {
     voltPercent = (diffCurr / diffMinMax) * 100;
   }
 }
+
+void Extra::customCommand(uint8_t* msg_data, uint32_t ms) {
+  if (millis() - prevCmndMs >= ms) {
+#ifdef DEBUG_EXTRA
+    Serial.print(millis() - prevCmndMs);
+    Serial.print("_");
+    Serial.println(__func__);
+#endif
+    prevCmndMs = millis();
+    //_________________________
+    // implement
+    if (msg_data[2] == DATA_MAX) // left
+      ; // AUX 1
+    if (msg_data[5] == DATA_MAX) // left
+      ; // AUX 2
+  }
+}

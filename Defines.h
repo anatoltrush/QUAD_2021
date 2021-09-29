@@ -34,6 +34,7 @@
 #define TIME_ENGINE_MS  10
 #define TIME_FLASH_MS   500
 #define TIME_VOLT_MS    2000
+#define TIME_CMD_UPD_MS 20
 
 // <----- CONSTANT VALUES ----->
 
@@ -51,7 +52,8 @@
 #define MIN_POWER       800
 #define MAX_POWER       2300
 #define MIN_DIAG_POWER  1000  
-#define WARN_POWER      1800
+#define WARN_POWER      2000
+#define THR_ADD_POWER   2
 
 // GYRO
 #define TO_DEG          57.295779513082320876798f

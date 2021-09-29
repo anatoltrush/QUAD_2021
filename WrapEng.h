@@ -15,8 +15,9 @@ class WrapEng
     GyverPID regulator_FL_RR;
     GyverPID regulator_D1_D2;
 
-    uint16_t POWER_IN_Diag_FRRL = MIN_POWER;
-    uint16_t POWER_IN_Diag_FLRR = MIN_POWER;
+    uint16_t POWER_IN_MAIN = MIN_POWER;
+    uint16_t POWER_IN_Diag_FRRL = POWER_IN_MAIN;
+    uint16_t POWER_IN_Diag_FLRR = POWER_IN_MAIN;
 
     uint16_t POWER_FR = MIN_POWER;
     uint16_t POWER_FL = MIN_POWER;
@@ -28,14 +29,14 @@ class WrapEng
     uint8_t numWarnEngine = 0;
 
     void init();
-    void analyzeCntrl(uint8_t* msg_data);
-    void analyzeAux(uint8_t* msg_data);
+    void analyzeCommand(uint8_t* msg_data, uint32_t ms);
     void apply(uint32_t ms);
 
   private:
     const uint16_t POWER_FULL_DIFF = MAX_POWER - MIN_POWER;
 
-    uint32_t prev_millis = 0;
+    uint32_t prevApplyMs = 0;
+    uint32_t prevCmndMs = 0;
 
     Servo motorFR; // 1
     Servo motorFL; // 2

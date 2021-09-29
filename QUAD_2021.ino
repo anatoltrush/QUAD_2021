@@ -20,7 +20,7 @@ void setup() {
   wrapradio.init();
 
   Serial.begin(115200);
-  Serial.println("OUTPUT_R, OUTPUT_L");
+  Serial.println("AXIS_Z, OUTPUT_R, OUTPUT_L");
 }
 
 void loop() {
@@ -39,11 +39,10 @@ void loop() {
         wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
       }
     }
-    /*---*/
   }
 
-  wrapengine.analyzeCntrl(wrapradio.data_msg[3]);
-  wrapengine.analyzeAux(wrapradio.data_msg[3]);
+  wrapengine.analyzeCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
+  extra.customCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
 
   /*---*/switch (wrapradio.data_msg[3]) { // move to WrapEngine
     case DATA_MIN:
@@ -63,7 +62,6 @@ void loop() {
       break;
     default :
       break;
-      /*---*/
   }
 
   // ---> GYRO <---
@@ -80,10 +78,11 @@ void loop() {
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);*/
+    Serial.print(wrapgyro.ax_z_rl);
+    Serial.print(',');
     Serial.print(wrapengine.POWER_FL);
     Serial.print(',');
     Serial.print(wrapengine.POWER_RR);
     Serial.println();
   }
 }
-// down power with down PIDs
