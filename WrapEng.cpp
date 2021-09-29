@@ -45,11 +45,20 @@ void WrapEng::init() {
   powers[3] = &POWER_RL;
 }
 
-void WrapEng::analyze(uint8_t* msg_data){
+void WrapEng::analyzeCntrl(uint8_t* msg_data) {
   // implement
+  // set angles
 }
 
-void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
+void WrapEng::analyzeAux(uint8_t* msg_data) {
+  // implement
+  if (msg_data[2] == DATA_MAX) // left
+    ; // AUX 1
+  if (msg_data[5] == DATA_MAX) // left
+    ; // AUX 2
+}
+
+void WrapEng::apply(uint32_t ms) {
   if (millis() - prev_millis >= ms) {
 #ifdef DEBUG_ENG
     Serial.print(millis() - prev_millis);
@@ -61,23 +70,29 @@ void WrapEng::apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms) {
 #endif
     prev_millis = millis(); // запоминаем момент времени
     //_________________________
+    // Diag FR <-o-> RL
+    uint16_t pid_FR_RL = 0;
     if (POWER_IN_Diag_FRRL >= MIN_DIAG_POWER) {
-      POWER_FR = POWER_IN_Diag_FRRL + pid_FR_RL;
-      POWER_RL = POWER_IN_Diag_FRRL - pid_FR_RL;
+      pid_FR_RL = (uint16_t)regulator_FR_RL.getResultTimer();
     }
     else {
-      POWER_FR = POWER_IN_Diag_FRRL;
-      POWER_RL = POWER_IN_Diag_FRRL;
+      pid_FR_RL = 0.0f;
+      regulator_FR_RL.output = 0.0f;
     }
+    POWER_FR = POWER_IN_Diag_FRRL + pid_FR_RL;
+    POWER_RL = POWER_IN_Diag_FRRL - pid_FR_RL;
 
+    // Diag FL <-o-> RR
+    uint16_t pid_FL_RR = 0;
     if (POWER_IN_Diag_FLRR >= MIN_DIAG_POWER) {
-      POWER_FL = POWER_IN_Diag_FLRR - pid_FL_RR;
-      POWER_RR = POWER_IN_Diag_FLRR + pid_FL_RR;
+      pid_FL_RR = (uint16_t)regulator_FL_RR.getResultTimer();
     }
     else {
-      POWER_FL = POWER_IN_Diag_FLRR;
-      POWER_RR = POWER_IN_Diag_FLRR;
+      pid_FL_RR = 0.0f;
+      regulator_FL_RR.output = 0.0f;
     }
+    POWER_FL = POWER_IN_Diag_FLRR - pid_FL_RR;
+    POWER_RR = POWER_IN_Diag_FLRR + pid_FL_RR;
 
     checkMinMax();
     checkWarning();

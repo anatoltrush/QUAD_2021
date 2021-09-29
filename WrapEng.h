@@ -28,8 +28,9 @@ class WrapEng
     uint8_t numWarnEngine = 0;
 
     void init();
-    void analyze(uint8_t* msg_data);
-    void apply(uint16_t pid_FR_RL, uint16_t pid_FL_RR, uint32_t ms);
+    void analyzeCntrl(uint8_t* msg_data);
+    void analyzeAux(uint8_t* msg_data);
+    void apply(uint32_t ms);
 
   private:
     const uint16_t POWER_FULL_DIFF = MAX_POWER - MIN_POWER;

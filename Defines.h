@@ -20,6 +20,9 @@
 
 // <----- ANALOG PINS ----->
 
+#define PIN_AUX_1       A0
+#define PIN_AUX_2       A1
+
 #define PIN_VOLT        A2
 // GYRO                 A4
 // GYRO                 A5
@@ -50,10 +53,6 @@
 #define MIN_DIAG_POWER  1000  
 #define WARN_POWER      1800
 
-// RESISTANCE
-#define RESIST_1        12500.0f
-#define RESIST_2        7500.0f
-
 // GYRO
 #define TO_DEG          57.295779513082320876798f
 #define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
@@ -69,6 +68,6 @@
 #define PID_KP          1.5f
 #define PID_KI          1.5f
 #define PID_KD          0.6f
-#define PID_LIM_COEFF   0.4f
+#define PID_LIM_COEFF   0.35f
 
 #endif // DEFINES_H

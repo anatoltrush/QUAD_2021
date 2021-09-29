@@ -29,7 +29,7 @@ void loop() {
 
   wrapradio.getData(extra.voltOutput * 10, wrapengine.isMaxReached, wrapengine.numWarnEngine);
 
-  if (Serial.available() > 0) {
+  /*---*/if (Serial.available() > 0) {
     int val = Serial.parseInt();
     if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
       if (wrapengine.isMaxReached && val < wrapengine.POWER_IN_Diag_FRRL && val < wrapengine.POWER_IN_Diag_FLRR) {
@@ -39,11 +39,13 @@ void loop() {
         wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
       }
     }
+    /*---*/
   }
 
-  wrapengine.analyze(wrapradio.data_msg[3]);
+  wrapengine.analyzeCntrl(wrapradio.data_msg[3]);
+  wrapengine.analyzeAux(wrapradio.data_msg[3]);
 
-  switch (wrapradio.data_msg[3]) { // move to WrapEngine
+  /*---*/switch (wrapradio.data_msg[3]) { // move to WrapEngine
     case DATA_MIN:
       wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL - SET_ANGLE;
       wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR - SET_ANGLE;
@@ -61,6 +63,7 @@ void loop() {
       break;
     default :
       break;
+      /*---*/
   }
 
   // ---> GYRO <---
@@ -70,12 +73,7 @@ void loop() {
   wrapengine.regulator_FR_RL.input = wrapgyro.ax_x_sm; // Enter for DIAGONAL 1
   wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // Enter for DIAGONAL 2
 
-  uint16_t pid_FR_RL = (wrapengine.POWER_IN_Diag_FRRL >= MIN_DIAG_POWER) ?
-                       (uint16_t)wrapengine.regulator_FR_RL.getResultTimer() : 0; // PID DIAGONAL 1
-  uint16_t pid_FL_RR = (wrapengine.POWER_IN_Diag_FLRR >= MIN_DIAG_POWER) ?
-                       (uint16_t)wrapengine.regulator_FL_RR.getResultTimer() : 0; // PID DIAGONAL 2
-
-  wrapengine.apply(pid_FR_RL, pid_FL_RR, TIME_ENGINE_MS);
+  wrapengine.apply(TIME_ENGINE_MS);
 
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();
@@ -83,9 +81,9 @@ void loop() {
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);*/
     Serial.print(wrapengine.POWER_FL);
-      Serial.print(',');
-      Serial.print(wrapengine.POWER_RR);
-      Serial.println();
+    Serial.print(',');
+    Serial.print(wrapengine.POWER_RR);
+    Serial.println();
   }
 }
 // down power with down PIDs
