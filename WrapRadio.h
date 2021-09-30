@@ -14,8 +14,10 @@ class WrapRadio
     RF24* radio = NULL;
 
     uint8_t pipeNum = 0;
+    
     // ACK bytes: 0 - quad volt, 1 - is max reached
     uint8_t ack_msg[SIZE_OF_ACK] = {0};
+    
     // left[1]throttle, left[0]yaw, right[4]pitch, right[3]roll
     uint8_t data_msg[SIZE_OF_DATA] = {0};
 

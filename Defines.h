@@ -54,12 +54,13 @@
 #define MIN_DIAG_POWER  1000  
 #define WARN_POWER      2000
 #define THR_ADD_POWER   2
+#define THR_SUB_POWER   1
 
 // GYRO
 #define TO_DEG          57.295779513082320876798f
 #define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
-#define OFFSET_FL_RR    -4.0f
 #define OFFSET_FR_RL    0.0f
+#define OFFSET_FL_RR    -4.0f
 
 // VOLTAGE
 #define VOLT_DIV        80.0f
@@ -71,5 +72,18 @@
 #define PID_KI          1.5f
 #define PID_KD          0.6f
 #define PID_LIM_COEFF   0.35f
+
+// BYTES MSG
+#define BT_MSG_YAW      0
+#define BT_MSG_THR      1
+#define BT_MSG_AUX1     2
+#define BT_MSG_ROLL     3
+#define BT_MSG_PTCH     4
+#define BT_MSG_AUX2     5
+
+// BYTES ACK
+#define BT_ACK_VOLT     0
+#define BT_ACK_WARN     1
+#define BT_ACK_NUME     2
 
 #endif // DEFINES_H

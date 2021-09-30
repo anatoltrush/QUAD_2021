@@ -39,6 +39,9 @@ void WrapEng::init() {
   regulator_FL_RR.Ki = PID_KI;
   regulator_FL_RR.Kd = PID_KD;
 
+  regulator_D1_D2.setDirection(NORMAL);
+  regulator_D1_D2.Kp = 0.0f;
+
   powers[0] = &POWER_FR;
   powers[1] = &POWER_FL;
   powers[2] = &POWER_RR;
@@ -56,24 +59,68 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, uint32_t ms) {
 #endif
     prevCmndMs = millis(); // запоминаем момент времени
     //_________________________
-    // [0] yaw
-    // [1] throttle
-    if(msg_data[1] == DATA_MAX){
+    // [0] YAW
+    if (msg_data[BT_MSG_YAW] == DATA_MAX) {
       // implement
     }
-    // [3] roll
-    // [4] pitch
-    // custom commands
-    if (msg_data[1] == DATA_MIN && msg_data[5] == DATA_MAX) { // FULL DOWN
+    // [1] THROTTLE
+    if (msg_data[BT_MSG_THR] == DATA_MAX) {
+      if (!isMaxReached)
+        POWER_IN_MAIN += THR_ADD_POWER;
+    }
+    if (msg_data[BT_MSG_THR] == DATA_MIN) {
+      POWER_IN_MAIN -= THR_SUB_POWER;
+    }
+    POWER_IN_Diag_FRRL = POWER_IN_MAIN;
+    POWER_IN_Diag_FLRR = POWER_IN_MAIN;
+    // // [3] ROLL + // [4] PITCH
+    float resOffsetFRRL = OFFSET_FR_RL;
+    float resOffsetFLRR = OFFSET_FL_RR;
+    if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_MAX) { // D1+ (FRRL)
+      resOffsetFRRL += SET_ANGLE;
+    }
+    if (msg_data[BT_MSG_PTCH] == DATA_MIN && msg_data[BT_MSG_ROLL] == DATA_MIN) { // D1- (FRRL)
+      resOffsetFRRL -= SET_ANGLE;
+    }
+
+    if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_MIN) { // D2+ (FLRR)
+      resOffsetFLRR += SET_ANGLE;
+    }
+    if (msg_data[BT_MSG_PTCH] == DATA_MIN && msg_data[BT_MSG_ROLL] == DATA_MAX) { // D2- (FLRR)
+      resOffsetFLRR -= SET_ANGLE;
+    }
+
+    if (msg_data[BT_MSG_PTCH] == DATA_AVRG && msg_data[BT_MSG_ROLL] == DATA_MAX) { // ROLL+
+      resOffsetFRRL += SET_ANGLE;
+      resOffsetFLRR += SET_ANGLE;
+    }
+    if (msg_data[BT_MSG_PTCH] == DATA_AVRG && msg_data[BT_MSG_ROLL] == DATA_MIN) { // ROLL-
+      resOffsetFRRL -= SET_ANGLE;
+      resOffsetFLRR -= SET_ANGLE;
+    }
+
+    if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_AVRG) { // PITCH+
+      resOffsetFRRL += SET_ANGLE;
+      resOffsetFLRR -= SET_ANGLE;
+    }
+    if (msg_data[BT_MSG_PTCH] == DATA_MIN && msg_data[BT_MSG_ROLL] == DATA_AVRG) { // PITCH-
+      resOffsetFRRL -= SET_ANGLE;
+      resOffsetFLRR += SET_ANGLE;
+    }
+
+    // --- apply offsets ---
+    regulator_FR_RL.setpoint = resOffsetFRRL;
+    regulator_FL_RR.setpoint = resOffsetFLRR;
+
+    // CUSTOM COMMANDS
+    if (msg_data[BT_MSG_THR] == DATA_MIN && msg_data[BT_MSG_AUX2] == DATA_MAX) { // FULL DOWN
       POWER_IN_Diag_FRRL = MIN_POWER;
       POWER_IN_Diag_FLRR = MIN_POWER;
     }
-    // isMaxReached
-    // set angles
   }
 }
 
-void WrapEng::apply(uint32_t ms) {
+void WrapEng::execute(uint32_t ms) {
   if (millis() - prevApplyMs >= ms) {
 #ifdef DEBUG_ENG
     Serial.print(millis() - prevApplyMs);

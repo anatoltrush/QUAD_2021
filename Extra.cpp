@@ -1,9 +1,11 @@
 #include "Extra.h"
 
-Extra::Extra(uint8_t led_pin, uint8_t volt_pin):
-  flashPin(led_pin), voltPin(volt_pin) {
-  pinMode(flashPin, OUTPUT);
-  pinMode(voltPin, INPUT);
+Extra::Extra(uint8_t ledPin, uint8_t voltPin, uint8_t aux1pin, uint8_t aux2pin):
+  PinFlash(ledPin), PinVolt(voltPin), PinAux1(aux1pin), PinAux2(aux2pin) {
+  pinMode(PinFlash, OUTPUT);
+  pinMode(PinVolt, INPUT);
+  pinMode(PinAux1, OUTPUT);
+  pinMode(PinAux2, OUTPUT);
 }
 
 void Extra::flash(uint32_t ms) {
@@ -15,9 +17,9 @@ void Extra::flash(uint32_t ms) {
 #endif
     prevFlashMs = millis();
     //_________________________
-    (ledState == LOW) ? ledState = HIGH : ledState = LOW;
+    (flashState == LOW) ? flashState = HIGH : flashState = LOW;
 
-    digitalWrite(flashPin, ledState);
+    digitalWrite(PinFlash, flashState);
   }
 }
 
@@ -30,7 +32,7 @@ void Extra::getVoltQuad(uint32_t ms) {
 #endif
     prevVoltMs = millis();
     //_________________________
-    uint16_t readSignal = analogRead(voltPin);
+    uint16_t readSignal = analogRead(PinVolt);
     voltOutput = (float)readSignal / VOLT_DIV;
     // in percents
     float diffCurr = voltOutput - VOLT_MIN;
@@ -48,9 +50,9 @@ void Extra::customCommand(uint8_t* msg_data, uint32_t ms) {
     prevCmndMs = millis();
     //_________________________
     // implement
-    if (msg_data[2] == DATA_MAX) // left
+    if (msg_data[BT_MSG_AUX1] == DATA_MAX) // left
       ; // AUX 1
-    if (msg_data[5] == DATA_MAX) // left
+    if (msg_data[BT_MSG_AUX2] == DATA_MAX) // left
       ; // AUX 2
   }
 }

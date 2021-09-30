@@ -30,7 +30,7 @@ class WrapEng
 
     void init();
     void analyzeCommand(uint8_t* msg_data, uint32_t ms);
-    void apply(uint32_t ms);
+    void execute(uint32_t ms);
 
   private:
     const uint16_t POWER_FULL_DIFF = MAX_POWER - MIN_POWER;

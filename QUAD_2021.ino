@@ -4,7 +4,7 @@
 #include "WrapEng.h"
 #include "WrapGyro.h"
 
-Extra extra(PIN_FLASH, PIN_VOLT);
+Extra extra(PIN_FLASH, PIN_VOLT, PIN_AUX_1, PIN_AUX_2);
 WrapRadio wrapradio;
 WrapGyro wrapgyro;
 WrapEng wrapengine;
@@ -27,7 +27,16 @@ void loop() {
   extra.flash(TIME_FLASH_MS); // heart beat
   extra.getVoltQuad(TIME_VOLT_MS);
 
+  wrapgyro.getRealResultTimer(TIME_GYRO_MS);
+  wrapgyro.getSmoothResultTimer(TIME_GYRO_MS);
+
+  wrapengine.regulator_D1_D2.input = wrapgyro.ax_z_sm;// Enter for D1 & D2
+  wrapengine.regulator_FR_RL.input = wrapgyro.ax_x_sm; // Enter for DIAGONAL 1
+  wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // Enter for DIAGONAL 2
+
   wrapradio.getData(extra.voltOutput * 10, wrapengine.isMaxReached, wrapengine.numWarnEngine);
+  wrapengine.analyzeCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
+  extra.customCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
 
   /*---*/if (Serial.available() > 0) {
     int val = Serial.parseInt();
@@ -41,37 +50,7 @@ void loop() {
     }
   }
 
-  wrapengine.analyzeCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
-  extra.customCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
-
-  /*---*/switch (wrapradio.data_msg[3]) { // move to WrapEngine
-    case DATA_MIN:
-      wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL - SET_ANGLE;
-      wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR - SET_ANGLE;
-      //Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
-      break;
-    case DATA_AVRG:
-      wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL;
-      wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR;
-      //Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
-      break;
-    case DATA_MAX:
-      wrapengine.regulator_FR_RL.setpoint = OFFSET_FR_RL + SET_ANGLE;
-      wrapengine.regulator_FL_RR.setpoint = OFFSET_FL_RR + SET_ANGLE;
-      //Serial.print(wrapengine.regulator_FR_RL.setpoint);Serial.print("_");Serial.println(wrapengine.regulator_FL_RR.setpoint);
-      break;
-    default :
-      break;
-  }
-
-  // ---> GYRO <---
-  wrapgyro.getRealResultTimer(TIME_GYRO_MS);
-  wrapgyro.getSmoothResultTimer(TIME_GYRO_MS);
-
-  wrapengine.regulator_FR_RL.input = wrapgyro.ax_x_sm; // Enter for DIAGONAL 1
-  wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // Enter for DIAGONAL 2
-
-  wrapengine.apply(TIME_ENGINE_MS);
+  wrapengine.execute(TIME_ENGINE_MS);
 
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();

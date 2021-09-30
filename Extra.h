@@ -8,7 +8,7 @@
 class Extra
 {
   public:
-    Extra(uint8_t led_pin, uint8_t volt_pin);
+    Extra(uint8_t ledPin, uint8_t voltPin, uint8_t aux1pin, uint8_t aux2pin);
 
     float voltOutput        = 0.0f;
 
@@ -17,10 +17,13 @@ class Extra
     void customCommand(uint8_t* msg_data, uint32_t ms);
 
   private:
-    uint8_t flashPin = PIN_FLASH;
-    uint8_t voltPin  = PIN_VOLT;
+    uint8_t PinFlash = 0;
+    uint8_t PinVolt = 0;
+    uint8_t PinAux1 = 0;
+    uint8_t PinAux2 = 0;
 
-    bool ledState = false;
+    bool flashState = false;
+    bool aux1State = false;
 
     int16_t voltPercent = 0;
 
