@@ -42,8 +42,6 @@
 #define SIZE_OF_DATA    6
 #define SIZE_OF_ACK     3
 
-#define SET_ANGLE       5.0f
-
 #define DATA_MIN        0
 #define DATA_AVRG       1
 #define DATA_MAX        2
@@ -60,7 +58,8 @@
 #define TO_DEG          57.295779513082320876798f
 #define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
 #define OFFSET_FR_RL    0.0f
-#define OFFSET_FL_RR    -4.0f
+#define OFFSET_FL_RR    -2.5f
+#define SET_ANGLE       10.0f // 5.0f
 
 // VOLTAGE
 #define VOLT_DIV        80.0f
@@ -68,9 +67,9 @@
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
 // PID
-#define PID_KP          1.5f
+#define PID_KP          1.8f
 #define PID_KI          1.5f
-#define PID_KD          0.6f
+#define PID_KD          0.65f
 #define PID_LIM_COEFF   0.35f
 
 // BYTES MSG

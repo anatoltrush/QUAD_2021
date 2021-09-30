@@ -73,7 +73,7 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, uint32_t ms) {
     }
     POWER_IN_Diag_FRRL = POWER_IN_MAIN;
     POWER_IN_Diag_FLRR = POWER_IN_MAIN;
-    // // [3] ROLL + // [4] PITCH
+    // [3] ROLL + [4] PITCH
     float resOffsetFRRL = OFFSET_FR_RL;
     float resOffsetFLRR = OFFSET_FL_RR;
     if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_MAX) { // D1+ (FRRL)
@@ -114,8 +114,7 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, uint32_t ms) {
 
     // CUSTOM COMMANDS
     if (msg_data[BT_MSG_THR] == DATA_MIN && msg_data[BT_MSG_AUX2] == DATA_MAX) { // FULL DOWN
-      POWER_IN_Diag_FRRL = MIN_POWER;
-      POWER_IN_Diag_FLRR = MIN_POWER;
+      POWER_IN_MAIN = MIN_POWER;
     }
   }
 }
@@ -150,8 +149,8 @@ void WrapEng::execute(uint32_t ms) {
       pid_FL_RR = (uint16_t)regulator_FL_RR.getResultTimer();
     }
     else {
-      //pid_FL_RR = 0.0f;
-      //regulator_FL_RR.integral = 0.0f;
+      pid_FL_RR = 0.0f;
+      regulator_FL_RR.integral = 0.0f;
     }
     POWER_FL = POWER_IN_Diag_FLRR - pid_FL_RR;
     POWER_RR = POWER_IN_Diag_FLRR + pid_FL_RR;

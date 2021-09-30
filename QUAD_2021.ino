@@ -35,20 +35,8 @@ void loop() {
   wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // Enter for DIAGONAL 2
 
   wrapradio.getData(extra.voltOutput * 10, wrapengine.isMaxReached, wrapengine.numWarnEngine);
-  wrapengine.analyzeCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
-  extra.customCommand(wrapradio.data_msg[3], TIME_CMD_UPD_MS);
-
-  /*---*/if (Serial.available() > 0) {
-    int val = Serial.parseInt();
-    if (val >= MIN_POWER && val <= MAX_POWER) { // ---> POWER <---
-      if (wrapengine.isMaxReached && val < wrapengine.POWER_IN_Diag_FRRL && val < wrapengine.POWER_IN_Diag_FLRR) {
-        wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
-      }
-      else if (!wrapengine.isMaxReached) {
-        wrapengine.POWER_IN_Diag_FRRL = wrapengine.POWER_IN_Diag_FLRR = val;
-      }
-    }
-  }
+  wrapengine.analyzeCommand(wrapradio.data_msg, TIME_CMD_UPD_MS);
+  extra.customCommand(wrapradio.data_msg, TIME_CMD_UPD_MS);
 
   wrapengine.execute(TIME_ENGINE_MS);
 
