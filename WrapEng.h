@@ -8,6 +8,11 @@
 
 //#define DEBUG_ENG
 
+enum State {
+  OK,
+  CONN_LOST
+};
+
 class WrapEng
 {
   public:
@@ -28,8 +33,10 @@ class WrapEng
     bool isMaxReached = false;
     uint8_t numWarnEngine = 0;
 
+    State state = State::CONN_LOST;
+
     void init();
-    void analyzeCommand(uint8_t* msg_data, uint32_t ms);
+    void analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms);
     void execute(uint32_t ms);
 
   private:

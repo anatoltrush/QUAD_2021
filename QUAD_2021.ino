@@ -35,7 +35,7 @@ void loop() {
   wrapengine.regulator_FL_RR.input = wrapgyro.ax_y_sm; // Enter for DIAGONAL 2
 
   wrapradio.getData(extra.voltOutput * 10, wrapengine.isMaxReached, wrapengine.numWarnEngine);
-  wrapengine.analyzeCommand(wrapradio.data_msg, TIME_CMD_UPD_MS);
+  wrapengine.analyzeCommand(wrapradio.data_msg, wrapradio.isConnLost, TIME_CMD_UPD_MS);
   extra.customCommand(wrapradio.data_msg, TIME_CMD_UPD_MS);
 
   wrapengine.execute(TIME_ENGINE_MS);
@@ -45,11 +45,11 @@ void loop() {
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);*/
-    Serial.print(wrapgyro.ax_z_rl);
+    /*Serial.print(wrapgyro.ax_z_rl);
     Serial.print(',');
     Serial.print(wrapengine.POWER_FL);
     Serial.print(',');
     Serial.print(wrapengine.POWER_RR);
-    Serial.println();
+    Serial.println();*/
   }
 }

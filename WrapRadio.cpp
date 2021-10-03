@@ -14,7 +14,6 @@ void WrapRadio::init() {
   if (radio != NULL) {
     radio->begin();
     radio->setAutoAck(true);
-    //radio->setRetries(5, 1); // delay, count
     radio->enableAckPayload();
     radio->setPayloadSize(SIZE_OF_DATA);
 
@@ -36,5 +35,24 @@ void WrapRadio::getData(uint8_t volt, bool isReached, uint8_t numEng) {
   if (radio->available(&pipeNum)) {
     radio->read(&data_msg, SIZE_OF_DATA);
     radio->writeAckPayload(pipeNum, ack_msg, SIZE_OF_ACK);
+    // _____
+    lastGetData = millis();
+  }
+  else {
+    noGetData = millis();
+  }
+  
+  int32_t diffGetDataMs = noGetData - lastGetData;
+  if(diffGetDataMs > TIME_IS_LOST_MS){
+    isConnLost = true;
+    data_msg[BT_MSG_YAW] = DATA_AVRG;
+    data_msg[BT_MSG_THR] = DATA_AVRG;
+    data_msg[BT_MSG_AUX1] = DATA_MIN;
+    data_msg[BT_MSG_ROLL] = DATA_AVRG;
+    data_msg[BT_MSG_PTCH] = DATA_AVRG;
+    data_msg[BT_MSG_AUX2] = DATA_MIN;
+  }
+  else{
+    isConnLost = false;
   }
 }

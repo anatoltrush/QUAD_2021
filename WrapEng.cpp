@@ -48,7 +48,7 @@ void WrapEng::init() {
   powers[3] = &POWER_RL;
 }
 
-void WrapEng::analyzeCommand(uint8_t* msg_data, uint32_t ms) {
+void WrapEng::analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms) {
   if (millis() - prevCmndMs >= ms) {
 #ifdef DEBUG_ENG
     Serial.print(millis() - prevCmndMs);
@@ -59,6 +59,9 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, uint32_t ms) {
 #endif
     prevCmndMs = millis(); // запоминаем момент времени
     //_________________________
+    if(isConnLost) state = State::CONN_LOST;
+    else state = State::OK;
+    // --- --- ---
     // [0] YAW
     if (msg_data[BT_MSG_YAW] == DATA_MAX) {
       // implement

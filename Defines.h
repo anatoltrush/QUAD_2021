@@ -35,6 +35,7 @@
 #define TIME_FLASH_MS   500
 #define TIME_VOLT_MS    2000
 #define TIME_CMD_UPD_MS 20
+#define TIME_IS_LOST_MS 2000
 
 // <----- CONSTANT VALUES ----->
 
