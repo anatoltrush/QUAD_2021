@@ -60,7 +60,9 @@
 #define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
 #define OFFSET_FR_RL    0.0f
 #define OFFSET_FL_RR    -2.5f
+#define OFFSET_D1_D2    0.0f
 #define SET_ANGLE       10.0f // 5.0f
+#define SET_YAW_ANG     2.0f
 
 // VOLTAGE
 #define VOLT_DIV        80.0f
