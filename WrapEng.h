@@ -54,6 +54,8 @@ class WrapEng
     uint16_t counter = 0;
 #endif
 
+    uint8_t counterDown = 0;
+
     uint16_t* powers[4];
     void checkMinMax();
     void checkWarning();

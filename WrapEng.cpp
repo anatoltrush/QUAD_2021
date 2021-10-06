@@ -68,7 +68,7 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms) {
     //_________________________
     if (isConnLost) state = State::CONN_LOST;
     else state = State::OK;
-    // --- --- ---
+    // --- --- --- --- ---
     if (state == State::OK)
       flyOk(msg_data);
     if (state == State::CONN_LOST)
@@ -146,15 +146,7 @@ void WrapEng::checkWarning() {
 }
 
 void WrapEng::flyOk(uint8_t* msg_data) {
-  // [0] YAW
-  float resOffsetD1D2 = OFFSET_D1_D2;
-  if (msg_data[BT_MSG_YAW] == DATA_MAX) {
-    // implement
-  }
-  if (msg_data[BT_MSG_YAW] == DATA_MIN) {
-    // implement
-  }
-  // [1] THROTTLE
+  // ---------- [1] THROTTLE ----------
   if (msg_data[BT_MSG_THR] == DATA_MAX) {
     if (!isMaxReached || POWER_IN_MAIN < MAX_POWER)
       POWER_IN_MAIN += THR_ADD_POWER;
@@ -165,7 +157,17 @@ void WrapEng::flyOk(uint8_t* msg_data) {
   }
   POWER_IN_Diag_FRRL = POWER_IN_MAIN;
   POWER_IN_Diag_FLRR = POWER_IN_MAIN;
-  // [3] ROLL + [4] PITCH
+
+  // ---------- [0] YAW ----------
+  float resOffsetD1D2 = OFFSET_D1_D2;
+  if (msg_data[BT_MSG_YAW] == DATA_MAX) {
+    // implement
+  }
+  if (msg_data[BT_MSG_YAW] == DATA_MIN) {
+    // implement
+  }
+
+  // ---------- [3] ROLL + [4] PITCH ----------
   float resOffsetFRRL = OFFSET_FR_RL;
   float resOffsetFLRR = OFFSET_FL_RR;
   if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_MAX) { // D1+ (FRRL)
@@ -200,7 +202,7 @@ void WrapEng::flyOk(uint8_t* msg_data) {
     resOffsetFLRR += SET_ANGLE;
   }
 
-  // --- apply offsets ---
+  // ----- apply offsets -----
   regulator_FR_RL.setpoint = resOffsetFRRL;
   regulator_FL_RR.setpoint = resOffsetFLRR;
 
@@ -211,5 +213,10 @@ void WrapEng::flyOk(uint8_t* msg_data) {
 }
 
 void WrapEng::flyConnLost() {
-
+  counterDown++;
+  if (counterDown >= EPOC_FOR_DOWN) {
+    counterDown = 0;
+    if (POWER_IN_MAIN > MIN_POWER)
+      POWER_IN_MAIN -= THR_SUB_POWER;
+  }
 }
