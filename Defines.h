@@ -67,7 +67,8 @@
 #define SET_YAW_ANG     2.0f
 
 // VOLTAGE
-#define VOLT_DIV        80.0f
+#define VOLT_COEFF_K    76.725f // MAGIC VALUE
+#define VOLT_COEFF_B    -62.401f // MAGIC VALUE
 #define VOLT_MIN        10.05f // 3 x 3.35V
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
