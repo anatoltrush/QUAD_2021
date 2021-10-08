@@ -36,6 +36,7 @@
 #define TIME_VOLT_MS    2000
 #define TIME_CMD_UPD_MS 20
 #define TIME_IS_LOST_MS 2000
+#define TIME_NEW_RADIO  30000
 
 #define EPOC_FOR_DOWN   10
 

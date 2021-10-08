@@ -35,7 +35,7 @@ void WrapRadio::getData(uint8_t volt, bool isReached, uint8_t numEng) {
   if (radio->available(&pipeNum)) {
     radio->read(&data_msg, SIZE_OF_DATA);
     radio->writeAckPayload(pipeNum, ack_msg, SIZE_OF_ACK);
-    // _____
+    // ____________
     lastGetData = millis();
   }
   else {
@@ -54,6 +54,20 @@ void WrapRadio::getData(uint8_t volt, bool isReached, uint8_t numEng) {
   }
   else {
     isConnLost = false;
+  }
+  // ---> Creating new radio for good ACK sending <---
+  if (millis() - prevNewRadio >= TIME_NEW_RADIO) {
+#ifdef DEBUG_RAD
+    Serial.println("Creating new radio");
+    Serial.print(millis() - prevNewRadio);
+    Serial.print("_");
+    Serial.println(__func__);
+#endif
+    prevNewRadio = millis();
+    //_________________________
+    delete radio;
+    radio = new RF24(PIN_NRF_CE, PIN_NRF_CS);
+    init();
   }
 }
 

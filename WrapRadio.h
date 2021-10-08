@@ -5,6 +5,8 @@
 
 #include "Defines.h"
 
+#define DEBUG_RAD
+
 class WrapRadio
 {
   public:
@@ -29,6 +31,8 @@ class WrapRadio
   private:
     uint32_t lastGetData = 0;
     uint32_t noGetData = 0;
+
+    uint32_t prevNewRadio = 0;
 };
 
 // _________________________

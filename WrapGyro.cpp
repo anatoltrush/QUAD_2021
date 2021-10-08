@@ -16,32 +16,32 @@ void WrapGyro::init() {
 }
 
 void WrapGyro::getRealResultTimer(uint32_t ms) {
-  if (millis() - prev_millis_rl >= ms) {
+  if (millis() - prevRealMs >= ms) {
 #ifdef DEBUG_GYRO
-    Serial.print(millis() - prev_millis_rl);
+    Serial.print(millis() - prevRealMs);
     Serial.print("_");
     Serial.print(counter_rl);
     Serial.print("_");
     Serial.println(__func__);
     counter_rl++;
 #endif
-    prev_millis_rl = millis(); // запоминаем момент времени
+    prevRealMs = millis(); // запоминаем момент времени
     //_________________________
     getData(ax_x_rl, ax_y_rl, ax_z_rl);
   }
 }
 
 void WrapGyro::getSmoothResultTimer(uint32_t ms) {
-  if (millis() - prev_millis_sm >= ms) {
+  if (millis() - prevSmoothMs >= ms) {
 #ifdef DEBUG_GYRO
-    Serial.print(millis() - prev_millis_sm);
+    Serial.print(millis() - prevSmoothMs);
     Serial.print("_");
     Serial.print(counter_sm);
     Serial.print("_");
     Serial.println(__func__);
     counter_sm++;
 #endif
-    prev_millis_sm = millis(); // запоминаем момент времени
+    prevSmoothMs = millis(); // запоминаем момент времени
     //_________________________
     prev_x = new_val_x;
     prev_y = new_val_y;

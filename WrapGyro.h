@@ -25,8 +25,8 @@ class WrapGyro
     uint8_t fifoBuffer[64];     // FIFO storage buffer
     float ypr[3];               // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector*/
 
-    uint32_t prev_millis_sm = 0;
-    uint32_t prev_millis_rl = 0;
+    uint32_t prevSmoothMs = 0;
+    uint32_t prevRealMs = 0;
 
     float prev_x = 0.0f,    prev_y = 0.0f,      prev_z = 0.0f;
     float new_val_x = 0.0f, new_val_y = 0.0f,   new_val_z = 0.0f;
