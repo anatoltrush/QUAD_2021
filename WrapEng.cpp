@@ -76,7 +76,7 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms) {
   }
 }
 
-void WrapEng::execute(uint32_t ms) {
+void WrapEng::stabAndExec(uint32_t ms) {
   if (millis() - prevApplyMs >= ms) {
 #ifdef DEBUG_ENG
     Serial.print(millis() - prevApplyMs);
@@ -93,27 +93,27 @@ void WrapEng::execute(uint32_t ms) {
 
     // Diag FR <-o-> RL
     uint16_t pid_FR_RL = 0;
-    if (POWER_IN_Diag_FRRL >= MIN_DIAG_POWER) {
+    if (POWER_Diag_FRRL >= MIN_DIAG_POWER) {
       pid_FR_RL = (uint16_t)regulator_FR_RL.getResultTimer();
     }
     else {
       pid_FR_RL = 0.0f;
       regulator_FR_RL.integral = 0.0f;
     }
-    POWER_FR = POWER_IN_Diag_FRRL + pid_FR_RL;
-    POWER_RL = POWER_IN_Diag_FRRL - pid_FR_RL;
+    POWER_FR = POWER_Diag_FRRL + pid_FR_RL;
+    POWER_RL = POWER_Diag_FRRL - pid_FR_RL;
 
     // Diag FL <-o-> RR
     uint16_t pid_FL_RR = 0;
-    if (POWER_IN_Diag_FLRR >= MIN_DIAG_POWER) {
+    if (POWER_Diag_FLRR >= MIN_DIAG_POWER) {
       pid_FL_RR = (uint16_t)regulator_FL_RR.getResultTimer();
     }
     else {
       pid_FL_RR = 0.0f;
       regulator_FL_RR.integral = 0.0f;
     }
-    POWER_FL = POWER_IN_Diag_FLRR - pid_FL_RR;
-    POWER_RR = POWER_IN_Diag_FLRR + pid_FL_RR;
+    POWER_FL = POWER_Diag_FLRR - pid_FL_RR;
+    POWER_RR = POWER_Diag_FLRR + pid_FL_RR;
 
     checkMinMax();
     checkWarning();
@@ -146,17 +146,22 @@ void WrapEng::checkWarning() {
 }
 
 void WrapEng::flyOk(uint8_t* msg_data) {
+#ifdef DEBUG_ENG
+  Serial.print(millis() - prevCmndMs);
+  Serial.print("_");
+  Serial.println(__func__);
+#endif
   // ---------- [1] THROTTLE ----------
   if (msg_data[BT_MSG_THR] == DATA_MAX) {
-    if (!isMaxReached || POWER_IN_MAIN < MAX_POWER)
-      POWER_IN_MAIN += THR_ADD_POWER;
+    if (!isMaxReached || POWER_MAIN < MAX_POWER)
+      POWER_MAIN += THR_ADD_POWER;
   }
   if (msg_data[BT_MSG_THR] == DATA_MIN) {
-    if (POWER_IN_MAIN > MIN_POWER)
-      POWER_IN_MAIN -= THR_SUB_POWER;
+    if (POWER_MAIN > MIN_POWER)
+      POWER_MAIN -= THR_SUB_POWER;
   }
-  POWER_IN_Diag_FRRL = POWER_IN_MAIN;
-  POWER_IN_Diag_FLRR = POWER_IN_MAIN;
+  POWER_Diag_FRRL = POWER_MAIN;
+  POWER_Diag_FLRR = POWER_MAIN;
 
   // ---------- [0] YAW ----------
   float resOffsetD1D2 = OFFSET_D1_D2;
@@ -208,15 +213,26 @@ void WrapEng::flyOk(uint8_t* msg_data) {
 
   // CUSTOM COMMANDS
   if (msg_data[BT_MSG_THR] == DATA_MIN && msg_data[BT_MSG_AUX2] == DATA_MAX) { // FULL DOWN
-    POWER_IN_MAIN = MIN_POWER;
+    POWER_MAIN = MIN_POWER;
   }
 }
 
 void WrapEng::flyConnLost() {
-  counterDown++;
-  if (counterDown >= EPOC_FOR_DOWN) {
-    counterDown = 0;
-    if (POWER_IN_MAIN > MIN_POWER)
-      POWER_IN_MAIN -= THR_SUB_POWER;
+#ifdef DEBUG_ENG
+  Serial.print(millis() - prevCmndMs);
+  Serial.print("_");
+  Serial.println(__func__);
+#endif
+  if (POWER_MAIN >= MIN_DIAG_POWER) {
+    counPowerDown++;
+    if (counPowerDown >= EPOC_FOR_DOWN) {
+      POWER_MAIN -= THR_SUB_POWER;
+      counPowerDown = 0;
+    }
   }
+  else {
+    POWER_MAIN = MIN_POWER;
+  }
+  POWER_Diag_FRRL = POWER_MAIN;
+  POWER_Diag_FLRR = POWER_MAIN;
 }

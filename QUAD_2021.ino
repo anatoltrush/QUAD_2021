@@ -35,18 +35,21 @@ void loop() {
   wrapengine.analyzeCommand(wrapradio.data_msg, wrapradio.isConnLost, TIME_CMD_UPD_MS);
   extra.customCommand(wrapradio.data_msg, TIME_CMD_UPD_MS);
 
-  wrapengine.execute(TIME_ENGINE_MS);
+  wrapengine.stabAndExec(TIME_ENGINE_MS);
 
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);*/
-    /*Serial.print(wrapgyro.ax_z_rl);
+    //Serial.print(wrapgyro.ax_z_rl);
+    //Serial.print(',');
+    /*Serial.print(wrapengine.POWER_FL);
     Serial.print(',');
-    Serial.print(wrapengine.POWER_FL);
+    Serial.print(wrapengine.POWER_RR);*/
+    /*Serial.print(wrapengine.POWER_Diag_FRRL);
     Serial.print(',');
-    Serial.print(wrapengine.POWER_RR);
-    Serial.println();*/
+    Serial.print(wrapengine.POWER_Diag_FLRR);*/
+    //Serial.println();
   }
 }

@@ -29,16 +29,16 @@
 
 // <----- PERIODS ----->
 
-#define TIME_PID_MS     10
-#define TIME_GYRO_MS    10
-#define TIME_ENGINE_MS  10
+#define TIME_PID_MS     20
+#define TIME_GYRO_MS    20
+#define TIME_ENGINE_MS  20
 #define TIME_FLASH_MS   500
 #define TIME_VOLT_MS    2000
 #define TIME_CMD_UPD_MS 20
 #define TIME_IS_LOST_MS 2000
-#define TIME_NEW_RADIO  30000
+#define TIME_NEW_RADIO  60000
 
-#define EPOC_FOR_DOWN   10
+#define EPOC_FOR_DOWN   50
 
 // <----- CONSTANT VALUES ----->
 

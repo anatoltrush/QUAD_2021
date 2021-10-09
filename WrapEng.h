@@ -16,9 +16,9 @@ enum State {
 class WrapEng
 {
   public:
-    uint16_t POWER_IN_MAIN = MIN_POWER;
-    uint16_t POWER_IN_Diag_FRRL = POWER_IN_MAIN;
-    uint16_t POWER_IN_Diag_FLRR = POWER_IN_MAIN;
+    uint16_t POWER_MAIN = MIN_POWER;
+    uint16_t POWER_Diag_FRRL = POWER_MAIN;
+    uint16_t POWER_Diag_FLRR = POWER_MAIN;
 
     uint16_t POWER_FR = MIN_POWER;
     uint16_t POWER_FL = MIN_POWER;
@@ -32,7 +32,7 @@ class WrapEng
     void init();
     void setGyroData(float ax_x, float ax_y, float ax_z);
     void analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms);
-    void execute(uint32_t ms);
+    void stabAndExec(uint32_t ms);
 
   private:
     State state = State::CONN_LOST;
@@ -54,7 +54,7 @@ class WrapEng
     uint16_t counter = 0;
 #endif
 
-    uint8_t counterDown = 0;
+    uint8_t counPowerDown = 0;
 
     uint16_t* powers[4];
     void checkMinMax();

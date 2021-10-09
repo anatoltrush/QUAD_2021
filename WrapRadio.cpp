@@ -26,6 +26,9 @@ void WrapRadio::init() {
     radio->powerUp();
     radio->startListening();
   }
+  else {
+    Serial.println("Null pointer in WrapRadio");
+  }
 }
 
 void WrapRadio::getData(uint8_t volt, bool isReached, uint8_t numEng) {
