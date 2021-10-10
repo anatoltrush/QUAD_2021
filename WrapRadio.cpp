@@ -108,6 +108,7 @@ void Extra::getVoltQuad(uint32_t ms) {
     prevVoltMs = millis();
     //_________________________
     uint16_t readSignal = analogRead(PinVolt);
+    Serial.println(readSignal);
     voltOutput = ((float)readSignal - VOLT_COEFF_B) / VOLT_COEFF_K;
     // in percents
     float diffCurr = voltOutput - VOLT_MIN;

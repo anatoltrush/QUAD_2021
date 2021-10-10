@@ -36,7 +36,7 @@
 #define TIME_VOLT_MS    2000
 #define TIME_CMD_UPD_MS 20
 #define TIME_IS_LOST_MS 2000
-#define TIME_NEW_RADIO  60000
+#define TIME_NEW_RADIO  20000
 
 #define EPOC_FOR_DOWN   50
 
@@ -60,22 +60,22 @@
 
 // GYRO
 #define TO_DEG          57.295779513082320876798f
-#define SMOOTH_COEFF    0.35f // config 0-smooth...1-sharp
+#define SMOOTH_COEFF    0.4f // config 0-smooth...1-sharp
 #define OFFSET_FR_RL    0.0f
 #define OFFSET_FL_RR    -2.5f
 #define OFFSET_D1_D2    0.0f
-#define SET_ANGLE       10.0f // 5.0f
+#define SET_ANGLE       8.0f // 5.0f
 #define SET_YAW_ANG     2.0f
 
 // VOLTAGE
-#define VOLT_COEFF_K    76.725f // MAGIC VALUE
-#define VOLT_COEFF_B    -62.401f // MAGIC VALUE
+#define VOLT_COEFF_K    87.74f // MAGIC VALUE
+#define VOLT_COEFF_B    -37.88f // MAGIC VALUE
 #define VOLT_MIN        10.05f // 3 x 3.35V
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
 // PID
-#define PID_KP          1.8f
-#define PID_KI          1.5f
+#define PID_KP          2.0f
+#define PID_KI          2.0f
 #define PID_KD          0.65f
 #define PID_LIM_COEFF   0.35f
 

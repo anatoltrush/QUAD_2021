@@ -37,13 +37,13 @@ class WrapRadio
 
 // _________________________
 //#define DEBUG_EXTRA
-// 12200(12300)/7800(7700)
+// 11650/7350
 class Extra
 {
   public:
     Extra();
 
-    float voltOutput        = 0.0f;
+    float voltOutput = 0.0f;
 
     void flash(uint32_t ms);
     void getVoltQuad(uint32_t ms);
