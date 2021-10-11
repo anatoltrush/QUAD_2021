@@ -14,8 +14,8 @@ void setup() {
   Wire.begin();
   Wire.setClock(400000ul);
 
-  wrapgyro.init();
   wrapengine.init();
+  wrapgyro.init();
   wrapradio.init();
 
   Serial.begin(115200);
@@ -45,11 +45,11 @@ void loop() {
     //Serial.print(wrapgyro.ax_z_rl);
     //Serial.print(',');
     /*Serial.print(wrapengine.POWER_FL);
-    Serial.print(',');
-    Serial.print(wrapengine.POWER_RR);*/
+      Serial.print(',');
+      Serial.print(wrapengine.POWER_RR);*/
     /*Serial.print(wrapengine.POWER_Diag_FRRL);
-    Serial.print(',');
-    Serial.print(wrapengine.POWER_Diag_FLRR);*/
+      Serial.print(',');
+      Serial.print(wrapengine.POWER_Diag_FLRR);*/
     //Serial.println();
   }
 }
