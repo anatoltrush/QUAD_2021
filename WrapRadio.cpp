@@ -31,10 +31,13 @@ void WrapRadio::init() {
   }
 }
 
-void WrapRadio::getData(uint8_t volt, bool isReached, uint8_t numEng) {
+void WrapRadio::getData(uint8_t volt, bool isReached, uint8_t numEng, uint16_t mainPower) {
+  uint8_t pwr = (uint8_t)(((mainPower - MIN_POWER) / 1500.0f) * 10);
+  if (pwr >= 10) pwr = 9;
   ack_msg[BT_ACK_VOLT] = volt;
   ack_msg[BT_ACK_WARN] = isReached;
   ack_msg[BT_ACK_NUME] = numEng;
+  ack_msg[BT_ACK_POWR] = pwr;
   if (radio->available(&pipeNum)) {
     radio->read(&data_msg, SIZE_OF_DATA);
     radio->writeAckPayload(pipeNum, ack_msg, SIZE_OF_ACK);

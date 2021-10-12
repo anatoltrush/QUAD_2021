@@ -29,7 +29,8 @@ void loop() {
   wrapgyro.getRealResultTimer(TIME_GYRO_MS);
   wrapgyro.getSmoothResultTimer(TIME_GYRO_MS);
 
-  wrapradio.getData(extra.voltOutput * 10, wrapengine.isMaxReached, wrapengine.numWarnEngine);
+  wrapradio.getData(extra.voltOutput * 10, wrapengine.isMaxReached,
+                    wrapengine.numWarnEngine, wrapengine.POWER_MAIN);
 
   wrapengine.setGyroData(wrapgyro.ax_x_sm, wrapgyro.ax_y_sm, wrapgyro.ax_z_sm);
   wrapengine.analyzeCommand(wrapradio.data_msg, wrapradio.isConnLost, TIME_CMD_UPD_MS);

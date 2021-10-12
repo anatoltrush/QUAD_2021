@@ -69,10 +69,8 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms) {
     if (isConnLost) state = State::CONN_LOST;
     else state = State::OK;
     // --- --- --- --- ---
-    if (state == State::OK)
-      flyOk(msg_data);
-    if (state == State::CONN_LOST)
-      flyConnLost();
+    if (state == State::OK) flyOk(msg_data);
+    if (state == State::CONN_LOST) flyConnLost();
   }
 }
 

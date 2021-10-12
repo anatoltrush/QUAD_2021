@@ -44,7 +44,7 @@
 
 // DATA
 #define SIZE_OF_DATA    6
-#define SIZE_OF_ACK     3
+#define SIZE_OF_ACK     4
 
 #define DATA_MIN        0
 #define DATA_AVRG       1
@@ -91,5 +91,6 @@
 #define BT_ACK_VOLT     0
 #define BT_ACK_WARN     1
 #define BT_ACK_NUME     2
+#define BT_ACK_POWR     3
 
 #endif // DEFINES_H
