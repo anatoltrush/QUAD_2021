@@ -74,7 +74,7 @@
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
 // PID
-#define PID_KP          2.0f
+#define PID_KP          2.2f
 #define PID_KI          2.0f
 #define PID_KD          0.65f
 #define PID_LIM_COEFF   0.35f

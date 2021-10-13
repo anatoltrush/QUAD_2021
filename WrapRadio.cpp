@@ -1,12 +1,10 @@
 #include "WrapRadio.h"
 
-WrapRadio::WrapRadio()
-{
+WrapRadio::WrapRadio(){
   radio = new RF24(PIN_NRF_CE, PIN_NRF_CS);
 }
 
-WrapRadio::~WrapRadio()
-{
+WrapRadio::~WrapRadio(){
   delete radio;
 }
 
@@ -65,8 +63,7 @@ void WrapRadio::getData(uint8_t volt, bool isReached, uint8_t numEng, uint16_t m
   if (millis() - prevNewRadio >= TIME_NEW_RADIO) {
 #ifdef DEBUG_RAD
     Serial.println("Creating new radio");
-    Serial.print(millis() - prevNewRadio);
-    Serial.print("_");
+    Serial.print(millis() - prevNewRadio); Serial.print("_");
     Serial.println(__func__);
 #endif
     prevNewRadio = millis();
@@ -89,8 +86,7 @@ Extra::Extra():
 void Extra::flash(uint32_t ms) {
   if (millis() - prevFlashMs >= ms) {
 #ifdef DEBUG_EXTRA
-    Serial.print(millis() - prevFlashMs);
-    Serial.print("_");
+    Serial.print(millis() - prevFlashMs); Serial.print("_");
     Serial.println(__func__);
 #endif
     prevFlashMs = millis();
@@ -104,8 +100,7 @@ void Extra::flash(uint32_t ms) {
 void Extra::getVoltQuad(uint32_t ms) {
   if (millis() - prevVoltMs >= ms) {
 #ifdef DEBUG_EXTRA
-    Serial.print(millis() - prevVoltMs);
-    Serial.print("_");
+    Serial.print(millis() - prevVoltMs); Serial.print("_");
     Serial.println(__func__);
 #endif
     prevVoltMs = millis();
@@ -122,8 +117,7 @@ void Extra::getVoltQuad(uint32_t ms) {
 void Extra::customCommand(uint8_t* msg_data, uint32_t ms) {
   if (millis() - prevCmndMs >= ms) {
 #ifdef DEBUG_EXTRA
-    Serial.print(millis() - prevCmndMs);
-    Serial.print("_");
+    Serial.print(millis() - prevCmndMs); Serial.print("_");
     Serial.println(__func__);
 #endif
     prevCmndMs = millis();
@@ -131,7 +125,7 @@ void Extra::customCommand(uint8_t* msg_data, uint32_t ms) {
     // implement
     if (msg_data[BT_MSG_AUX1] == DATA_MAX) // left
       ; // AUX 1
-    if (msg_data[BT_MSG_AUX2] == DATA_MAX) // left
+    if (msg_data[BT_MSG_AUX2] == DATA_MAX && msg_data[BT_MSG_THR] != DATA_MIN) // right
       ; // AUX 2
   }
 }

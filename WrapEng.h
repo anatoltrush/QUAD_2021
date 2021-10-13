@@ -31,7 +31,7 @@ class WrapEng
 
     void init();
     void setGyroData(float ax_x, float ax_y, float ax_z);
-    void analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms);
+    void analyzeCommand(uint8_t* msgData, bool isConnLost, uint32_t ms);
     void stabAndExec(uint32_t ms);
 
   private:

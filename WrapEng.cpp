@@ -58,10 +58,8 @@ void WrapEng::setGyroData(float ax_x, float ax_y, float ax_z) {
 void WrapEng::analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms) {
   if (millis() - prevCmndMs >= ms) {
 #ifdef DEBUG_ENG
-    Serial.print(millis() - prevCmndMs);
-    Serial.print("_");
-    Serial.print(counter);
-    Serial.print("_");
+    Serial.print(millis() - prevCmndMs); Serial.print("_");
+    Serial.print(counter); Serial.print("_");
     Serial.println(__func__);
 #endif
     prevCmndMs = millis(); // запоминаем момент времени
@@ -77,10 +75,8 @@ void WrapEng::analyzeCommand(uint8_t* msg_data, bool isConnLost, uint32_t ms) {
 void WrapEng::stabAndExec(uint32_t ms) {
   if (millis() - prevApplyMs >= ms) {
 #ifdef DEBUG_ENG
-    Serial.print(millis() - prevApplyMs);
-    Serial.print("_");
-    Serial.print(counter);
-    Serial.print("_");
+    Serial.print(millis() - prevApplyMs); Serial.print("_");
+    Serial.print(counter); Serial.print("_");
     Serial.println(__func__);
     counter++;
 #endif
@@ -143,18 +139,17 @@ void WrapEng::checkWarning() {
   isMaxReached = (maxPower > WARN_POWER) ? true : false;
 }
 
-void WrapEng::flyOk(uint8_t* msg_data) {
+void WrapEng::flyOk(uint8_t* msgData) {
 #ifdef DEBUG_ENG
-  Serial.print(millis() - prevCmndMs);
-  Serial.print("_");
+  Serial.print(millis() - prevCmndMs); Serial.print("_");
   Serial.println(__func__);
 #endif
   // ---------- [1] THROTTLE ----------
-  if (msg_data[BT_MSG_THR] == DATA_MAX) {
+  if (msgData[BT_MSG_THR] == DATA_MAX) {
     if (!isMaxReached || POWER_MAIN < MAX_POWER)
       POWER_MAIN += THR_ADD_POWER;
   }
-  if (msg_data[BT_MSG_THR] == DATA_MIN) {
+  if (msgData[BT_MSG_THR] == DATA_MIN) {
     if (POWER_MAIN > MIN_POWER)
       POWER_MAIN -= THR_SUB_POWER;
   }
@@ -163,44 +158,44 @@ void WrapEng::flyOk(uint8_t* msg_data) {
 
   // ---------- [0] YAW ----------
   float resOffsetD1D2 = OFFSET_D1_D2;
-  if (msg_data[BT_MSG_YAW] == DATA_MAX) {
+  if (msgData[BT_MSG_YAW] == DATA_MAX) {
     // implement
   }
-  if (msg_data[BT_MSG_YAW] == DATA_MIN) {
+  if (msgData[BT_MSG_YAW] == DATA_MIN) {
     // implement
   }
 
   // ---------- [3] ROLL + [4] PITCH ----------
   float resOffsetFRRL = OFFSET_FR_RL;
   float resOffsetFLRR = OFFSET_FL_RR;
-  if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_MAX) { // D1+ (FRRL)
+  if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_MAX) { // D1+ (FRRL)
     resOffsetFRRL += SET_ANGLE;
   }
-  if (msg_data[BT_MSG_PTCH] == DATA_MIN && msg_data[BT_MSG_ROLL] == DATA_MIN) { // D1- (FRRL)
+  if (msgData[BT_MSG_PTCH] == DATA_MIN && msgData[BT_MSG_ROLL] == DATA_MIN) { // D1- (FRRL)
     resOffsetFRRL -= SET_ANGLE;
   }
 
-  if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_MIN) { // D2+ (FLRR)
+  if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_MIN) { // D2+ (FLRR)
     resOffsetFLRR += SET_ANGLE;
   }
-  if (msg_data[BT_MSG_PTCH] == DATA_MIN && msg_data[BT_MSG_ROLL] == DATA_MAX) { // D2- (FLRR)
+  if (msgData[BT_MSG_PTCH] == DATA_MIN && msgData[BT_MSG_ROLL] == DATA_MAX) { // D2- (FLRR)
     resOffsetFLRR -= SET_ANGLE;
   }
 
-  if (msg_data[BT_MSG_PTCH] == DATA_AVRG && msg_data[BT_MSG_ROLL] == DATA_MAX) { // ROLL+
+  if (msgData[BT_MSG_PTCH] == DATA_AVRG && msgData[BT_MSG_ROLL] == DATA_MAX) { // ROLL+
     resOffsetFRRL += SET_ANGLE;
     resOffsetFLRR += SET_ANGLE;
   }
-  if (msg_data[BT_MSG_PTCH] == DATA_AVRG && msg_data[BT_MSG_ROLL] == DATA_MIN) { // ROLL-
+  if (msgData[BT_MSG_PTCH] == DATA_AVRG && msgData[BT_MSG_ROLL] == DATA_MIN) { // ROLL-
     resOffsetFRRL -= SET_ANGLE;
     resOffsetFLRR -= SET_ANGLE;
   }
 
-  if (msg_data[BT_MSG_PTCH] == DATA_MAX && msg_data[BT_MSG_ROLL] == DATA_AVRG) { // PITCH+
+  if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_AVRG) { // PITCH+
     resOffsetFRRL += SET_ANGLE;
     resOffsetFLRR -= SET_ANGLE;
   }
-  if (msg_data[BT_MSG_PTCH] == DATA_MIN && msg_data[BT_MSG_ROLL] == DATA_AVRG) { // PITCH-
+  if (msgData[BT_MSG_PTCH] == DATA_MIN && msgData[BT_MSG_ROLL] == DATA_AVRG) { // PITCH-
     resOffsetFRRL -= SET_ANGLE;
     resOffsetFLRR += SET_ANGLE;
   }
@@ -210,15 +205,14 @@ void WrapEng::flyOk(uint8_t* msg_data) {
   regulator_FL_RR.setpoint = resOffsetFLRR;
 
   // CUSTOM COMMANDS
-  if (msg_data[BT_MSG_THR] == DATA_MIN && msg_data[BT_MSG_AUX2] == DATA_MAX) { // FULL DOWN
+  if (msgData[BT_MSG_THR] == DATA_MIN && msgData[BT_MSG_AUX2] == DATA_MAX) { // FULL DOWN
     POWER_MAIN = MIN_POWER;
   }
 }
 
 void WrapEng::flyConnLost() {
 #ifdef DEBUG_ENG
-  Serial.print(millis() - prevCmndMs);
-  Serial.print("_");
+  Serial.print(millis() - prevCmndMs); Serial.print("_");
   Serial.println(__func__);
 #endif
   if (POWER_MAIN >= MIN_DIAG_POWER) {
