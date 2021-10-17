@@ -17,9 +17,10 @@ void setup() {
   wrapengine.init();
   wrapgyro.init();
   wrapradio.init();
+  analogReference(DEFAULT);
 
   Serial.begin(115200);
-  Serial.println("AXIS_Z, OUTPUT_R, OUTPUT_L");
+  Serial.println("/*fr, rl,*/ xr, xs");
 }
 
 void loop() {
@@ -41,16 +42,22 @@ void loop() {
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();
     /*Serial.print(wrapengine.POWER_FR);
-      Serial.print(',');
-      Serial.print(wrapengine.POWER_RL);*/
-    //Serial.print(wrapgyro.ax_z_rl);
+    Serial.print(',');
+    Serial.print(wrapengine.POWER_RL);
+    Serial.print(',');*/
+    Serial.print(wrapgyro.ax_x_rl);
+    Serial.print(',');
+    Serial.print(wrapgyro.ax_x_sm);
     //Serial.print(',');
+    //Serial.print(wrapgyro.ax_y_rl);
+    //Serial.print(',');
+    //Serial.print(wrapgyro.ax_y_sm);
     /*Serial.print(wrapengine.POWER_FL);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RR);*/
     /*Serial.print(wrapengine.POWER_Diag_FRRL);
       Serial.print(',');
       Serial.print(wrapengine.POWER_Diag_FLRR);*/
-    //Serial.println();
+    Serial.println();
   }
 }

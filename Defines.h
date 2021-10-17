@@ -38,7 +38,7 @@
 #define TIME_IS_LOST_MS 2000
 #define TIME_NEW_RADIO  20000
 
-#define EPOC_FOR_DOWN   50
+#define EPOC_FOR_DOWN   40
 
 // <----- CONSTANT VALUES ----->
 
@@ -60,24 +60,24 @@
 
 // GYRO
 #define TO_DEG          57.295779513082320876798f
-#define SMOOTH_COEFF    0.4f // config 0-smooth...1-sharp
-#define OFFSET_FR_RL    0.0f
-#define OFFSET_FL_RR    -2.5f
+#define SMOOTH_COEFF    0.2f // config 0-smooth...1-sharp
+#define OFFSET_FR_RL    0.0f // axis X
+#define OFFSET_FL_RR    -2.5f // axis Y
 #define OFFSET_D1_D2    0.0f
 #define SET_ANGLE       8.0f // 5.0f
 #define SET_YAW_ANG     2.0f
 
 // VOLTAGE
-#define VOLT_COEFF_K    87.74f // MAGIC VALUE
-#define VOLT_COEFF_B    -37.88f // MAGIC VALUE
+#define VOLT_COEFF_K    84.3f // MAGIC VALUE
+#define VOLT_COEFF_B    4.0f // MAGIC VALUE
 #define VOLT_MIN        10.05f // 3 x 3.35V
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
 // PID
-#define PID_KP          2.2f
+#define PID_KP          0.5f
 #define PID_KI          2.0f
-#define PID_KD          0.65f
-#define PID_LIM_COEFF   0.35f
+#define PID_KD          0.7f // 0.7f
+#define PID_LIM_COEFF   0.75f
 
 // BYTES MSG
 #define BT_MSG_YAW      0
