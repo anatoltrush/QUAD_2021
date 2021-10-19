@@ -20,7 +20,7 @@ void setup() {
   analogReference(DEFAULT);
 
   Serial.begin(115200);
-  Serial.println("/*fr, rl,*/ xr, xs");
+  Serial.println("xr, xs, yr, ys");
 }
 
 void loop() {
@@ -48,10 +48,10 @@ void loop() {
     Serial.print(wrapgyro.ax_x_rl);
     Serial.print(',');
     Serial.print(wrapgyro.ax_x_sm);
-    //Serial.print(',');
-    //Serial.print(wrapgyro.ax_y_rl);
-    //Serial.print(',');
-    //Serial.print(wrapgyro.ax_y_sm);
+    Serial.print(',');
+    Serial.print(wrapgyro.ax_y_rl);
+    Serial.print(',');
+    Serial.print(wrapgyro.ax_y_sm);
     /*Serial.print(wrapengine.POWER_FL);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RR);*/

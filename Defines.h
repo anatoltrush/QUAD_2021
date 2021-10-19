@@ -66,6 +66,13 @@
 #define OFFSET_D1_D2    0.0f
 #define SET_ANGLE       8.0f // 5.0f
 #define SET_YAW_ANG     2.0f
+// OFFSETS
+#define OFF_A_X         0
+#define OFF_A_Y         0
+#define OFF_A_Z         0
+#define OFF_G_X         0
+#define OFF_G_Y         0
+#define OFF_G_Z         0
 
 // VOLTAGE
 #define VOLT_COEFF_K    84.3f // MAGIC VALUE
