@@ -60,9 +60,9 @@
 
 // GYRO
 #define TO_DEG          57.295779513082320876798f
-#define SMOOTH_COEFF    0.2f // config 0-smooth...1-sharp
+#define SMOOTH_COEFF    0.95f // config 0-smooth...1-sharp
 #define OFFSET_FR_RL    0.0f // axis X
-#define OFFSET_FL_RR    -2.5f // axis Y
+#define OFFSET_FL_RR    0.0f // axis Y
 #define OFFSET_D1_D2    0.0f
 #define SET_ANGLE       8.0f // 5.0f
 #define SET_YAW_ANG     2.0f
@@ -81,7 +81,7 @@
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
 // PID
-#define PID_KP          0.5f
+#define PID_KP          2.0f
 #define PID_KI          2.0f
 #define PID_KD          0.7f // 0.7f
 #define PID_LIM_COEFF   0.75f
