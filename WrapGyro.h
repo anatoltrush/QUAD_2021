@@ -10,12 +10,11 @@ class WrapGyro
   public:
     void init();
 
-    float ax_x_rl = 0.0f,  ax_x_sm = 0.0f;
-    float ax_y_rl = 0.0f,  ax_y_sm = 0.0f;
-    float ax_z_rl = 0.0f,  ax_z_sm = 0.0f;
+    float ax_x_rl = 0.0f;
+    float ax_y_rl = 0.0f;
+    float ax_z_rl = 0.0f;
 
     void getRealResultTimer(uint32_t ms);
-    void getSmoothResultTimer(uint32_t ms);
 
   private:
     const float toDeg = 180.0 / M_PI;
@@ -25,15 +24,10 @@ class WrapGyro
     uint8_t fifoBuffer[64];     // FIFO storage buffer
     float ypr[3];               // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector*/
 
-    uint32_t prevSmoothMs = 0;
     uint32_t prevRealMs = 0;
-
-    float prev_x = 0.0f,    prev_y = 0.0f,      prev_z = 0.0f;
-    float new_val_x = 0.0f, new_val_y = 0.0f,   new_val_z = 0.0f;
 
 #ifdef DEBUG_GYRO
     uint16_t counter_rl = 0;
-    uint16_t counter_sm = 0;
 #endif
 
     void getData(float &axis_x, float &axis_y, float &axis_z);

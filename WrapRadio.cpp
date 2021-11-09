@@ -97,7 +97,7 @@ void Extra::flash(uint32_t ms) {
   }
 }
 
-void Extra::getVoltQuad(uint32_t ms) {
+void Extra::getVoltQuad(uint32_t ms, uint8_t* ack) {
   if (millis() - prevVoltMs >= ms) {
 #ifdef DEBUG_EXTRA
     Serial.print(millis() - prevVoltMs); Serial.print("_");
@@ -110,6 +110,11 @@ void Extra::getVoltQuad(uint32_t ms) {
     // in percents
     float diffCurr = voltOutput - VOLT_MIN;
     voltPercent = (diffCurr / diffMinMax) * 100;
+    // --- raw voltage ---
+    uint8_t rawVoltArr[sizeof (uint16_t)] = {0};
+    memcpy(rawVoltArr, &readSignal, sizeof (uint16_t));
+    ack[4] = rawVoltArr[0];
+    ack[5] = rawVoltArr[1];
   }
 }
 
@@ -123,8 +128,8 @@ void Extra::customCommand(uint8_t* msg_data, uint32_t ms) {
     //_________________________
     // implement
     if (msg_data[BT_MSG_AUX1] == DATA_MAX) // left
-      ; // AUX 1
+      /*todo*/; // AUX 1
     if (msg_data[BT_MSG_AUX2] == DATA_MAX && msg_data[BT_MSG_THR] != DATA_MIN) // right
-      ; // AUX 2
+      /*todo*/; // AUX 2
   }
 }

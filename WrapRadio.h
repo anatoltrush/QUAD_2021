@@ -46,7 +46,7 @@ class Extra
     float voltOutput = 0.0f;
 
     void flash(uint32_t ms);
-    void getVoltQuad(uint32_t ms);
+    void getVoltQuad(uint32_t ms, uint8_t* ack);
     void customCommand(uint8_t* msg_data, uint32_t ms);
 
   private:
