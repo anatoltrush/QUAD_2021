@@ -75,8 +75,8 @@
 #define OFF_G_Z         0
 
 // VOLTAGE
-#define VOLT_COEFF_K    84.3f // MAGIC VALUE
-#define VOLT_COEFF_B    4.0f // MAGIC VALUE
+#define VOLT_COEFF_K    81.49f // MAGIC VALUE
+#define VOLT_COEFF_B    -3.47f // MAGIC VALUE
 #define VOLT_MIN        10.05f // 3 x 3.35V
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
