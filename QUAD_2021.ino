@@ -46,6 +46,8 @@ void loop() {
     /*Serial.print(wrapgyro.ax_x_rl);
       Serial.print(',');*/
     Serial.print(wrapGyro.ax_y_rl);
+    Serial.print(',');
+    Serial.print(wrapKalman.valY);
     /*Serial.print(',');
       Serial.print(wrapengine.POWER_FL);
       Serial.print(',');

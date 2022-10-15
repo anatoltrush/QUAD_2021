@@ -60,7 +60,7 @@
 
 // GYRO
 #define TO_DEG          57.295779513082320876798f
-#define ESTIM           0.1f
+#define ESTIM           10.0f
 #define SMOOTH_COEFF    0.9f // config 0-smooth...1-sharp
 #define OFFSET_FR_RL    0.0f // axis X
 #define OFFSET_FL_RR    0.0f // axis Y
