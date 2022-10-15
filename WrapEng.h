@@ -13,8 +13,7 @@ enum State {
   CONN_LOST
 };
 
-class WrapEng
-{
+class WrapEng {
   public:
     uint16_t POWER_MAIN = MIN_POWER;
     uint16_t POWER_Diag_FRRL = POWER_MAIN;
@@ -45,10 +44,10 @@ class WrapEng
     GyverPID regulator_FL_RR;
     GyverPID regulator_D1_D2;
 
-    Servo motorFR; // 1
-    Servo motorFL; // 2
-    Servo motorRR; // 3
-    Servo motorRL; // 4
+    Servo motorFR;  // 1
+    Servo motorFL;  // 2
+    Servo motorRR;  // 3
+    Servo motorRL;  // 4
 
 #ifdef DEBUG_ENG
     uint16_t counter = 0;
@@ -64,4 +63,4 @@ class WrapEng
     void flyConnLost();
 };
 
-#endif // WRAPENG_H
+#endif  // WRAPENG_H

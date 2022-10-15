@@ -53,14 +53,15 @@
 // ENGINES
 #define MIN_POWER       800
 #define MAX_POWER       2300
-#define MIN_DIAG_POWER  1000  
+#define MIN_DIAG_POWER  1000
 #define WARN_POWER      2000
 #define THR_ADD_POWER   2
 #define THR_SUB_POWER   1
 
 // GYRO
 #define TO_DEG          57.295779513082320876798f
-#define SMOOTH_COEFF    0.95f // config 0-smooth...1-sharp
+#define ESTIM           0.1f
+#define SMOOTH_COEFF    0.9f // config 0-smooth...1-sharp
 #define OFFSET_FR_RL    0.0f // axis X
 #define OFFSET_FL_RR    0.0f // axis Y
 #define OFFSET_D1_D2    0.0f

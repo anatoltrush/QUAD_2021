@@ -1,10 +1,10 @@
 #include "WrapRadio.h"
 
-WrapRadio::WrapRadio(){
+WrapRadio::WrapRadio() {
   radio = new RF24(PIN_NRF_CE, PIN_NRF_CS);
 }
 
-WrapRadio::~WrapRadio(){
+WrapRadio::~WrapRadio() {
   delete radio;
 }
 
@@ -105,7 +105,7 @@ void Extra::getVoltQuad(uint32_t ms, uint8_t* ack) {
 #endif
     prevVoltMs = millis();
     //_________________________
-    uint16_t readSignal = analogRead(PinVolt);    
+    uint16_t readSignal = analogRead(PinVolt);
     voltOutput = ((float)readSignal - VOLT_COEFF_B) / VOLT_COEFF_K;
     // in percents
     float diffCurr = voltOutput - VOLT_MIN;
