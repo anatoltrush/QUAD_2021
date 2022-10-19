@@ -61,7 +61,7 @@
 // GYRO
 #define TO_DEG          57.295779513082320876798f
 #define ESTIM           10.0f
-#define SMOOTH_COEFF    0.9f // config 0-smooth...1-sharp
+#define SMOOTH_COEFF    1.0f // config 0-smooth...1-sharp
 #define OFFSET_FR_RL    0.0f // axis X
 #define OFFSET_FL_RR    0.0f // axis Y
 #define OFFSET_D1_D2    0.0f
@@ -84,7 +84,7 @@
 // PID
 #define PID_KP          2.0f
 #define PID_KI          2.0f
-#define PID_KD          0.7f // 0.7f
+#define PID_KD          0.8f // 0.7f
 #define PID_LIM_COEFF   0.75f
 
 // BYTES MSG

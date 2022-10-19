@@ -6,7 +6,6 @@
 Extra extra;
 WrapRadio wrapRadio;
 WrapGyro wrapGyro;
-WrapKalman wrapKalman(ESTIM, SMOOTH_COEFF);
 WrapEng wrapEngine;
 
 uint32_t curr_time = 0;
@@ -20,7 +19,7 @@ void setup() {
   wrapRadio.init();
 
   Serial.begin(115200);
-  Serial.println("Y_real");
+  Serial.println("X_real");
 }
 
 void loop() {
@@ -29,11 +28,10 @@ void loop() {
   extra.customCommand(wrapRadio.data_msg, TIME_CMD_UPD_MS);
 
   wrapGyro.getRealResultTimer(TIME_GYRO_MS);
-  wrapKalman.setDataAndCalc(wrapGyro.ax_x_rl, wrapGyro.ax_y_rl, wrapGyro.ax_z_rl, TIME_GYRO_MS);
 
   wrapRadio.getData(extra.voltOutput * 10, wrapEngine.isMaxReached, wrapEngine.numWarnEngine, wrapEngine.POWER_MAIN);
 
-  wrapEngine.setGyroData(wrapKalman.valX, wrapKalman.valY, wrapKalman.valZ);
+  wrapEngine.setGyroData(wrapGyro.ax_x_rl, wrapGyro.ax_y_rl, wrapGyro.ax_z_rl);
   wrapEngine.analyzeCommand(wrapRadio.data_msg, wrapRadio.isConnLost, TIME_CMD_UPD_MS);
   wrapEngine.stabAndExec(TIME_ENGINE_MS);
 
@@ -43,11 +41,9 @@ void loop() {
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);
       Serial.print(',');*/
-    /*Serial.print(wrapgyro.ax_x_rl);
-      Serial.print(',');*/
-    Serial.print(wrapGyro.ax_y_rl);
-    Serial.print(',');
-    Serial.print(wrapKalman.valY);
+    Serial.print(wrapGyro.ax_x_rl);
+    //Serial.print(',');
+    //Serial.print(wrapGyro.ax_y_rl);
     /*Serial.print(',');
       Serial.print(wrapengine.POWER_FL);
       Serial.print(',');
