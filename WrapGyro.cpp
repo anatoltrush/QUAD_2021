@@ -47,23 +47,3 @@ void WrapGyro::getData(float &axis_x, float &axis_y, float &axis_z) {
   axis_y = ypr[1] * toDeg;
   axis_z = ypr[0] * toDeg;
 }
-
-WrapKalman::WrapKalman(float est, float coeff) {
-  filterX = new GKalman(est, coeff);
-  filterY = new GKalman(est, coeff);
-  filterZ = new GKalman(est, coeff);
-}
-
-WrapKalman::~WrapKalman() {
-  delete filterX;
-  delete filterY;
-  delete filterZ;
-}
-
-void WrapKalman::setDataAndCalc(float inX, float inY, float inZ, uint32_t ms) {
-  if (millis() - prevCalcMs >= ms) {
-    valX = filterX->filtered(inX);
-    valY = filterY->filtered(inY);
-    valZ = filterZ->filtered(inZ);
-  }
-}

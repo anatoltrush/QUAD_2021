@@ -32,28 +32,4 @@ class WrapGyro
 
     void getData(float &axis_x, float &axis_y, float &axis_z);
 };
-
-// _________________________
-
-#include <GyverFilters.h>
-
-class WrapKalman
-{
-  public:
-    WrapKalman(float est, float coeff);
-    ~WrapKalman();
-
-    GKalman* filterX = NULL;
-    GKalman* filterY = NULL;
-    GKalman* filterZ = NULL;
-
-    float valX = 0.0f;
-    float valY = 0.0f;
-    float valZ = 0.0f;
-
-    void setDataAndCalc(float inX, float inY, float inZ, uint32_t ms);
-
-  private:
-    uint32_t prevCalcMs = 0;
-};
 #endif // WRAPGYRO_H
