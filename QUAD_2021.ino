@@ -32,7 +32,7 @@ void loop() {
   wrapRadio.getData(extra.voltOutput * 10, wrapEngine.isMaxReached, wrapEngine.numWarnEngine, wrapEngine.POWER_MAIN);
 
   wrapEngine.setGyroData(wrapGyro.ax_x_rl, wrapGyro.ax_y_rl, wrapGyro.ax_z_rl);
-  wrapEngine.analyzeCommand(wrapRadio.data_msg, wrapRadio.isConnLost, TIME_CMD_UPD_MS);
+  wrapEngine.setData(wrapRadio.data_msg, wrapRadio.isConnLost, TIME_CMD_UPD_MS);
   wrapEngine.stabAndExec(TIME_ENGINE_MS);
 
   if (millis() - curr_time >= TIME_PID_MS) {

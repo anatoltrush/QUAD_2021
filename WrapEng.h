@@ -30,7 +30,7 @@ class WrapEng {
 
     void init();
     void setGyroData(float ax_x, float ax_y, float ax_z);
-    void analyzeCommand(uint8_t* msgData, bool isConnLost, uint32_t ms);
+    void setData(uint8_t* msgData, bool isConnLost, uint32_t ms);
     void stabAndExec(uint32_t ms);
 
   private:
@@ -59,8 +59,8 @@ class WrapEng {
     void checkMinMax();
     void checkWarning();
 
-    void flyOk(uint8_t* msg_data);
-    void flyConnLost();
+    void analyzeCommands(uint8_t* msg_data);
+    void connectionLost();
 };
 
 #endif  // WRAPENG_H

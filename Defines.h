@@ -54,7 +54,7 @@
 #define MIN_POWER       800
 #define MAX_POWER       2300
 #define MIN_DIAG_POWER  1000
-#define WARN_POWER      2000
+#define WARN_POWER      2100
 #define THR_ADD_POWER   2
 #define THR_SUB_POWER   1
 

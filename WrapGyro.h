@@ -16,12 +16,12 @@ class WrapGyro
 
     void getRealResultTimer(uint32_t ms);
 
-  private:
-    const float toDeg = 180.0 / M_PI;
+  private:    
     uint8_t mpuIntStatus = 0;   // holds actual interrupt status byte from MPU
     uint8_t devStatus = 0;      // return status after each device operation (0 = success, !0 = error)
-    uint16_t fifoCount = 0;     // count of all bytes currently in FIFO
     uint8_t fifoBuffer[64];     // FIFO storage buffer
+    uint16_t fifoCount = 0;     // count of all bytes currently in FIFO
+    const float toDeg = 180.0 / M_PI;
     float ypr[3];               // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector*/
 
     uint32_t prevRealMs = 0;
