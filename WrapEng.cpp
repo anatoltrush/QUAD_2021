@@ -136,7 +136,7 @@ void WrapEng::checkWarning() {
       numWarnEngine = i + 1;
     }
   }
-  isMaxReached = (maxPower > WARN_POWER) ? true : false;
+  isMaxReached = (maxPower > WARN_ENG_POWER) ? true : false;
 }
 
 void WrapEng::analyzeCommands(uint8_t* msgData) {
@@ -146,7 +146,7 @@ void WrapEng::analyzeCommands(uint8_t* msgData) {
 #endif
   // ---------- [1] THROTTLE ----------
   if (msgData[BT_MSG_THR] == DATA_MAX) {
-    if (!isMaxReached || POWER_MAIN < MAX_POWER)
+    if (!isMaxReached && POWER_MAIN < WARN_MAIN_POWER)
       POWER_MAIN += THR_ADD_POWER;
   }
   if (msgData[BT_MSG_THR] == DATA_MIN) {
@@ -157,20 +157,19 @@ void WrapEng::analyzeCommands(uint8_t* msgData) {
   POWER_Diag_FLRR = POWER_MAIN;
 
   // ---------- [0] YAW ----------
-  float resOffsetD1D2 = OFFSET_D1_D2;
+  float resultOffsetD1D2 = OFFSET_D1_D2;
+  
   if (msgData[BT_MSG_YAW] == DATA_MAX) {
-    if (!isMaxReached) {
       // implement
-    }
   }
   if (msgData[BT_MSG_YAW] == DATA_MIN) {
-    if (!isMaxReached) {
       // implement
-    }
   }
 
   // ---------- [3] ROLL + [4] PITCH ----------
   float resultOffsetFRRL = OFFSET_FR_RL;
+  float resultOffsetFLRR = OFFSET_FL_RR;
+   
   if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_MAX) { // Diag1+ (FRRL)
     resultOffsetFRRL += SET_ANGLE;
   }
@@ -178,7 +177,6 @@ void WrapEng::analyzeCommands(uint8_t* msgData) {
     resultOffsetFRRL -= SET_ANGLE;
   }
 
-  float resultOffsetFLRR = OFFSET_FL_RR;
   if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_MIN) { // Diag2+ (FLRR)
     resultOffsetFLRR += SET_ANGLE;
   }
@@ -205,6 +203,7 @@ void WrapEng::analyzeCommands(uint8_t* msgData) {
   }
 
   // ----- apply offsets -----
+  regulator_D1_D2.setpoint = resultOffsetD1D2;
   regulator_FR_RL.setpoint = resultOffsetFRRL;
   regulator_FL_RR.setpoint = resultOffsetFLRR;
 
