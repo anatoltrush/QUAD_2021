@@ -26,18 +26,18 @@ void WrapEng::init() {
   regulator_FR_RL.setDirection(NORMAL);
   regulator_FR_RL.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
   regulator_FR_RL.setDt(TIME_PID_MS);
-  regulator_FR_RL.setpoint = OFFSET_FR_RL;
-  regulator_FR_RL.Kp = PID_KP;
-  regulator_FR_RL.Ki = PID_KI;
-  regulator_FR_RL.Kd = PID_KD;
+  regulator_FR_RL.setpoint = 0.0f;
+  regulator_FR_RL.Kp = PID_KP_XY;
+  regulator_FR_RL.Ki = PID_KI_XY;
+  regulator_FR_RL.Kd = PID_KD_XY;
 
   regulator_FL_RR.setDirection(NORMAL);
   regulator_FL_RR.setLimits(-(POWER_FULL_DIFF * PID_LIM_COEFF), POWER_FULL_DIFF * PID_LIM_COEFF);
   regulator_FL_RR.setDt(TIME_PID_MS);
-  regulator_FL_RR.setpoint = OFFSET_FL_RR;
-  regulator_FL_RR.Kp = PID_KP;
-  regulator_FL_RR.Ki = PID_KI;
-  regulator_FL_RR.Kd = PID_KD;
+  regulator_FL_RR.setpoint = 0.0f;
+  regulator_FL_RR.Kp = PID_KP_XY;
+  regulator_FL_RR.Ki = PID_KI_XY;
+  regulator_FL_RR.Kd = PID_KD_XY;
 
   regulator_D1_D2.setDirection(NORMAL);
   regulator_D1_D2.setDt(TIME_PID_MS);
@@ -84,10 +84,16 @@ void WrapEng::stabAndExec(uint32_t ms) {
     //_________________________
     // --- --- --- --- ---> D1 <-o-> D2 <--- --- --- --- ---
     uint16_t pid_D1_D2 = 0;
+    if(POWER_MAIN >= MIN_UP_POWER){
+
+    }
+    else{
+
+    }
 
     // --- --- --- --- ---> Diag FR <-o-> RL <--- --- --- --- ---
     uint16_t pid_FR_RL = 0;
-    if (POWER_Diag_FRRL >= MIN_DIAG_POWER) {
+    if (POWER_Diag_FRRL >= MIN_UP_POWER) {
       pid_FR_RL = (uint16_t)regulator_FR_RL.getResultTimer();
     }
     else {
@@ -99,7 +105,7 @@ void WrapEng::stabAndExec(uint32_t ms) {
 
     // --- --- --- --- ---> Diag FL <-o-> RR <--- --- --- --- ---
     uint16_t pid_FL_RR = 0;
-    if (POWER_Diag_FLRR >= MIN_DIAG_POWER) {
+    if (POWER_Diag_FLRR >= MIN_UP_POWER) {
       pid_FL_RR = (uint16_t)regulator_FL_RR.getResultTimer();
     }
     else {
@@ -153,53 +159,49 @@ void WrapEng::analyzeCommands(uint8_t* msgData) {
     if (POWER_MAIN > MIN_POWER)
       POWER_MAIN -= THR_SUB_POWER;
   }
-  POWER_Diag_FRRL = POWER_MAIN;
-  POWER_Diag_FLRR = POWER_MAIN;
 
-  // ---------- [0] YAW ----------
-  float resultOffsetD1D2 = OFFSET_D1_D2;
-  
+  // ---------- [0] YAW ----------  
   if (msgData[BT_MSG_YAW] == DATA_MAX) {
-      // implement
+      resultOffsetD1D2 += SET_YAW_ANG;
   }
   if (msgData[BT_MSG_YAW] == DATA_MIN) {
-      // implement
+      resultOffsetD1D2 -= SET_YAW_ANG;
   }
 
   // ---------- [3] ROLL + [4] PITCH ----------
-  float resultOffsetFRRL = OFFSET_FR_RL;
-  float resultOffsetFLRR = OFFSET_FL_RR;
+  float resultOffsetFRRL = 0.0f;
+  float resultOffsetFLRR = 0.0f;
    
   if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_MAX) { // Diag1+ (FRRL)
-    resultOffsetFRRL += SET_ANGLE;
+    resultOffsetFRRL += SET_P_R_ANG;
   }
   if (msgData[BT_MSG_PTCH] == DATA_MIN && msgData[BT_MSG_ROLL] == DATA_MIN) { // Diag1- (FRRL)
-    resultOffsetFRRL -= SET_ANGLE;
+    resultOffsetFRRL -= SET_P_R_ANG;
   }
 
   if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_MIN) { // Diag2+ (FLRR)
-    resultOffsetFLRR += SET_ANGLE;
+    resultOffsetFLRR += SET_P_R_ANG;
   }
   if (msgData[BT_MSG_PTCH] == DATA_MIN && msgData[BT_MSG_ROLL] == DATA_MAX) { // Diag2- (FLRR)
-    resultOffsetFLRR -= SET_ANGLE;
+    resultOffsetFLRR -= SET_P_R_ANG;
   }
 
   if (msgData[BT_MSG_PTCH] == DATA_AVRG && msgData[BT_MSG_ROLL] == DATA_MAX) { // ROLL+
-    resultOffsetFRRL += SET_ANGLE;
-    resultOffsetFLRR += SET_ANGLE;
+    resultOffsetFRRL += SET_P_R_ANG;
+    resultOffsetFLRR += SET_P_R_ANG;
   }
   if (msgData[BT_MSG_PTCH] == DATA_AVRG && msgData[BT_MSG_ROLL] == DATA_MIN) { // ROLL-
-    resultOffsetFRRL -= SET_ANGLE;
-    resultOffsetFLRR -= SET_ANGLE;
+    resultOffsetFRRL -= SET_P_R_ANG;
+    resultOffsetFLRR -= SET_P_R_ANG;
   }
 
   if (msgData[BT_MSG_PTCH] == DATA_MAX && msgData[BT_MSG_ROLL] == DATA_AVRG) { // PITCH+
-    resultOffsetFRRL += SET_ANGLE;
-    resultOffsetFLRR -= SET_ANGLE;
+    resultOffsetFRRL += SET_P_R_ANG;
+    resultOffsetFLRR -= SET_P_R_ANG;
   }
   if (msgData[BT_MSG_PTCH] == DATA_MIN && msgData[BT_MSG_ROLL] == DATA_AVRG) { // PITCH-
-    resultOffsetFRRL -= SET_ANGLE;
-    resultOffsetFLRR += SET_ANGLE;
+    resultOffsetFRRL -= SET_P_R_ANG;
+    resultOffsetFLRR += SET_P_R_ANG;
   }
 
   // ----- apply offsets -----
@@ -218,16 +220,14 @@ void WrapEng::connectionLost() {
   Serial.print(millis() - prevCmndMs); Serial.print("_");
   Serial.println(__func__);
 #endif
-  if (POWER_MAIN >= MIN_DIAG_POWER) {
-    counPowerDown++;
-    if (counPowerDown >= EPOC_FOR_DOWN) {
+  if (POWER_MAIN >= MIN_UP_POWER) {
+    countPowerDown++;
+    if (countPowerDown >= EPOC_FOR_DOWN) {
       POWER_MAIN -= THR_SUB_POWER;
-      counPowerDown = 0;
+      countPowerDown = 0;
     }
   }
   else {
     POWER_MAIN = MIN_POWER;
   }
-  POWER_Diag_FRRL = POWER_MAIN;
-  POWER_Diag_FLRR = POWER_MAIN;
 }

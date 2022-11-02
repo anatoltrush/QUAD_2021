@@ -14,12 +14,10 @@ void WrapGyro::init() {
   mpu.setDMPEnabled(true);
   mpuIntStatus = mpu.getIntStatus();
 
-  mpu.setXAccelOffset(OFF_A_X);
-  mpu.setYAccelOffset(OFF_A_Y);
-  mpu.setZAccelOffset(OFF_A_Z);
-  mpu.setXGyroOffset(OFF_G_X);
-  mpu.setYGyroOffset(OFF_G_Y);
-  mpu.setZGyroOffset(OFF_G_Z);
+  mpu.setXAccelOffset(OFFSET_A_X);
+  mpu.setYAccelOffset(OFFSET_A_Y);
+  mpu.setXGyroOffset(OFFSET_G_X);
+  mpu.setYGyroOffset(OFFSET_G_Y);
 }
 
 void WrapGyro::getRealResultTimer(uint32_t ms) {

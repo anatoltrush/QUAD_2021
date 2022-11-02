@@ -37,11 +37,15 @@ void loop() {
 
   if (millis() - curr_time >= TIME_PID_MS) {
     curr_time = millis();
+    Serial.print(wrapGyro.ax_z_rl);
+    Serial.print(',');
+    Serial.print(wrapEngine.resultOffsetD1D2);
+
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');
       Serial.print(wrapengine.POWER_RL);
       Serial.print(',');*/
-    Serial.print(wrapGyro.ax_x_rl);
+    //Serial.print(wrapGyro.ax_x_rl);
     //Serial.print(',');
     //Serial.print(wrapGyro.ax_y_rl);
     /*Serial.print(',');

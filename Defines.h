@@ -53,28 +53,22 @@
 // ENGINES
 #define MIN_POWER       800
 #define MAX_POWER       2300
-#define MIN_DIAG_POWER  1000
+#define MIN_UP_POWER    1000
 #define WARN_MAIN_POWER 2100
 #define WARN_ENG_POWER  2200
 #define THR_ADD_POWER   2
 #define THR_SUB_POWER   1
 
 // GYRO
-#define TO_DEG          57.295779513082320876798f
-#define ESTIM           10.0f
+#define TO_DEG          57.295779513082320
 #define SMOOTH_COEFF    1.0f // config 0-smooth...1-sharp
-#define OFFSET_FR_RL    0.0f // axis X
-#define OFFSET_FL_RR    0.0f // axis Y
-#define OFFSET_D1_D2    0.0f
-#define SET_ANGLE       8.0f // 5.0f
-#define SET_YAW_ANG     2.0f
+#define SET_P_R_ANG     8.0f
+#define SET_YAW_ANG     0.2f
 // OFFSETS
-#define OFF_A_X         0
-#define OFF_A_Y         0
-#define OFF_A_Z         0
-#define OFF_G_X         0
-#define OFF_G_Y         0
-#define OFF_G_Z         0
+#define OFFSET_A_X      0
+#define OFFSET_A_Y      0
+#define OFFSET_G_X      0
+#define OFFSET_G_Y      0
 
 // VOLTAGE
 #define VOLT_COEFF_K    81.49f // MAGIC VALUE
@@ -83,9 +77,11 @@
 #define VOLT_MAX        12.6f // 3 x 4.2V
 
 // PID
-#define PID_KP          2.0f
-#define PID_KI          2.0f
-#define PID_KD          0.8f // 0.7f
+#define PID_KP_XY       2.0f
+#define PID_KI_XY       2.0f
+#define PID_KD_XY       0.8f // 0.7f
+#define PID_KI_Z        2.0f
+#define PID_KD_Z        0.8f // 0.7f
 #define PID_LIM_COEFF   0.75f
 
 // BYTES MSG

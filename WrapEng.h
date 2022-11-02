@@ -24,6 +24,8 @@ class WrapEng {
     uint16_t POWER_RR = MIN_POWER;
     uint16_t POWER_RL = MIN_POWER;
 
+    float resultOffsetD1D2 = 0.0f;
+
     // IS MAX
     bool isMaxReached = false;
     uint8_t numWarnEngine = 0;
@@ -53,7 +55,7 @@ class WrapEng {
     uint16_t counter = 0;
 #endif
 
-    uint8_t counPowerDown = 0;
+    uint8_t countPowerDown = 0;
 
     uint16_t* powers[4];
     void checkMinMax();
