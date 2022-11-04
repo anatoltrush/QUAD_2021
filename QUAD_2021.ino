@@ -11,15 +11,15 @@ WrapEng wrapEngine;
 uint32_t curr_time = 0;
 
 void setup() {
+  Serial.begin(115200);
+  Serial.println("X_real");
+
   Wire.begin();
   Wire.setClock(400000ul);
 
-  wrapEngine.init();
-  wrapGyro.init();
+  wrapEngine.init();  
   wrapRadio.init();
-
-  Serial.begin(115200);
-  Serial.println("X_real");
+  wrapGyro.init();
 }
 
 void loop() {

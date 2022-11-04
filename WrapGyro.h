@@ -17,7 +17,6 @@ class WrapGyro
     void getRealResultTimer(uint32_t ms);
 
   private:    
-    uint8_t mpuIntStatus = 0;   // holds actual interrupt status byte from MPU
     uint8_t devStatus = 0;      // return status after each device operation (0 = success, !0 = error)
     uint8_t fifoBuffer[64];     // FIFO storage buffer
     uint16_t fifoCount = 0;     // count of all bytes currently in FIFO

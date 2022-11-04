@@ -64,11 +64,6 @@
 #define SMOOTH_COEFF    1.0f // config 0-smooth...1-sharp
 #define SET_P_R_ANG     8.0f
 #define SET_YAW_ANG     0.2f
-// OFFSETS
-#define OFFSET_A_X      0
-#define OFFSET_A_Y      0
-#define OFFSET_G_X      0
-#define OFFSET_G_Y      0
 
 // VOLTAGE
 #define VOLT_COEFF_K    81.49f // MAGIC VALUE

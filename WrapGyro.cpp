@@ -12,12 +12,7 @@ void WrapGyro::init() {
 
   devStatus = mpu.dmpInitialize();
   mpu.setDMPEnabled(true);
-  mpuIntStatus = mpu.getIntStatus();
-
-  mpu.setXAccelOffset(OFFSET_A_X);
-  mpu.setYAccelOffset(OFFSET_A_Y);
-  mpu.setXGyroOffset(OFFSET_G_X);
-  mpu.setYGyroOffset(OFFSET_G_Y);
+  mpu.CalibrateGyro();
 }
 
 void WrapGyro::getRealResultTimer(uint32_t ms) {
