@@ -53,6 +53,7 @@
 // ENGINES
 #define MIN_POWER       800
 #define MAX_POWER       2300
+#define POWER_FULL_DIFF ((MAX_POWER) - (MIN_POWER))
 #define MIN_UP_POWER    1000
 #define WARN_MAIN_POWER 2100
 #define WARN_ENG_POWER  2200
@@ -75,9 +76,10 @@
 #define PID_KP_XY       2.0f
 #define PID_KI_XY       2.0f
 #define PID_KD_XY       0.8f // 0.7f
-#define PID_KI_Z        2.0f
-#define PID_KD_Z        0.8f // 0.7f
-#define PID_LIM_COEFF   0.75f
+#define PID_KI_Z        1.0f
+#define PID_KD_Z        0.2f
+#define PID_LIM_COEFF_XY  0.7f
+#define PID_LIM_COEFF_Z   0.5f
 
 // BYTES MSG
 #define BT_MSG_YAW      0

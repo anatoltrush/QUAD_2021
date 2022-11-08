@@ -39,7 +39,7 @@ void loop() {
     curr_time = millis();
     Serial.print(wrapGyro.ax_z_rl);
     Serial.print(',');
-    Serial.print(wrapEngine.resultOffsetD1D2);
+    Serial.print(wrapEngine.setpointD1D2);
 
     /*Serial.print(wrapengine.POWER_FR);
       Serial.print(',');

@@ -24,7 +24,7 @@ class WrapEng {
     uint16_t POWER_RR = MIN_POWER;
     uint16_t POWER_RL = MIN_POWER;
 
-    float resultOffsetD1D2 = 0.0f;
+    float setpointD1D2 = 0.0f;
 
     // IS MAX
     bool isMaxReached = false;
@@ -37,7 +37,6 @@ class WrapEng {
 
   private:
     State state = State::CONN_LOST;
-    const uint16_t POWER_FULL_DIFF = MAX_POWER - MIN_POWER;
 
     uint32_t prevApplyMs = 0;
     uint32_t prevCmndMs = 0;
